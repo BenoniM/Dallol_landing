@@ -17,11 +17,12 @@ const Hero = () => {
     { title: "Card 3", image: slide2 },
   ];
 
-  const autoplayOptions = { delay: 3000 };
+  const autoplayOptions = { delay: 9000 };
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "center" },
     [Autoplay(autoplayOptions)]
   );
+
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const scrollTo = useCallback(
@@ -30,7 +31,6 @@ const Hero = () => {
     },
     [emblaApi]
   );
-
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
