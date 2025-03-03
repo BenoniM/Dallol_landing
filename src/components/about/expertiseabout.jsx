@@ -46,7 +46,9 @@ const ExpertiseAbout = () => {
       }}
     >
       <div className="text-start w-full max-w-8xl  px-10">
-        <h1 className="text-5xl font-bold mb-10 ">Expertise</h1>
+        <h1 className="text-5xl font-bold mb-10 underline underline-offset-8">
+          Expertise
+        </h1>
       </div>
       <section className="w-full max-w-7xl">
         <div className="grid grid-cols-3 gap-6">
