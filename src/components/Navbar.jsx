@@ -87,20 +87,24 @@ const Navbar = () => {
 
           <section className="flex flex-col items-start mt-20 pl-14 ">
             <img src={logo} alt="" className="w-[15rem]" />
-            <ul className="flex flex-col items-start mt-16 space-y-4 ">
-              {["Home", "About Us", "Projects", "gallery360", "Contact Us"].map(
-                (item, index) => (
-                  <li key={index}>
-                    <NavLink
-                      to={getPath(item)}
-                      className="text-black text-5xl font-medium hover:text-primary transition "
-                      onClick={closeMenu}
-                    >
-                      {item}
-                    </NavLink>
-                  </li>
-                )
-              )}
+            <ul className="flex flex-col items-start mt-16 space-y-4 capitalize">
+              {[
+                "Home",
+                "About Us",
+                "Projects",
+                "360 Gallery",
+                "Contact Us",
+              ].map((item, index) => (
+                <li key={index}>
+                  <NavLink
+                    to={getPath(item)}
+                    className="text-black text-5xl font-medium hover:text-primary transition "
+                    onClick={closeMenu}
+                  >
+                    {item}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </section>
         </div>
