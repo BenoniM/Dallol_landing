@@ -3,6 +3,7 @@ import Hero from "../components/about/hero";
 import Nabbar2 from "../components/Nabbar2";
 import WeAre from "../components/about/WeAre";
 import Mission from "../components/about/mission";
+import ExpertiseAbout from "../components/about/ExpertiseAbout";
 
 const About = () => {
   return (
@@ -11,6 +12,7 @@ const About = () => {
       <Hero />
       <WeAre />
       <Mission />
+      <ExpertiseAbout />
     </>
   );
 };

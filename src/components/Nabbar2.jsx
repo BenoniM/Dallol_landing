@@ -12,6 +12,12 @@ const Nabbar2 = () => {
 
   const closeMenu = () => setIsOpen(false);
 
+  // Helper function to generate valid paths
+  const getPath = (item) => {
+    if (item === "Home") return "/";
+    return `/${item.replace(/\s/g, "").toLowerCase()}`;
+  };
+
   return (
     <nav className="w-full flex items-center justify-around py-4 px-10 relative">
       {/* Left Section - Navigation Links */}
@@ -37,6 +43,7 @@ const Nabbar2 = () => {
         ))}
       </ul>
 
+      {/* Logo */}
       <div>
         <img src={logo} alt="Logo" className="h-10 w-auto" />
       </div>
@@ -68,7 +75,7 @@ const Nabbar2 = () => {
           <li>
             <NavLink
               to="/contact"
-              className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-opacity-80 transition"
+              className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-opacity-80 transition "
             >
               Contact Us
             </NavLink>
@@ -100,8 +107,8 @@ const Nabbar2 = () => {
             <X size={60} className="text-black font-bold" />
           </button>
 
-          {/* social media */}
-          <div className=" bottom-0 flex flex-col items-center space-y-6 p-1">
+          {/* Social Media Links */}
+          <div className="bottom-0 flex flex-col items-center space-y-6 p-1">
             <div className="border-r-4 border-black h-[65vh] "></div>
             <a
               className="text-white text-2xl hover:text-gray-400 transition duration-300"
@@ -138,14 +145,14 @@ const Nabbar2 = () => {
           </div>
         </div>
 
-        <section className="flex flex-col items-start mt-20 s pl-14 ">
+        <section className="flex flex-col items-start mt-20 pl-14 ">
           <img src={logo} alt="" className="w-[15rem]" />
           <ul className="flex flex-col items-start mt-16 space-y-4 ">
             {["Home", "About Us", "Projects", "360 Gallery", "Contact Us"].map(
               (item, index) => (
                 <li key={index}>
                   <NavLink
-                    to={`/${item.replace(/\s/g, "").toLowerCase()}`}
+                    to={getPath(item)}
                     className="text-black text-5xl font-medium hover:text-primary transition "
                     onClick={closeMenu}
                   >
