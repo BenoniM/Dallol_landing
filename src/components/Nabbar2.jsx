@@ -15,6 +15,7 @@ const Nabbar2 = () => {
   // Helper function to generate valid paths
   const getPath = (item) => {
     if (item === "Home") return "/";
+    if (item === "360 Gallery") return "/gallery360";
     return `/${item.replace(/\s/g, "").toLowerCase()}`;
   };
 
@@ -44,9 +45,9 @@ const Nabbar2 = () => {
       </ul>
 
       {/* Logo */}
-      <div>
+      <a href="/">
         <img src={logo} alt="Logo" className="h-10 w-auto" />
-      </div>
+      </a>
 
       {/* Right Section - Links and Hamburger Menu */}
       <div className="flex items-center space-x-5">
@@ -74,7 +75,7 @@ const Nabbar2 = () => {
           {/* Contact Us Button */}
           <li>
             <NavLink
-              to="/contact"
+              to="/contactus"
               className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-opacity-80 transition "
             >
               Contact Us
