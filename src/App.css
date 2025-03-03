@@ -1,0 +1,43 @@
+.carousel-container {
+  width: 100%;
+}
+
+.carousel {
+  display: flex;
+  animation: scrollCarousel 60s infinite linear;
+}
+
+.carouselReverse {
+  display: flex;
+  animation: scrollCarouselReverse 60s infinite linear;
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+}
+
+.carousel-item {
+  margin-right: 1rem;
+}
+.text-body {
+  margin-bottom: 1rem;
+}
+
+@keyframes scrollCarousel {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-600%);
+  }
+}
+
+@keyframes scrollCarouselReverse {
+  0% {
+    transform: translateX(-600%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
