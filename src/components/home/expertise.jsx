@@ -51,12 +51,13 @@ const Expertise = () => {
       prevIndex === 0 ? images.length - 2 : prevIndex - 1
     );
   };
+
   return (
     <article className="w-full pt-10 font-montserrat flex flex-col items-center">
       <section className="w-full max-w-7xl mt-10 relative">
         <div className="flex justify-between items-center">
-          <div className=" w-[70%]">
-            <h1 className="text-2xl font-bold underline underline-offset-8 ">
+          <div className="w-[70%]">
+            <h1 className="text-2xl font-bold underline underline-offset-8">
               Expertise
             </h1>
             <p className="pl-5 pt-4">
@@ -73,7 +74,7 @@ const Expertise = () => {
         </div>
 
         {/* Image Slider */}
-        <div className="relative w-full overflow-hidden  mt-5">
+        <div className="relative w-full overflow-hidden mt-5">
           <div
             className="flex transition-transform duration-300 ease-in-out"
             style={{
@@ -85,9 +86,11 @@ const Expertise = () => {
                 key={image.id}
                 className="w-1/2 min-w-[45%] flex flex-col items-start"
               >
-                <div className="text-start border  rounded-lg p-5 w-[95%] ">
+                <div className="text-start border rounded-lg p-5 w-[95%] h-48 flex flex-col justify-between">
                   <h1 className="font-semibold text-3xl mb-1">{image.title}</h1>
-                  <p>{image.description}</p>
+                  <p className="overflow-hidden overflow-ellipsis line-clamp-3">
+                    {image.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -95,7 +98,7 @@ const Expertise = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className=" bottom-0 items-center justify-center pt-5 transform flex space-x-4">
+        <div className="bottom-0 items-center justify-center pt-5 transform flex space-x-4">
           <button
             onClick={handlePrev}
             className="border border-primary text-primary px-4 py-3 rounded-full"
@@ -104,7 +107,7 @@ const Expertise = () => {
           </button>
           <button
             onClick={handleNext}
-            className="border border-primary  text-primary px-4 py-3  rounded-full"
+            className="border border-primary text-primary px-4 py-3 rounded-full"
           >
             →
           </button>
