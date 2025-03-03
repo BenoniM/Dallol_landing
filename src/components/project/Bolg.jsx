@@ -42,7 +42,7 @@ const BlogPost = () => {
   const navigate = useNavigate();
 
   const handleReadMore = (id) => {
-    navigate(`/blog/${id}`);
+    navigate(`/projects/${id}`);
   };
 
   const filteredBlogs =
