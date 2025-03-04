@@ -4,7 +4,7 @@ const InfoWindow = ({ pharmacy }) => {
   return (
     <div className="rounded-full bg-white w-full flex flex-col items-center">
       <div className="flex gap-2">
-        <img src={DallolLogo} alt="droga-logo" height={80} className="!h-22" />
+        <img src={DallolLogo} alt="Dallo-logo" height={80} className="!h-22" />
       </div>
       <div className="w-full border-t border-t-[#F0F0F0] my-2 mb-3" />
       <a
