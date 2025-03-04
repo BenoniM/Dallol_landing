@@ -1,4 +1,4 @@
-import DallolLogo from "../../../assets/icon/logoblack.svg";
+import DallolLogo from "../../../assets/icon/black.svg";
 
 const InfoWindow = ({ pharmacy }) => {
   return (

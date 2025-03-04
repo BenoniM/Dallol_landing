@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import logo from "../assets/icon/logoblack.svg";
+import logo from "../assets/icon/black.svg";
 import menu from "../assets/icon/menublack.svg";
 import facebook from "../assets/icon/facebook.svg";
 import instagram from "../assets/icon/instagram.svg";
