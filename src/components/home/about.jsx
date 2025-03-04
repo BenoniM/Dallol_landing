@@ -76,7 +76,7 @@ const About = () => {
         </div>
 
         {/* Image Slider */}
-        <div className="relative w-full overflow-hidden  mt-5">
+        <div className="relative w-full overflow-auto scrollbar-hide  mt-5">
           <div
             className="flex transition-transform duration-300 ease-in-out"
             style={{
