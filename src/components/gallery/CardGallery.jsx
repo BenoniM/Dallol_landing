@@ -12,6 +12,7 @@ const galleries = [
     title: "Birhan",
     description:
       "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s...",
+    link: "https://www.keypano.com/v/fvfex566478jee-1728020920.html",
   },
   {
     id: 2,
@@ -39,8 +40,8 @@ const galleries = [
 const CardGallery = () => {
   const navigate = useNavigate();
 
-  const handleReadMore = (id) => {
-    navigate(`/gallery360/${id}`);
+  const handleReadMore = (link) => {
+    navigate(link);
   };
 
   return (
@@ -59,7 +60,7 @@ const CardGallery = () => {
             <h1 className="text-xl font-bold mt-4">{gallery.title}</h1>
             <p className="text-gray-600 mt-2">{gallery.description}</p>
             <button
-              onClick={() => handleReadMore(gallery.id)}
+              onClick={() => handleReadMore(gallery.link)}
               className="mt-4 bg-primary text-white px-5 py-2 rounded-full"
             >
               Read More

@@ -80,7 +80,9 @@ const BlogDetails = () => {
 
       <section className="flex flex-row items-center  p-5">
         <div className="flex flex-col  items-center w-1/2 h-[500px] gap-20 pt-20 p- border border-primary ">
-          <h1 className="text-8xl font-bold">Features</h1>
+          <h1 className="text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
+            Features
+          </h1>
           <p className="w-[66%]">
             The Hotel design, while modern and sleek, might not fully align with
             the expectations of a typical hotel. The minimalist aesthetic, while
@@ -93,7 +95,9 @@ const BlogDetails = () => {
 
       <section>
         <div className="flex flex-row items-center justify-between p-5">
-          <h1 className="text-8xl font-bold">Function</h1>
+          <h1 className="text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
+            Function
+          </h1>
           <p className="w-[55%]">
             The Hotel design, while modern and sleek, might not fully align with
             the expectations of a typical hotel. The minimalist aesthetic, while

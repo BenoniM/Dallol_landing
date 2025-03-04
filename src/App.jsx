@@ -9,6 +9,7 @@ import Contact from "./page/Contact";
 import BlogDetails from "./components/project/BlogDetails";
 import HotelMall from "./components/project/Hotelmall";
 import SchoolDetails from "./components/project/schoolDetails";
+import ResidenceHenok from "./components/project/ResidenceHenok";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/blogdetails" element={<BlogDetails />} />
         <Route path="/hotelmall" element={<HotelMall />} />
         <Route path="/schooldetails" element={<SchoolDetails />} />
+        <Route path="/henok-t-residence" element={<ResidenceHenok />} />
 
         <Route path="/gallery360" element={<Gallery />} />
         <Route path="/contactus" element={<Contact />} />
