@@ -20,6 +20,7 @@ const galleries = [
     title: "Dr. Abdi Aermolo Interior",
     description:
       "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s...",
+    link: "https://www.keypano.com/v/ul1b60et884l6c-1725884388.html",
   },
   {
     id: 3,
@@ -27,6 +28,7 @@ const galleries = [
     title: "ATO GIZACHEW TERGA",
     description:
       "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s...",
+    link: "https://www.keypano.com/v/8o4fdbt74v_b46-1723125684.html",
   },
   {
     id: 4,
@@ -34,6 +36,7 @@ const galleries = [
     title: "Ato Henok Interior",
     description:
       "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s...",
+    link: "https://www.keypano.com/v/98apb_1c43ay06-1721661744.html",
   },
 ];
 
@@ -41,7 +44,11 @@ const CardGallery = () => {
   const navigate = useNavigate();
 
   const handleReadMore = (link) => {
-    navigate(link);
+    if (link.startsWith("http")) {
+      window.open(link, "_blank"); // Opens external links in a new tab
+    } else {
+      navigate(link); // Navigates to internal routes
+    }
   };
 
   return (
@@ -57,7 +64,7 @@ const CardGallery = () => {
               alt={gallery.title}
               className="w-full h-auto object-cover rounded-lg"
             />
-            <h1 className="text-xl font-bold mt-4">{gallery.title}</h1>
+            <h1 className="text-xl font-semibold mt-4">{gallery.title}</h1>
             <p className="text-gray-600 mt-2">{gallery.description}</p>
             <button
               onClick={() => handleReadMore(gallery.link)}

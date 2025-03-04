@@ -18,25 +18,34 @@ const Nabbar2 = () => {
     if (item === "360 Gallery") return "/gallery360";
     return `/${item.replace(/\s/g, "").toLowerCase()}`;
   };
+  console.log(window.location.pathname);
 
   return (
     <nav className="w-full flex items-center justify-around py-4 px-10 relative">
       <ul className="flex items-center space-x-8">
-        {["Home", "About Us"].map((item, index) => (
+        {[
+          {
+            name: "Home",
+            link: "/",
+          },
+          {
+            name: "About Us",
+            link: "/aboutus",
+          },
+        ].map((item, index) => (
           <li key={index} className="relative flex items-center">
             <NavLink
-              to={`/${item.replace(/\s/g, "").toLowerCase()}`}
+              to={item.link}
               className={({ isActive }) =>
                 `text-gray-700 font-medium hover:text-primary transition flex items-center ${
                   isActive ? "font-bold" : ""
                 }`
               }
             >
-              {item}
+              {item.name}
             </NavLink>
 
-            {window.location.pathname ===
-              `/${item.replace(/\s/g, "").toLowerCase()}` && (
+            {window.location.pathname == item.link && (
               <span className="ml-2 w-2 h-2 bg-primary rounded-full"></span>
             )}
           </li>
@@ -50,27 +59,34 @@ const Nabbar2 = () => {
 
       <div className="flex items-center space-x-5">
         <ul className="flex items-center space-x-8">
-          {["Projects", "360 Gallery"].map((item, index) => (
+          {[
+            {
+              name: "Projects",
+              link: "/projects",
+            },
+            {
+              name: "360 Gallery",
+              link: "/gallery360",
+            },
+          ].map((item, index) => (
             <li key={index} className="relative flex items-center">
               <NavLink
-                to={`/${item.replace(/\s/g, "").toLowerCase()}`}
+                to={item.link}
                 className={({ isActive }) =>
                   `text-gray-700 font-medium hover:text-primary transition flex items-center ${
-                    isActive ? "text-primary font-bold" : ""
+                    isActive ? "text-black font-bold" : ""
                   }`
                 }
               >
-                {item}
+                {item.name}
               </NavLink>
-              {/* Active Dot Indicator (Right Side) */}
-              {window.location.pathname ===
-                `/${item.replace(/\s/g, "").toLowerCase()}` && (
+
+              {window.location.pathname == item.link && (
                 <span className="ml-2 w-2 h-2 bg-primary rounded-full"></span>
               )}
             </li>
           ))}
 
-          {/* Contact Us Button */}
           <li>
             <NavLink
               to="/contactus"
@@ -79,12 +95,10 @@ const Nabbar2 = () => {
               Contact Us
             </NavLink>
           </li>
+          <button onClick={() => setIsOpen(true)} className="">
+            <Menu size={32} className="text-black" />
+          </button>
         </ul>
-
-        {/* Hamburger Menu Button - Always Visible */}
-        <button onClick={() => setIsOpen(true)}>
-          <Menu size={32} className="text-black" />
-        </button>
       </div>
 
       {/* Overlay when Menu is Open */}

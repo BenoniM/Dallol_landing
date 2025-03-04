@@ -101,9 +101,7 @@ const Hero = () => {
       </div>
 
       {/* Button on the Right */}
-      <div className="absolute bottom-32 right-10 z-10">
-        <img src={logo} alt="" />
-      </div>
+      <div className="absolute bottom-32 right-10 z-10"></div>
     </div>
   );
 };

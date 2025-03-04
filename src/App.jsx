@@ -8,7 +8,7 @@ import Gallery from "./page/Gallery";
 import Contact from "./page/Contact";
 import BlogDetails from "./components/project/BlogDetails";
 import HotelMall from "./components/project/Hotelmall";
-import SchoolDetails from "./components/project/schoolDetails";
+import SchoolDetails from "./components/project/SchoolDetails";
 import ResidenceHenok from "./components/project/ResidenceHenok";
 
 function App() {
