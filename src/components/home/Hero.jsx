@@ -6,9 +6,11 @@ import Bactier from "../../assets/img/heroimg2.png";
 import slide1 from "../../assets/img/heroimg.png";
 import slide2 from "../../assets/img/heroimg3.png";
 import logo from "../../assets/icon/logowhite.svg";
-import facebook from "../../assets/icon/whitelinkedin.svg";
+
 import linkedin from "../../assets/icon/whitelinkedin.svg";
-import pinterest from "../../assets/icon/whitepinterest.svg";
+import facebook from "../../assets/icon/whitefacebook.svg";
+import tiktok from "../../assets/icon/whitetiktok.svg";
+import instagram from "../../assets/icon/whtieinstagram.svg";
 import CircularText from "../CircularText";
 
 const Hero = () => {
@@ -46,7 +48,7 @@ const Hero = () => {
   return (
     <div id="Hero-section" className="relative w-full font-montserrat">
       {/* Carousel */}
-      <div className="overflow-hidden relative h-auto" ref={emblaRef}>
+      <div className="overflow-hidden relative h-[100dvh]" ref={emblaRef}>
         <div className="flex">
           {cardsData.map((card, index) => (
             <div
@@ -65,7 +67,7 @@ const Hero = () => {
       </div>
 
       {/* Text on the Left */}
-      <div className="absolute bottom-24 left-20 w-[70%] space-y-1 text-white z-10">
+      <div className="absolute bottom-20 left-20 w-[70%] space-y-1 text-white z-10">
         <h1 className="text-xl sm:text-5xl md:text-7xl lg:text-5xl font-semibold leading-tight">
           DALLOL
         </h1>
@@ -73,14 +75,14 @@ const Hero = () => {
           Where Innovation Meets Precision
         </p>
       </div>
-      <div className="absolute bottom-0 flex flex-col items-center space-y-4 p-8 ">
-        <div className="border-r border-white h-[70vh] pt-"></div>
+      <div className="absolute bottom-0 flex flex-col items-center space-y-5 p-8 ">
+        <div className="border-r border-white h-[100vh] pt-"></div>
         <a
           className="text-white text-2xl hover:text-gray-400 transition duration-300"
           href="#"
         >
           <i className="">
-            <img src={facebook} alt="" />
+            <img src={facebook} alt="" className="w-6 h-6" />
           </i>
         </a>
         <a
@@ -88,7 +90,7 @@ const Hero = () => {
           href="#"
         >
           <i className="">
-            <img src={linkedin} alt="" />
+            <img src={instagram} alt="" className="w-5 h-5" />
           </i>
         </a>
         <a
@@ -96,13 +98,21 @@ const Hero = () => {
           href="#"
         >
           <i className="">
-            <img src={pinterest} alt="" />
+            <img src={linkedin} alt="" className="w-6 h-6" />
+          </i>
+        </a>
+        <a
+          className="text-white text-2xl hover:text-gray-400 transition duration-300"
+          href="#"
+        >
+          <i className="">
+            <img src={tiktok} alt="" className="w-6 h-6" />
           </i>
         </a>
       </div>
 
       {/* Button on the Right */}
-      <div className="absolute bottom-32 right-10 z-10 ">
+      <div className="absolute bottom-20 right-10 z-10 ">
         <CircularText text="build your dream With Us" />
       </div>
     </div>
