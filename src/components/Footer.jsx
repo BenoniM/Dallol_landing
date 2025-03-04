@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-// import logo from "../assets/icon/logoblack.svg";
-import logo from "../assets/icon/logowhite.svg";
+import logo from "../assets/icon/black.svg";
+
 import facebook from "../assets/icon/facebook.svg";
 import instagram from "../assets/icon/instagram.svg";
 import linkedin from "../assets/icon/linkedin.svg";
