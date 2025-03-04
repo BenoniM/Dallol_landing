@@ -111,7 +111,6 @@ const Hero = () => {
         </a>
       </div>
 
-      {/* Button on the Right */}
       <div className="absolute bottom-20 right-10 z-10 ">
         <CircularText text="build your dream With Us" />
       </div>
