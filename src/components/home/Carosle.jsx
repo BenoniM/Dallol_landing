@@ -5,7 +5,7 @@ import img4 from "../../assets/img/clint/Dede.svg";
 import img5 from "../../assets/img/clint/Dembesh.svg";
 import img6 from "../../assets/img/clint/Drogapharma.svg";
 import img7 from "../../assets/img/clint/ElilitaInv.svg";
-import img8 from "../../assets/img/clint/ethiopianairlines.svg";
+import img8 from "../../assets/img/clint/airlines.svg";
 import img9 from "../../assets/img/clint/ethiopianheritageauthority.svg";
 import img10 from "../../assets/img/clint/fujitacorporation.svg";
 import img11 from "../../assets/img/clint/gergesenon.svg";
