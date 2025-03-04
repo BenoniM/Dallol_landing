@@ -45,8 +45,8 @@ const ExpertiseAbout = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="text-start w-full max-w-8xl  px-10">
-        <h1 className="text-5xl font-bold mb-10 underline underline-offset-8">
+      <div className="text-start w-full max-w-8xl mb-10  px-10">
+        <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[4px] after:w-[9%] pb-5 after:bg-primary after:left-[6%] after:top-full after:-translate-y-4">
           Expertise
         </h1>
       </div>

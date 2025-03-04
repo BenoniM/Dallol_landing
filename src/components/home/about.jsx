@@ -67,7 +67,7 @@ const About = () => {
       {/* Projects Section */}
       <section className="w-full max-w-7xl mt-10 relative">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold underline underline-offset-8 ">
+          <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[80%] pb-5 after:bg-primary after:left-[20%] after:top-full after:-translate-y-2">
             Projects
           </h1>
           <button className="bg-primary px-5 py-1 text-white rounded-full">

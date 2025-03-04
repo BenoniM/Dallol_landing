@@ -9,7 +9,9 @@ const WeAre = () => {
       </section>
 
       <section className="w-1/2 ">
-        <h1 className="text-5xl font-bold">We are Dallol</h1>
+        <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[30%] pb-5 after:bg-primary after:left-[16%] after:top-full after:-translate-y-2">
+          We are Dallol
+        </h1>
         <p className="mt-10">
           At Dallol Design Build, we believe that great design starts with
           understanding. Our mission is to craft spaces that resonate with our
