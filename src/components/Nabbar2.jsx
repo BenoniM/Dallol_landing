@@ -21,7 +21,6 @@ const Nabbar2 = () => {
 
   return (
     <nav className="w-full flex items-center justify-around py-4 px-10 relative">
-      {/* Left Section - Navigation Links */}
       <ul className="flex items-center space-x-8">
         {["Home", "About Us"].map((item, index) => (
           <li key={index} className="relative flex items-center">
@@ -35,7 +34,7 @@ const Nabbar2 = () => {
             >
               {item}
             </NavLink>
-            {/* Active Dot Indicator (Right Side) */}
+
             {window.location.pathname ===
               `/${item.replace(/\s/g, "").toLowerCase()}` && (
               <span className="ml-2 w-2 h-2 bg-primary rounded-full"></span>
@@ -49,7 +48,6 @@ const Nabbar2 = () => {
         <img src={logo} alt="Logo" className="h-10 w-auto" />
       </a>
 
-      {/* Right Section - Links and Hamburger Menu */}
       <div className="flex items-center space-x-5">
         <ul className="flex items-center space-x-8">
           {["Projects", "360 Gallery"].map((item, index) => (
