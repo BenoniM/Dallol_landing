@@ -5,9 +5,10 @@ import Footer from "./components/Footer";
 import About from "./page/About";
 import Project from "./page/Project";
 import Gallery from "./page/Gallery";
-import ContactUs from "./components/contact/ContactUs";
 import Contact from "./page/Contact";
 import BlogDetails from "./components/project/BlogDetails";
+import HotelMall from "./components/project/Hotelmall";
+import SchoolDetails from "./components/project/schoolDetails";
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/AboutUs" element={<About />} />
         <Route path="/projects" element={<Project />} />
-        <Route path="/projects/:id" element={<BlogDetails />} />
+        <Route path="/blogdetails" element={<BlogDetails />} />
+        <Route path="/hotelmall" element={<HotelMall />} />
+        <Route path="/schooldetails" element={<SchoolDetails />} />
 
         <Route path="/gallery360" element={<Gallery />} />
         <Route path="/contactus" element={<Contact />} />
