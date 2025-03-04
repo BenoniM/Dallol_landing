@@ -9,6 +9,7 @@ import logo from "../../assets/icon/logowhite.svg";
 import facebook from "../../assets/icon/whitelinkedin.svg";
 import linkedin from "../../assets/icon/whitelinkedin.svg";
 import pinterest from "../../assets/icon/whitepinterest.svg";
+import CircularText from "../CircularText";
 
 const Hero = () => {
   const cardsData = [
@@ -101,7 +102,9 @@ const Hero = () => {
       </div>
 
       {/* Button on the Right */}
-      <div className="absolute bottom-32 right-10 z-10"></div>
+      <div className="absolute bottom-32 right-10 z-10 ">
+        <CircularText text="build your dream With Us" />
+      </div>
     </div>
   );
 };
