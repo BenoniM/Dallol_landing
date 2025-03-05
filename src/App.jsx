@@ -10,6 +10,7 @@ import BlogDetails from "./components/project/BlogDetails";
 import HotelMall from "./components/project/Hotelmall";
 import SchoolDetails from "./components/project/SchoolDetails";
 import ResidenceHenok from "./components/project/ResidenceHenok";
+import FooterNew from "./components/FooterNew";
 
 function App() {
   return (
@@ -26,7 +27,12 @@ function App() {
         <Route path="/gallery360" element={<Gallery />} />
         <Route path="/contactus" element={<Contact />} />
       </Routes>
-      <Footer />
+      <div className="hidden lg:block">
+        <Footer />
+      </div>
+      <div className="lg:hidden">
+        <FooterNew />
+      </div>
     </>
   );
 }
