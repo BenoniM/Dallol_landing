@@ -41,8 +41,11 @@ const images = [
   },
 ];
 
+const image = [lidiyares, lidiyares];
+
 const SchoolDetails = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -56,18 +59,31 @@ const SchoolDetails = () => {
     );
   };
 
+  const handleNextnew = () => {
+    setCurrentSlide((prev) => (prev === image.length - 1 ? 0 : prev + 1));
+  };
+
+  const handlePrevnew = () => {
+    setCurrentSlide((prev) => (prev === 0 ? image.length - 1 : prev - 1));
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
   return (
     <article>
       <Nabbar2 />
+      {/* Hero Section */}
       <div className="flex items-center justify-center">
         <div
           style={{ backgroundImage: `url(${bloghero})` }}
-          className="h-[450px] bg-cover bg-center flex flex-col items-center justify-center rounded-3xl max-w-[98%] mx-auto"
+          className="h-[300px] md:h-[450px] bg-cover bg-center flex flex-col items-center justify-center rounded-3xl max-w-[98%] mx-auto"
         >
-          <h1 className="text-8xl font-bold text-white text-center">
+          <h1 className="text-4xl md:text-8xl font-bold text-white text-center">
             School of Tomorrow
           </h1>
-          <p className="text-white w-1/2 my-2 text-center">
+          <p className="text-white w-3/4 md:w-1/2 my-2 text-center text-sm md:text-base">
             The design is focused in presenting a modern and stylish design. The
             contrasting use of dark brick and white plaster creates a visually
             interesting facade. The vertical lines formed by the windows and
@@ -76,53 +92,92 @@ const SchoolDetails = () => {
         </div>
       </div>
 
-      <section className="flex flex-row items-start p-3">
-        <div className="flex flex-col  items-center w-1/2 h-[830px] gap-20 pt-20 p- border border-primary mr-4">
-          <h1 className="text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
+      {/* Features Section */}
+      <section className="flex flex-col md:flex-row items-center p-5">
+        <div className="flex flex-col lg:items-center items-start w-full md:w-1/2 h-auto md:h-[500px] gap-10 md:gap-20 pt-10 md:pt-20 lg:border lg:border-primary">
+          <h1 className="text-4xl md:text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
             Features
           </h1>
-          <p className="w-[66%]">
-            The design shows a large, imposing hotel and business structure. The
-            front has a large central entrance, arched windows, and a
-            symmetrical layout, all of which are characteristics of classic
-            architecture. A sense of elegance and grandeur is created by the
-            building's exterior's use of warm, earthy tones.
+          <p className="w-full md:w-[66%] text-start lg:text-center md:text-left">
+            This School design depicts a modern school building with a bold,
+            contemporary aesthetic. The facade features a vibrant combination of
+            colors, primarily white with accents of blue, yellow, and red,
+            creating a dynamic visual appeal. The structure’s linear design,
+            large windows, and distinct color blocks give it a playful yet
+            structured look. Balloons floating in the background add a sense of
+            liveliness, enhancing the building’s inviting atmosphere. This
+            design effectively balances functionality with creativity, making it
+            both practical and visually engaging for a school environment.
           </p>
         </div>
-        <img src={blognew} alt="" className="w-1/2" />
+        <img src={blognew} alt="" className="w-full md:w-1/2 mt-10 md:mt-0" />
       </section>
 
+      {/* Function Section */}
       <section>
-        <div className="flex flex-row items-center justify-between p-5">
-          <h1 className="text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
+        <div className="flex flex-col md:flex-row items-center justify-between p-5">
+          <h1 className="text-4xl md:text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
             Function
           </h1>
-          <p className="w-[55%]">
-            The Hotel design, while modern and sleek, might not fully align with
-            the expectations of a typical hotel. The minimalist aesthetic, while
-            visually appealing, could potentially lack a warmer and more
-            inviting atmosphere required in hospitality spaces.
+          <p className="w-full md:w-[55%] mt-5 md:mt-0">
+            The structure’s linear design, large windows, and distinct color
+            blocks give it a playful yet structured look. Balloons floating in
+            the background add a sense of liveliness, enhancing the building’s
+            inviting atmosphere. This design effectively balances functionality
+            with creativity, making it both practical and visually engaging for
+            a school environment.
           </p>
         </div>
 
-        <div className="flex flex-row items-center justify-center p-5 mx-auto w-full gap-10">
-          {/* Ensure both images take equal width and maintain aspect ratio */}
+        {/* Image Slider for Mobile */}
+        <div className="md:hidden relative w-full overflow-x-auto scrollbar-hide ">
+          <div
+            className="flex transition-transform duration-300 ease-in-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {image.map((img, index) => (
+              <div key={index} className="w-full flex-shrink-0">
+                <img
+                  src={img}
+                  alt={`Slide ${index + 1}`}
+                  className="w-full h-[450px] object-cover rounded-lg"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Dots Navigation */}
+        <div className="flex lg:hidden justify-center mt-4 space-x-2">
+          {image.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-3 h-3 rounded-full ${
+                currentSlide === index ? "bg-primary" : "bg-gray-300"
+              }`}
+            ></button>
+          ))}
+        </div>
+
+        {/* Two Images Side by Side for Larger Screens */}
+        <div className="hidden md:flex flex-col md:flex-row items-center justify-center  mx-auto w-full md:w-full gap-10">
           <img
             src={blogfull}
             alt=""
-            className="w-full h-[500px] object-cover rounded-lg"
+            className="w-full  object-cover rounded-lg"
           />
         </div>
 
-        <div className="flex flex-row items-start justify-around p-5">
+        {/* Project Teams Section */}
+        <div className="flex flex-col md:flex-row items-start justify-around p-5">
           <h1 className="font-semibold text-2xl">Project Teams</h1>
-          <ul>
+          <ul className="mt-5 md:mt-0">
             <li>Principal Architect</li>
             <li>3D Visualization Specialist</li>
             <li>Interior Design Specialist</li>
             <li>Marketing</li>
           </ul>
-          <ul>
+          <ul className="mt-5 md:mt-0 lg:block hidden">
             <li>Lorem Ipsum</li>
             <li>Lorem Ipsum</li>
             <li>Lorem Ipsum</li>
@@ -131,21 +186,22 @@ const SchoolDetails = () => {
         </div>
       </section>
 
+      {/* Carousel Section */}
       <section className="border-t pt-14">
-        <div className="flex flex-col items-start pl-10">
-          <h1 className="text-5xl w-1/3 font-semibold">
+        <div className="flex flex-col items-start pl-5 md:pl-10">
+          <h1 className="text-3xl md:text-5xl w-full md:w-1/3 font-semibold">
             Explore some of our current projects
           </h1>
-          <div className=" bottom-0 items-center justify-center pt-5 transform flex space-x-4">
+          <div className="bottom-0 items-center justify-center pt-5 transform flex space-x-4">
             <button
               onClick={handlePrev}
-              className="border border-primary text-primary px-4 py-3 rounded-full"
+              className="border border-primary text-primary px-4 py-2 md:px-4 md:py-3 rounded-full"
             >
               ←
             </button>
             <button
               onClick={handleNext}
-              className="border border-primary  text-primary px-4 py-3  rounded-full"
+              className="border border-primary text-primary px-4 py-2 md:px-4 md:py-3 rounded-full"
             >
               →
             </button>
@@ -153,9 +209,9 @@ const SchoolDetails = () => {
         </div>
 
         <section>
-          <div className="relative w-full overflow-hidden mt-5 p-10">
+          <div className="relative w-full overflow-x-auto scrollbar-hide mt-5 p-5 md:p-10">
             <div
-              className="flex transition-transform duration-300 ease-in-out"
+              className="flex transition-transform duration-300 ease-in-out gap-10"
               style={{
                 transform: `translateX(-${currentIndex * (100 / 2.2)}%)`,
               }}
@@ -163,15 +219,15 @@ const SchoolDetails = () => {
               {images.map((image) => (
                 <div
                   key={image.id}
-                  className="w-1/2 min-w-[45%] flex flex-col items-start"
+                  className="w-full md:w-1/2  min-w-[100%] md:min-w-[45%] flex flex-col items-start"
                 >
-                  <img src={image.img} alt={image.title} className="w-[90%]" />
+                  <img src={image.img} alt={image.title} className="w-full " />
                   <div className="text-start mt-5">
-                    <h1 className="font-semibold  text-xl ">{image.title}</h1>
+                    <h1 className="font-semibold text-xl">{image.title}</h1>
                     <h2 className="font-semibold pt-4">{image.subtitle}</h2>
-                    <p className="text-sm w-[94%]">{image.description}</p>
+                    <p className="text-sm w-full">{image.description}</p>
                   </div>
-                  <button className="underline underline-offset-8 pt2">
+                  <button className="underline underline-offset-8 pt-2">
                     View →
                   </button>
                 </div>
