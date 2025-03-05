@@ -38,7 +38,7 @@ const Navbar = () => {
 
         {/* Sidebar Menu (Visible on All Screens) */}
         <div
-          className={`fixed top-0 right-0 h-full w-[550px] pt-14 bg-white shadow-lg transform transition-transform duration-500 ${
+          className={`fixed top-0 right-0 h-full lg:w-[550px] w-[430px] pt-14 bg-white shadow-lg transform transition-transform duration-500 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           } z-50`}
         >

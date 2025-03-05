@@ -22,7 +22,7 @@ const Nabbar2 = () => {
 
   return (
     <nav className="w-full flex items-center justify-around py-4 px-10 relative">
-      <ul className="flex items-center space-x-8">
+      <ul className="lg:flex items-center space-x-8  hidden">
         {[
           {
             name: "Home",
@@ -52,12 +52,16 @@ const Nabbar2 = () => {
         ))}
       </ul>
 
-      {/* Logo */}
-      <a href="/">
-        <img src={logo} alt="Logo" className="h-10 w-auto" />
-      </a>
-
       <div className="flex items-center space-x-5">
+        <a href="/">
+          <img src={logo} alt="Logo" className="h-10 w-auto" />
+        </a>
+        <button onClick={() => setIsOpen(true)} className="lg:hidden block">
+          <Menu size={32} className="text-black" />
+        </button>
+      </div>
+
+      <div className="items-center space-x-5 lg:flex hidden">
         <ul className="flex items-center space-x-8">
           {[
             {
@@ -95,10 +99,10 @@ const Nabbar2 = () => {
               Contact Us
             </NavLink>
           </li>
-          <button onClick={() => setIsOpen(true)} className="">
-            <Menu size={32} className="text-black" />
-          </button>
         </ul>
+        <button onClick={() => setIsOpen(true)} className="">
+          <Menu size={32} className="text-black" />
+        </button>
       </div>
 
       {/* Overlay when Menu is Open */}
@@ -111,7 +115,7 @@ const Nabbar2 = () => {
 
       {/* Sidebar Menu (Visible on All Screens) */}
       <div
-        className={`fixed top-0 right-0 h-full w-[550px] pt-14 bg-white shadow-lg transform transition-transform duration-500 ${
+        className={`fixed top-0 right-0 h-full lg:w-[550px] w-[430px] pt-14 bg-white shadow-lg transform transition-transform duration-500 ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } z-50`}
       >
