@@ -19,7 +19,7 @@ const CircularText = () => {
   );
 
   return (
-    <div className="circle-container overflow-hidden">
+    <div className="circle-container overflow-hidden ">
       <div className="circle-text">
         {characters.map((char, i) => (
           <span

@@ -48,7 +48,7 @@ const Hero = () => {
   return (
     <div id="Hero-section" className="relative w-full font-montserrat">
       {/* Carousel */}
-      <div className="overflow-hidden relative h-[100dvh]" ref={emblaRef}>
+      <div className="overflow-hidden relative " ref={emblaRef}>
         <div className="flex">
           {cardsData.map((card, index) => (
             <div
@@ -58,7 +58,7 @@ const Hero = () => {
               <img
                 src={card.image}
                 alt={card.title}
-                className="w-full h-auto object-cover"
+                className="w-full h-screen object-cover"
               />
               <div className="absolute inset-0 bg-black bg-opacity-40 z-0"></div>
             </div>
@@ -67,15 +67,15 @@ const Hero = () => {
       </div>
 
       {/* Text on the Left */}
-      <div className="absolute bottom-20 left-20 w-[70%] space-y-1 text-white z-10">
-        <h1 className="text-xl sm:text-5xl md:text-7xl lg:text-5xl font-semibold leading-tight">
+      <div className="absolute lg:bottom-20 bottom-14 lg:left-20 left-14 w-[70%] space-y-1 text-white z-10">
+        <h1 className="text-xl font-light md:text-7xl lg:text-5xl lg:font-semibold leading-tight">
           DALLOL
         </h1>
-        <p className="lg:text-[5rem] text-lg font-semibold leading-none">
+        <p className="lg:text-[5rem] lg:w-full w-[80%] text-2xl font-semibold leading-none">
           Where Innovation Meets Precision
         </p>
       </div>
-      <div className="absolute bottom-0 flex flex-col items-center space-y-5 p-8 ">
+      <div className="absolute bottom-0 flex flex-col items-center space-y-5 lg:p-8 p-4 ">
         <div className="border-r border-white h-[100vh] pt-"></div>
         <a
           className="text-white text-2xl hover:text-gray-400 transition duration-300"
@@ -111,7 +111,7 @@ const Hero = () => {
         </a>
       </div>
 
-      <div className="absolute bottom-20 right-10 z-10 ">
+      <div className="absolute bottom-10 right-5 sm:bottom-20 sm:right-10 z-10">
         <CircularText text="build your dream With Us" />
       </div>
     </div>

@@ -44,60 +44,76 @@
 }
 .circle-container {
   position: relative;
-  width: 200px; /* Adjust based on your desired size */
-  height: 200px; /* Adjust based on your desired size */
+  width: 200px; /* Default size */
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%; /* Make the container circular */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  border-radius: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.circle-container:hover {
-  background-color: white; /* White background on hover */
+@media (max-width: 640px) {
+  .circle-container {
+    width: 120px; /* Smaller size for mobile */
+    height: 120px;
+  }
 }
 
 .circle-text {
   position: absolute;
   width: 100%;
   height: 100%;
-  animation: rotateText 20s linear infinite; /* Optional: for rotating text */
+  animation: rotateText 20s linear infinite;
 }
 
 .circle-text span {
   position: absolute;
   left: 50%;
   top: 0;
-  transform-origin: 0 100px; /* Adjust based on the radius of your circle */
-  font-size: 14px; /* Adjust font size */
+  transform-origin: 0 100px;
+  font-size: 14px;
   font-weight: bold;
-  color: #fff; /* Default text color */
-  transition: color 0.3s ease; /* Smooth transition for text color */
+  color: #fff;
+  transition: color 0.3s ease;
 }
 
-.circle-container:hover .circle-text span {
-  color: black; /* Black text on hover */
+@media (max-width: 640px) {
+  .circle-text span {
+    transform-origin: 0 60px; /* Adjust radius */
+    font-size: 8px; /* Smaller text for mobile */
+  }
 }
 
 .red-image {
-  width: 20px; /* Adjust size of the red image */
-  height: 20px; /* Adjust size of the red image */
-  display: inline-block; /* Ensure it behaves like text */
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+@media (max-width: 640px) {
+  .red-image {
+    width: 10px; /* Smaller red images */
+    height: 10px;
+  }
 }
 
 .circle-logo {
-  width: 100px; /* Adjust logo size */
-  height: 100px; /* Adjust logo size */
+  width: 100px;
+  height: 100px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1; /* Ensure the logo is above the text */
-  transition: filter 0.3s ease; /* Smooth transition for logo color */
+  z-index: 1;
+  transition: filter 0.3s ease;
 }
 
-.circle-container:hover .circle-logo {
-  filter: brightness(0); /* Turn logo black on hover */
+@media (max-width: 640px) {
+  .circle-logo {
+    width: 60px; /* Smaller logo for mobile */
+    height: 60px;
+  }
 }
 
 /* Optional: Rotate the text */
