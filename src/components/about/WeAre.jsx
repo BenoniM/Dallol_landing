@@ -5,7 +5,7 @@ const WeAre = () => {
   return (
     <article className="flex flex-col lg:flex-row justify-between items-center  lg:items-start  w-full">
       {/* Image Section */}
-      <section className="w-full lg:w-[45%] mb-8 lg:mb-0">
+      <section className="w-full lg:w-[45%] mb-8 lg:mb-0 lg:p-5 p-3">
         <img
           src={img}
           alt="We are Dallol"
@@ -14,11 +14,11 @@ const WeAre = () => {
       </section>
 
       {/* Text Section */}
-      <section className="w-full lg:w-1/2 lg:pr-20 text-start lg:text-left">
-        <h1 className="text-3xl lg:text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[30%] pb-5 after:bg-primary after:left-[4%] after:top-full after:-translate-y-2">
+      <section className="w-full lg:w-1/2 lg:pr-20 text-start lg:text-left ">
+        <h1 className="text-3xl lg:p-0 p-3 lg:text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[30%] pb-5 after:bg-primary lg:after:left-[20%] after:left-[6%]  after:top-full lg:after:-translate-y-0 after:-translate-y-4">
           We are Dallol
         </h1>
-        <p className="mt-6 lg:mt-10 text-lg text-justify leading-relaxed">
+        <p className="mt-6 lg:mt-10 text-lg text-justify leading-relaxed lg:p-0 p-4">
           At Dallol Design Build, we believe that great design starts with
           understanding. Our mission is to craft spaces that resonate with our
           clients’ visions while being grounded in the needs of the local

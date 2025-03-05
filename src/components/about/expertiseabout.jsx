@@ -46,16 +46,16 @@ const ExpertiseAbout = () => {
       }}
     >
       <div className="text-start w-full max-w-8xl mb-10  px-10">
-        <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[4px] after:w-[9%] pb-5 after:bg-primary after:left-[6%] after:top-full after:-translate-y-4">
+        <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[4px] lg:after:w-[9%] after:w-[49%] pb-5 after:bg-primary lg:after:left-[6%] after:left-[34%] after:top-full after:-translate-y-4">
           Expertise
         </h1>
       </div>
-      <section className="w-full max-w-7xl">
-        <div className="grid grid-cols-3 gap-6">
+      <section className="w-full max-w-7xl lg:p-0 p-3">
+        <div className="grid lg:grid-cols-3 grid-flow-row gap-6">
           {images.slice(0, 3).map((image) => (
             <div
               key={image.id}
-              className="col-span-1 bg-white rounded-lg border shadow-lg p-6 flex flex-col justify-between"
+              className="col-span-1 bg-white rounded-lg border border-black p-6 flex flex-col justify-between"
             >
               <h1 className="font-semibold text-2xl mb-4">{image.title}</h1>
               <p className="text-gray-600 line-clamp-3">{image.description}</p>
@@ -64,11 +64,11 @@ const ExpertiseAbout = () => {
         </div>
 
         {/* Last row - Centered */}
-        <div className="flex justify-center gap-6 mt-6">
+        <div className="flex lg:flex-row flex-col justify-center gap-6 mt-6">
           {images.slice(3).map((image) => (
             <div
               key={image.id}
-              className="bg-white rounded-lg border shadow-lg p-6 flex flex-col justify-between w-[35%]"
+              className="bg-white rounded-lg border border-black p-6 flex flex-col  justify-between lg:w-[35%]"
             >
               <h1 className="font-semibold text-2xl mb-4">{image.title}</h1>
               <p className="text-gray-600 line-clamp-3">{image.description}</p>
