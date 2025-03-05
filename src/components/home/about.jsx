@@ -50,24 +50,25 @@ const About = () => {
   };
 
   return (
-    <article className="w-full pt-10 font-montserrat flex flex-col items-center">
+    <article className="w-full pt-10 font-montserrat flex flex-col items-center overflow-hidden">
       {/* About Section */}
-      <section className="text-center">
-        <h1 className="font-semibold">About Dallol</h1>
-        <p className="text-xl mt-2 w-1/2 mx-auto">
-          We believe <span className="text-primary">Great Design</span> begins
-          with <span className="text-primary">Understanding.</span>
+      <section className="text-center py-16 px-4">
+        <h1 className="font-semibold text-xl sm:text-2xl">About Dallol</h1>
+        <p className="text-lg sm:text-2xl mt-2 w-full sm:w-3/4 lg:w-1/2 mx-auto leading-relaxed">
+          We believe{" "}
+          <span className="text-primary font-bold">Great Design</span> begins
+          with <span className="text-primary font-bold">Understanding.</span>
           Our mission is to create spaces that align with our clients'{" "}
-          <span className="text-primary">Visions</span>
+          <span className="text-primary font-bold">Visions</span>
           and meet the needs of the{" "}
-          <span className="text-primary">Local Community.</span>
+          <span className="text-primary font-bold">Local Community.</span>
         </p>
       </section>
 
       {/* Projects Section */}
-      <section className="w-full max-w-7xl mt-10 relative">
+      <section className="w-full max-w-7xl mt-10 relative px-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[80%] pb-5 after:bg-primary after:left-[20%] after:top-full after:-translate-y-2">
+          <h1 className="text-4xl sm:text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[80%] pb-5 after:bg-primary after:left-[20%] after:top-full after:-translate-y-2">
             Projects
           </h1>
           <button className="bg-primary px-5 py-1 text-white rounded-full">
@@ -76,20 +77,24 @@ const About = () => {
         </div>
 
         {/* Image Slider */}
-        <div className="relative w-full overflow-auto scrollbar-hide  mt-5">
+        <div className="relative w-full overflow-hidden mt-5">
           <div
             className="flex transition-transform duration-300 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * (100 / 2.2)}%)`,
+              transform: `translateX(-${currentIndex * 100}%)`,
             }}
           >
             {images.map((image) => (
               <div
                 key={image.id}
-                className="w-1/2 min-w-[45%] flex flex-col items-start"
+                className="w-full lg:w-[45%] flex flex-col items-start px-2 shrink-0"
               >
-                <img src={image.img} alt={image.title} className="w-[95%]" />
-                <div className="text-start">
+                <img
+                  src={image.img}
+                  alt={image.title}
+                  className="w-full rounded-lg"
+                />
+                <div className="text-start mt-2">
                   <h1 className="font-light text-primary">{image.title}</h1>
                   <p>{image.description}</p>
                 </div>
@@ -99,7 +104,7 @@ const About = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className=" bottom-0 items-center justify-center pt-5 transform flex space-x-4">
+        <div className="bottom-0 flex lg:items-center justify-start lg:justify-center pt-5 space-x-4">
           <button
             onClick={handlePrev}
             className="border border-primary text-primary px-4 py-3 rounded-full"
@@ -108,7 +113,7 @@ const About = () => {
           </button>
           <button
             onClick={handleNext}
-            className="border border-primary  text-primary px-4 py-3  rounded-full"
+            className="border border-primary text-primary px-4 py-3 rounded-full"
           >
             →
           </button>

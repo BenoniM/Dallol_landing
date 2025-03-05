@@ -14,7 +14,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <article className="bg-[#E8EDF5]">
+    <article className="bg-[#E8EDF5] overflow-hidden">
       <section className="flex flex-row items-center justify-evenly">
         <div className="w-[60%] p-10">
           <img src={logo} alt="" />

@@ -46,7 +46,10 @@ const Hero = () => {
   }, [emblaApi, onSelect]);
 
   return (
-    <div id="Hero-section" className="relative w-full font-montserrat">
+    <div
+      id="Hero-section"
+      className="relative w-full font-montserrat overflow-hidden"
+    >
       {/* Carousel */}
       <div className="overflow-hidden relative " ref={emblaRef}>
         <div className="flex">
@@ -111,7 +114,7 @@ const Hero = () => {
         </a>
       </div>
 
-      <div className="absolute bottom-10 right-5 sm:bottom-20 sm:right-10 z-10">
+      <div className="absolute bottom-10 right-5 sm:bottom-20 sm:right-10 z-10 overflow-hidden">
         <CircularText text="build your dream With Us" />
       </div>
     </div>

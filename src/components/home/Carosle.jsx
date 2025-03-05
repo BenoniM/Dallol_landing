@@ -54,7 +54,7 @@ const Carousel = () => {
   return (
     <article className="carousel-container bg-gradient-to-r text-white p-10 overflow-hidden">
       <section className="carousel">
-        <div className="carousel-track gap-x-4 md:gap-x-24">
+        <div className="carousel-track gap-x-12 md:gap-x-24  ">
           {Array(8)
             .fill(images)
             .flat()

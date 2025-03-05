@@ -56,38 +56,41 @@ const Expertise = () => {
     <article className="w-full pt-10 font-montserrat flex flex-col items-center">
       <section className="w-full max-w-7xl mt-10 relative">
         <div className="flex justify-between items-center">
-          <div className="w-[70%]">
-            <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[20%] pb-5 after:bg-primary after:left-[6%] after:top-full after:-translate-y-2">
-              Expertise
-            </h1>
-            <p className="pl-5 pt-4">
+          <div className="w-[100%] p-3">
+            <div className="flex items-center justify-between">
+              <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[20%] pb-5 after:bg-primary after:left-[6%] after:top-full after:-translate-y-2">
+                Expertise
+              </h1>
+              <button className="bg-primary px-5 py-1 text-white rounded-full">
+                View All
+              </button>
+            </div>
+            <p className="lg:pl-5 pt-4 lg:w-[70%]">
               We believe that architecture should be a reflection of the
               communities it serves. Our architectural and engineering design
               expertise is rooted in a deep understanding of both aesthetics and
               functionality.
             </p>
           </div>
-
-          <button className="bg-primary px-5 py-1 text-white rounded-full">
-            View All
-          </button>
         </div>
 
         {/* Image Slider */}
-        <div className="relative w-full overflow-auto scrollbar-hide mt-5">
+        <div className="relative w-full overflow-x-auto scrollbar-hide mt-5">
           <div
-            className="flex transition-transform duration-300 ease-in-out"
+            className="flex transition-transform duration-300 ease-in-out gap-3 p-2"
             style={{
-              transform: `translateX(-${currentIndex * (100 / 2.2)}%)`,
+              transform: `translateX(-${currentIndex * 100}%)`,
             }}
           >
             {images.map((image) => (
               <div
                 key={image.id}
-                className="w-1/2 min-w-[45%] flex flex-col items-start"
+                className="w-[90%] lg:w-[40%] md:w-1/3 flex-shrink-0 "
               >
-                <div className="text-start border rounded-lg p-5 w-[95%] h-48 flex flex-col justify-between">
-                  <h1 className="font-semibold text-3xl mb-1">{image.title}</h1>
+                <div className="text-start border rounded-lg p-5 h-48 flex flex-col justify-between bg-white ">
+                  <h1 className="font-semibold text-xl sm:text-2xl">
+                    {image.title}
+                  </h1>
                   <p className="overflow-hidden overflow-ellipsis line-clamp-3">
                     {image.description}
                   </p>
