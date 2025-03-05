@@ -90,31 +90,29 @@ const ContactUs = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <section className="space-y-8 px-0 md:px-[10%] ">
+      <section className="space-y-8 px-2 md:px-[10%] ">
         <section className="flex flex-col md:flex-row items-start gap-10">
           {/* Left Section: Contact Information */}
           <main className="bg-secondary text-white flex flex-col items-center justify-center rounded-3xl w-full md:w-1/2 p-5 space-y-10 bg-primary">
             <div className="flex flex-col w-full items-start">
-              <h1 className="text-4xl md:text-xl font-light">Get in Touch</h1>
-              <p className="text-start text-3xl w-full mb-7 mt-3 font-bold">
+              <h1 className="text-xl font-light">Get in Touch</h1>
+              <p className="text-start text-3xl lg:w-full w-[88%] mb-7 mt-3 font-bold">
                 We’re Eager to Assist with Your Architectural Dreams
               </p>
             </div>
 
             {/* Contact Details Section */}
-            <section className="grid grid-cols-2 md:grid-cols-2 gap-10 mt-5text-sm">
+            <section className="grid grid-cols-2 md:grid-cols-2 gap-10 mt-5 text-sm ">
               <div className="flex flex-col gap-2 ">
                 <div className="mb-5 f">
                   <div className="flex flex-row items-center text-xl font-bold mb-5 gap-5">
-                    {" "}
                     <img src={office} alt="" className="w-16 h-16" />
                     <div className="flex flex-col items-start">
                       <h1>Our Office</h1>
-                      <h1 className="font-light ">Addis Ababa, Ethiopia</h1>
+                      <h1 className="font-light">Addis Ababa,Ethiopia</h1>
                     </div>
                   </div>
                   <div className="flex flex-row items-center text-xl font-bold mb-5 gap-5">
-                    {" "}
                     <img src={email} alt="" className="w-16 h-16" />
                     <div className="flex flex-col items-start">
                       <h1>Contact Email</h1>
@@ -122,7 +120,6 @@ const ContactUs = () => {
                     </div>
                   </div>
                   <div className="flex flex-row items-center text-xl font-bold mb-5 gap-5">
-                    {" "}
                     <img src={phone} alt="" className="w-16 h-16" />
                     <div className="flex flex-col items-start">
                       <h1>Phone Number</h1>
@@ -211,7 +208,7 @@ const ContactUs = () => {
       </section>
 
       {/* Map Section */}
-      <div className="w-full h-auto  mt-32 mb-12 overflow-hidden object-cover ">
+      <div className="lg:w-full w-[93%] h-auto mt-32 mb-12  overflow-hidden object-cover ">
         <Map />
       </div>
     </article>

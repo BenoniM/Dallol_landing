@@ -12,7 +12,7 @@ const About = () => {
       <Hero />
       <WeAre />
       <Mission />
-      {/* <ExpertiseAbout /> */}
+      <ExpertiseAbout />
     </>
   );
 };

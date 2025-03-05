@@ -52,7 +52,7 @@ const CardGallery = () => {
   };
 
   return (
-    <article className="p-10">
+    <article className="lg:p-10">
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {galleries.map((gallery) => (
           <div

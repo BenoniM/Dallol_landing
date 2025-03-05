@@ -3,13 +3,16 @@ import logo from "../../assets/icon/black.svg";
 
 const Hero = () => {
   return (
-    <article className="flex flex-col items-center py-16 w-full">
-      <h1 className="text-7xl font-bold">360 Projects Gallery</h1>
+    <article className="flex flex-col items-center py-10 w-full">
+      <h1 className="text-7xl font-bold lg:block hidden">
+        360 Projects Gallery
+      </h1>
+      <h1 className="text-7xl font-bold">360 Gallery</h1>
 
-      <section className="flex flex-row items-center justify-center pt-10">
+      <section className="flex lg:flex-row flex-col items-start lg:items-center justify-center pt-10 p-5">
         <img src={logo} alt="" />
-        <div className="border-b-2 border-black h-1 w-[350px] mr-5"></div>
-        <p className="w-[56%] text-start">
+        <div className="border-b-2 border-black h-1 w-[250px] lg:w-[350px] mr-5 pb-4"></div>
+        <p className="lg:w-[56%] w-full text-justify pt-5 lg:pt-0">
           At Dallol Design Build, we believe that great design starts with
           understanding. Our mission is to craft spaces that resonate with our
           clients’ visions while being grounded in the needs of the local

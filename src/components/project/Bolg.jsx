@@ -51,9 +51,9 @@ const BlogPost = () => {
       : blogPosts.filter((post) => post.category === activeTab);
 
   return (
-    <article className="relative min-h-screen p-10">
+    <article className="relative min-h-screen lg:p-10 pt-10 p-5">
       {/* Dropdown Filter */}
-      <div className="absolute left-10 top-5">
+      <div className="lg:top-5 lg:pb-0 pb-10">
         <select
           value={activeTab}
           onChange={(e) => setActiveTab(e.target.value)}
@@ -67,7 +67,7 @@ const BlogPost = () => {
         </select>
       </div>
 
-      <section className="p-10">
+      <section className="lg:p-10">
         {filteredBlogs.length > 0 ? (
           filteredBlogs.map((blog, index) => (
             <div
