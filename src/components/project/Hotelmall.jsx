@@ -136,7 +136,7 @@ const HotelMall = () => {
                 <img
                   src={img}
                   alt={`Slide ${index + 1}`}
-                  className="w-full h-[450px] object-cover rounded-lg"
+                  className="w-full h-[450px] object-cover rounded-lg p-2"
                 />
               </div>
             ))}

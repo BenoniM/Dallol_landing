@@ -59,6 +59,10 @@ const BlogDetails = () => {
     );
   };
 
+  const gotTOslidetwo = (index) => {
+    setCurrentIndex(index);
+  };
+
   const handleNextnew = () => {
     setCurrentSlide((prev) => (prev === image.length - 1 ? 0 : prev + 1));
   };
@@ -124,17 +128,17 @@ const BlogDetails = () => {
         </div>
 
         {/* Image Slider for Mobile */}
-        <div className="md:hidden relative w-full overflow-x-auto scrollbar-hide ">
+        <div className="md:hidden relative w-full overflow-x-auto scrollbar-hide  ">
           <div
             className="flex transition-transform duration-300 ease-in-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {image.map((img, index) => (
-              <div key={index} className="w-full flex-shrink-0">
+              <div key={index} className="w-full flex-shrink-0 ">
                 <img
                   src={img}
                   alt={`Slide ${index + 1}`}
-                  className="w-full h-[450px] object-cover rounded-lg"
+                  className="w-full h-[450px] object-cover rounded-lg p-3"
                 />
               </div>
             ))}
@@ -169,8 +173,8 @@ const BlogDetails = () => {
 
         {/* Project Teams Section */}
         <div className="flex flex-col md:flex-row items-start justify-around p-5">
-          <h1 className="font-semibold text-2xl">Project Teams</h1>
-          <ul className="mt-5 md:mt-0">
+          <h1 className="font-medium text-2xl">Project Teams</h1>
+          <ul className="mt-5 md:mt-0 leading-10 xs:leading-10 lg:leading-7">
             <li>Principal Architect</li>
             <li>3D Visualization Specialist</li>
             <li>Interior Design Specialist</li>
@@ -191,6 +195,7 @@ const BlogDetails = () => {
           <h1 className="text-3xl md:text-5xl w-full md:w-1/3 font-semibold">
             Explore some of our current projects
           </h1>
+
           <div className="bottom-0 items-center justify-center pt-5 transform flex space-x-4">
             <button
               onClick={handlePrev}
@@ -217,7 +222,7 @@ const BlogDetails = () => {
             >
               {images.map((image) => (
                 <div
-                  key={image.id}
+                  key={images.id}
                   className="w-full md:w-1/2  min-w-[100%] md:min-w-[45%] flex flex-col items-start"
                 >
                   <img src={image.img} alt={image.title} className="w-full " />

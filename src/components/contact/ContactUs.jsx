@@ -142,30 +142,34 @@ const ContactUs = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="space-y-8">
                     <div className="flex flex-row items-center justify-center gap-3">
-                      <Field
-                        type="text"
-                        name="name"
-                        placeholder="First Name"
-                        className="w-full p-2 border rounded-full  focus:outline-none focus:border-[#259925b4]"
-                        required
-                      />
-                      <ErrorMessage
-                        name="name"
-                        component="div"
-                        className="text-secondary"
-                      />
-                      <Field
-                        type="text"
-                        name="name"
-                        placeholder="Last Name"
-                        className="w-full p-2 border rounded-full  focus:outline-none focus:border-[#259925b4]"
-                        required
-                      />
-                      <ErrorMessage
-                        name="name"
-                        component="div"
-                        className="text-secondary"
-                      />
+                      <div className="flex flex-col w-full">
+                        <Field
+                          type="text"
+                          name="name"
+                          placeholder="First Name"
+                          className="w-full p-2 border-b-[1px] border-black focus:outline-none "
+                        />
+
+                        <ErrorMessage
+                          name="name"
+                          component="div"
+                          className="text-red-500"
+                        />
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <Field
+                          type="text"
+                          name="name"
+                          placeholder="Last Name"
+                          className="w-full p-2 border-b-[1px] border-black focus:outline-none "
+                          required
+                        />
+                        <ErrorMessage
+                          name="name"
+                          component="div"
+                          className="text-red-500"
+                        />
+                      </div>
                     </div>
 
                     <div className="flex flex-row items-center justify-center gap-3">
@@ -173,14 +177,14 @@ const ContactUs = () => {
                         type="email"
                         name="email"
                         placeholder="Email"
-                        className="w-full p-2 border rounded-full  focus:outline-none focus:border-[#259925b4]"
+                        className="w-full p-2 border-b-[1px] border-black focus:outline-none "
                         required
                       />
                       <Field
                         type="phone"
                         name="phone"
                         placeholder="Phone"
-                        className="w-full p-2 border rounded-full  focus:outline-none focus:border-[#259925b4]"
+                        className="w-full p-2 border-b-[1px] border-black focus:outline-none "
                         required
                       />
                     </div>
@@ -190,7 +194,7 @@ const ContactUs = () => {
                       name="body"
                       placeholder="Message"
                       rows="3"
-                      className="w-full p-2 border rounded-xl  focus:outline-none focus:border-[#259925b4]"
+                      className="w-full p-2 border-b-[1px] border-black focus:outline-none "
                       required
                     />
                     <button

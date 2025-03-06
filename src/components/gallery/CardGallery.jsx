@@ -62,7 +62,8 @@ const CardGallery = () => {
             <img
               src={gallery.image}
               alt={gallery.title}
-              className="w-full h-auto object-cover rounded-lg"
+              className="w-full h-auto object-cover rounded-lg cursor-pointer"
+              onClick={() => handleReadMore(gallery.link)}
             />
             <h1 className="text-xl font-semibold mt-4">{gallery.title}</h1>
             <p className="text-gray-600 mt-2">{gallery.description}</p>

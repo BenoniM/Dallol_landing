@@ -21,7 +21,7 @@ const Nabbar2 = () => {
   console.log(window.location.pathname);
 
   return (
-    <nav className="w-full flex items-center justify-around py-4 px-10 relative">
+    <nav className="w-full flex items-center justify-center gap-x-[290px] py-4  relative">
       <ul className="lg:flex items-center space-x-8  hidden">
         {[
           {
@@ -33,7 +33,7 @@ const Nabbar2 = () => {
             link: "/aboutus",
           },
         ].map((item, index) => (
-          <li key={index} className="relative flex items-center">
+          <li key={index} className="relative flex items-center ">
             <NavLink
               to={item.link}
               className={({ isActive }) =>
@@ -61,7 +61,7 @@ const Nabbar2 = () => {
         </button>
       </div>
 
-      <div className="items-center space-x-5 lg:flex hidden">
+      <div className="items-center  lg:flex hidden">
         <ul className="flex items-center space-x-8">
           {[
             {
@@ -94,14 +94,14 @@ const Nabbar2 = () => {
           <li>
             <NavLink
               to="/contactus"
-              className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-opacity-80 transition "
+              className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-opacity-80 transition m"
             >
               Contact Us
             </NavLink>
           </li>
         </ul>
         <button onClick={() => setIsOpen(true)} className="">
-          <Menu size={32} className="text-black" />
+          <Menu size={32} className="text-black ml-3" />
         </button>
       </div>
 
