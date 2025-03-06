@@ -3,7 +3,7 @@ import logo from "../../assets/icon/black.svg";
 
 const Hero = () => {
   return (
-    <article className="flex flex-col items-center py-10 w-full">
+    <article className="flex flex-col items-center lg:py-10 w-full">
       <h1 className="text-7xl font-bold">About Us</h1>
 
       <section className="flex lg:flex-row flex-col items-start lg:items-center justify-center pt-10 p-5">

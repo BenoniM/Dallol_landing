@@ -53,7 +53,7 @@ const Expertise = () => {
   };
 
   return (
-    <article className="w-full pt-10 font-montserrat flex flex-col items-center">
+    <article className="w-full pt-5 font-montserrat flex flex-col items-center">
       <section className="w-full max-w-7xl mt-10 relative">
         <div className="flex justify-between items-center">
           <div className="w-[100%] p-3">
@@ -75,7 +75,7 @@ const Expertise = () => {
         </div>
 
         {/* Image Slider */}
-        <div className="relative w-full overflow-x-auto scrollbar-hide mt-5">
+        <div className="relative w-full overflow-x-auto scrollbar-hide mt-1">
           <div
             className="flex transition-transform duration-300 ease-in-out gap-3 p-2"
             style={{
@@ -87,7 +87,12 @@ const Expertise = () => {
                 key={image.id}
                 className="w-[90%] lg:w-[40%] md:w-1/3 flex-shrink-0 "
               >
-                <div className="text-start border rounded-lg p-5 h-48 flex flex-col justify-between bg-white ">
+                <div
+                  className="text-start border border-black rounded-3xl p-5 h-48 flex flex-col justify-between bg-white 
+               transition-colors duration-300 
+               hover:bg-primary hover:text-white 
+               group"
+                >
                   <h1 className="font-semibold text-xl sm:text-2xl">
                     {image.title}
                   </h1>
@@ -101,16 +106,20 @@ const Expertise = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="bottom-0 items-center justify-center pt-5 transform flex space-x-4">
+        <div className="bottom-0 items-center lg:justify-center lg:pl-0 pl-2 pt-5 transform flex space-x-4">
           <button
             onClick={handlePrev}
-            className="border border-primary text-primary px-4 py-3 rounded-full"
+            className="border border-primary text-primary px-4 py-3 rounded-full 
+             transition-colors duration-300 
+             hover:bg-primary hover:text-white hover:border-transparent"
           >
             ←
           </button>
           <button
             onClick={handleNext}
-            className="border border-primary text-primary px-4 py-3 rounded-full"
+            className="border border-primary text-primary px-4 py-3 rounded-full 
+             transition-colors duration-300 
+             hover:bg-primary hover:text-white hover:border-transparent"
           >
             →
           </button>

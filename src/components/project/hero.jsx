@@ -9,7 +9,7 @@ const Hero = () => {
       <section className="flex lg:flex-row flex-col items-start lg:items-center justify-center pt-10 p-5">
         <img src={logo} alt="" />
         <div className="border-b-2 border-black h-1 w-[250px] lg:w-[350px] mr-5 pb-4"></div>
-        <p className="lg:w-[56%] w-full text-justify pt-5 lg:pt-0">
+        <p className="lg:w-[56%] w-full text-justify pt-5 lg:pt-0 ">
           At Dallol Design Build, we believe that great design starts with
           understanding. Our mission is to craft spaces that resonate with our
           clients’ visions while being grounded in the needs of the local

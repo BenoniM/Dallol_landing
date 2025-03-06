@@ -1,3 +1,7 @@
+/* index.css */
+body {
+  font-family: "Montserrat", sans-serif;
+}
 /* Hide scrollbar */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
