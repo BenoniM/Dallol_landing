@@ -107,13 +107,17 @@ const About = () => {
         <div className="bottom-0 flex lg:items-center justify-start lg:justify-center pt-5 space-x-4">
           <button
             onClick={handlePrev}
-            className="border border-primary text-primary px-4 py-3 rounded-full"
+            className="border border-primary text-primary px-4 py-3 rounded-full 
+            transition-colors duration-300 
+            hover:bg-primary hover:text-white hover:border-transparent"
           >
             ←
           </button>
           <button
             onClick={handleNext}
-            className="border border-primary text-primary px-4 py-3 rounded-full"
+            className="border border-primary text-primary px-4 py-3 rounded-full 
+            transition-colors duration-300 
+            hover:bg-primary hover:text-white hover:border-transparent"
           >
             →
           </button>

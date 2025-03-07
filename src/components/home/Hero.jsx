@@ -82,7 +82,9 @@ const Hero = () => {
         <div className="border-r border-white h-[100vh] pt-"></div>
         <a
           className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="#"
+          href="https://web.facebook.com/dallol.consult"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <i className="">
             <img src={facebook} alt="" className="w-6 h-6" />
@@ -90,7 +92,9 @@ const Hero = () => {
         </a>
         <a
           className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="#"
+          href="https://www.instagram.com/dallolconsult?igsh=Z2kwcXlheXpid2Np"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <i className="">
             <img src={instagram} alt="" className="w-5 h-5" />
@@ -98,7 +102,9 @@ const Hero = () => {
         </a>
         <a
           className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="#"
+          href="https://www.linkedin.com/company/dallol-consult/"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <i className="">
             <img src={linkedin} alt="" className="w-6 h-6" />
@@ -106,7 +112,9 @@ const Hero = () => {
         </a>
         <a
           className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="#"
+          href="https://www.tiktok.com/@dallol.consult?_t=ZM-8tsMnv9lVHp&_r=1"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <i className="">
             <img src={tiktok} alt="" className="w-6 h-6" />
