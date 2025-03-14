@@ -55,7 +55,7 @@ const ExpertiseAbout = () => {
           {images.slice(0, 3).map((image) => (
             <div
               key={image.id}
-              className="col-span-1 bg-white rounded-lg border border-black p-6 flex flex-col justify-between"
+              className="col-span-1 bg-white rounded-lg border border-black p-6 flex flex-col justify-evenly"
             >
               <h1 className="font-semibold text-2xl mb-4">{image.title}</h1>
               <p className="text-gray-600 line-clamp-3">{image.description}</p>
@@ -68,7 +68,7 @@ const ExpertiseAbout = () => {
           {images.slice(3).map((image) => (
             <div
               key={image.id}
-              className="bg-white rounded-lg border border-black p-6 flex flex-col  justify-between lg:w-[35%]"
+              className="bg-white rounded-lg border border-black p-6 flex flex-col  justify-evenly lg:w-[35%]"
             >
               <h1 className="font-semibold text-2xl mb-4">{image.title}</h1>
               <p className="text-gray-600 line-clamp-3">{image.description}</p>

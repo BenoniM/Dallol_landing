@@ -273,13 +273,15 @@ const ResidenceHenok = () => {
           <div className="flex space-x-4 pt-5">
             <button
               onClick={handlePrev}
-              className="border border-primary text-primary px-4 py-2 md:py-3 rounded-full"
+              className="border border-primary text-primary px-4 py-2 md:py-3 rounded-full transition-colors duration-300 
+             hover:bg-primary hover:text-white hover:border-transparent"
             >
               ←
             </button>
             <button
               onClick={handleNext}
-              className="border border-primary text-primary px-4 py-2 md:py-3 rounded-full"
+              className="border border-primary text-primary px-4 py-2 md:py-3 rounded-full transition-colors duration-300 
+             hover:bg-primary hover:text-white hover:border-transparent"
             >
               →
             </button>
