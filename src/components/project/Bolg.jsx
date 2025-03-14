@@ -1,5 +1,8 @@
 import { useState } from "react";
 import blognew from "../../assets/img/bolgnew.png";
+import school from "../../assets/img/schoolnew.png";
+import henok from "../../assets/img/featurehenok.png";
+import yesh from "../../assets/img/yesh.png";
 import { useNavigate } from "react-router-dom";
 
 const blogPosts = [
@@ -10,6 +13,7 @@ const blogPosts = [
       "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s, is residential establishment with a sizable portion of the artist's priceless works created over the course of his lifeti..",
     author: "John Doe",
     link: "/blogdetails",
+    img: blognew,
   },
   {
     category: "Hotel",
@@ -18,6 +22,7 @@ const blogPosts = [
       "The design shows a large, imposing hotel and business structure. The front has a large central entrance, arched windows, and a symmetrical layout, all of which are characteristics of classic architecture. A sense of elegance and grandeur is created by the building's exterior's use of warm, earthy tones.",
     author: "Sarah Smith",
     link: "/hotelmall",
+    img: yesh,
   },
   {
     category: "School",
@@ -26,6 +31,7 @@ const blogPosts = [
       "This School design depicts a modern school building with a bold, contemporary aesthetic. The facade features a vibrant combination of colors, primarily white with accents of blue, yellow, and red, creating a dynamic visual appeal...",
     author: "Mike Johnson",
     link: "/schooldetails",
+    img: school,
   },
   {
     category: "Residence",
@@ -34,6 +40,7 @@ const blogPosts = [
       "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s, is residential establishment with a sizable portion of the artist's priceless works created over the course of his lifeti..",
     author: "Emily Davis",
     link: "/henok-t-residence",
+    img: henok,
   },
 ];
 
@@ -77,9 +84,9 @@ const BlogPost = () => {
               }`}
             >
               <img
-                src={blognew}
+                src={blog.img}
                 alt="Blog"
-                className="w-full md:w-1/2 rounded-lg"
+                className="w-full md:w-1/2 rounded-lg "
               />
 
               <div className="flex flex-col gap-5 w-full md:w-1/2">

@@ -40,6 +40,7 @@ const Hero = () => {
   }, [emblaApi]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!emblaApi) return;
     emblaApi.on("select", onSelect);
     onSelect();

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import img1 from "../../assets/img/project1.png";
+import { useNavigate } from "react-router-dom";
 
 const images = [
   {
@@ -27,18 +28,21 @@ const images = [
     id: 4,
     img: img1,
     title: "Hotel",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Successful project management is vital to navigating the complexities of architectural and construction projects. Our dedicated project management team employs structured methodologies to oversee all aspects of the project, from inception to completion.",
   },
   {
     id: 5,
     img: img1,
     title: "Hotel",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description:
+      "Successful project management is vital to navigating the complexities of architectural and construction projects. Our dedicated project management team employs structured methodologies to oversee all aspects of the project, from inception to completion.",
   },
 ];
 
 const Expertise = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -61,7 +65,10 @@ const Expertise = () => {
               <h1 className="text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[20%] pb-5 after:bg-primary after:left-[6%] after:top-full after:-translate-y-2">
                 Expertise
               </h1>
-              <button className="bg-primary px-5 py-1 text-white rounded-full">
+              <button
+                onClick={() => navigate("/aboutus")}
+                className="bg-primary px-5 py-1 text-white rounded-full"
+              >
                 View All
               </button>
             </div>
@@ -88,7 +95,7 @@ const Expertise = () => {
                 className="w-[90%] lg:w-[40%] md:w-1/3 flex-shrink-0 "
               >
                 <div
-                  className="text-start border border-black rounded-3xl p-5 h-48 flex flex-col justify-between bg-white 
+                  className="text-start border border-black rounded-3xl p-5 h-48 flex flex-col justify-evenly bg-white 
                transition-colors duration-300 
                hover:bg-primary hover:text-white 
                group"

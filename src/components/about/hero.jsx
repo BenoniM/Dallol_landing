@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../assets/icon/black.svg";
 
 const Hero = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <article className="flex flex-col items-center lg:py-10 w-full">
       <h1 className="text-7xl font-bold">About Us</h1>

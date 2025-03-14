@@ -5,6 +5,7 @@ import facebook from "../assets/icon/facebook.svg";
 import instagram from "../assets/icon/instagram.svg";
 import linkedin from "../assets/icon/linkedin.svg";
 import tiktok from "../assets/icon/tiktok.svg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -26,13 +27,34 @@ const Footer = () => {
             </p>
           </div>
 
-          <ul className="w-1/2 lg:block hidden">
+          <ul className="w-1/2 lg:block hidden space-y-4 lg:pt-10">
             <li>
-              <a href="/"></a>Home
+              <Link to="/" className="text-link">
+                Home
+              </Link>{" "}
+              {/* Home link */}
             </li>
-            <li>About Us</li>
-            <li>Projects</li>
-            <li>Contact Us</li>
+            <li>
+              <Link to="/aboutus" className="text-link">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/projects" className="text-link">
+                Projects
+              </Link>
+            </li>
+            <li>
+              <Link to="/gallery360" className="text-link">
+                360 Gallery
+              </Link>
+            </li>
+            <li>
+              <Link to="/contactus" className="text-link">
+                Contact Us
+              </Link>{" "}
+              {/* Contact Us link */}
+            </li>
           </ul>
 
           <div className="w-1/2">
