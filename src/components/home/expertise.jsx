@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img1 from "../../assets/img/project1.png";
 import { useNavigate } from "react-router-dom";
 
@@ -27,32 +27,44 @@ const images = [
   {
     id: 4,
     img: img1,
-    title: "Hotel",
+    title: "Asset Valuation and Property Management",
     description:
-      "Successful project management is vital to navigating the complexities of architectural and construction projects. Our dedicated project management team employs structured methodologies to oversee all aspects of the project, from inception to completion.",
+      "Understanding the value of assets across various sectors is crucial in today’s ever-evolving market. Our asset valuation services provide comprehensive insights into performance metrics, market trends, and potential opportunities.",
   },
   {
     id: 5,
     img: img1,
-    title: "Hotel",
+    title: "Training and Consultancy",
     description:
-      "Successful project management is vital to navigating the complexities of architectural and construction projects. Our dedicated project management team employs structured methodologies to oversee all aspects of the project, from inception to completion.",
+      "Recognizing the importance of continuous learning, we offer training and consultancy services designed to equip individuals and organizations with the knowledge and skills necessary to navigate the complexities of the built environment.",
   },
 ];
 
 const Expertise = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(1);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+      setItemsPerView(isDesktop ? 2 : 1);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 2 ? 0 : prevIndex + 1
+    setCurrentIndex((prev) =>
+      prev >= images.length - itemsPerView ? 0 : prev + 1
     );
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 2 : prevIndex - 1
+    setCurrentIndex((prev) =>
+      prev === 0 ? images.length - itemsPerView : prev - 1
     );
   };
 
@@ -86,7 +98,7 @@ const Expertise = () => {
           <div
             className="flex transition-transform duration-300 ease-in-out gap-3 p-2"
             style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
+              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
             {images.map((image) => (
@@ -103,9 +115,7 @@ const Expertise = () => {
                   <h1 className="font-semibold text-xl sm:text-2xl">
                     {image.title}
                   </h1>
-                  <p className="overflow-hidden overflow-ellipsis line-clamp-3">
-                    {image.description}
-                  </p>
+                  <p className="overflow-hidden text-sm">{image.description}</p>
                 </div>
               </div>
             ))}

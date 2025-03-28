@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img1 from "../../assets/img/project1.png";
+import img2 from "../../assets/img/Getachew.png";
+import img3 from "../../assets/img/Belay.png";
+import img4 from "../../assets/img/Getachew.png";
 import { useNavigate } from "react-router-dom";
 
 const images = [
@@ -11,43 +14,49 @@ const images = [
   },
   {
     id: 2,
-    img: img1,
+    img: img2,
     title: "Residential",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Getachew K. Residence",
   },
   {
     id: 3,
-    img: img1,
+    img: img3,
     title: "Hotel",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Belay G. Hotel",
   },
   {
     id: 4,
-    img: img1,
+    img: img4,
     title: "Hotel",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 5,
-    img: img1,
-    title: "Hotel",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Tranzit Hotel",
   },
 ];
 
 const About = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(1);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+      setItemsPerView(isDesktop ? 2 : 1);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 2 ? 0 : prevIndex + 1
+    setCurrentIndex((prev) =>
+      prev >= images.length - itemsPerView ? 0 : prev + 1
     );
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 2 : prevIndex - 1
+    setCurrentIndex((prev) =>
+      prev === 0 ? images.length - itemsPerView : prev - 1
     );
   };
 
@@ -86,7 +95,7 @@ const About = () => {
           <div
             className="flex transition-transform duration-300 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
+              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
             }}
           >
             {images.map((image) => (

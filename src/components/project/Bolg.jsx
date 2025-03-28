@@ -37,7 +37,7 @@ const blogPosts = [
     category: "Residence",
     title: "Henok T. Residence B+G+2+T Residence Building",
     content:
-      "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s, is residential establishment with a sizable portion of the artist's priceless works created over the course of his lifeti..",
+      "The design is focused in presenting a modern and stylish design. The contrasting use of dark brick and white plaster creates a visually interesting facade. The vertical lines formed by the windows and balconies add a sense of height and elegance...",
     author: "Emily Davis",
     link: "/henok-t-residence",
     img: henok,

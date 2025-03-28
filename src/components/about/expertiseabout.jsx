@@ -50,7 +50,7 @@ const ExpertiseAbout = () => {
           Expertise
         </h1>
       </div>
-      <section className="w-full max-w-7xl lg:p-0 p-3">
+      <section className="w-full max-w-8xl lg:p-5 p-3">
         <div className="grid lg:grid-cols-3 grid-flow-row gap-6">
           {images.slice(0, 3).map((image) => (
             <div
@@ -58,7 +58,7 @@ const ExpertiseAbout = () => {
               className="col-span-1 bg-white rounded-lg border border-black p-6 flex flex-col justify-evenly"
             >
               <h1 className="font-semibold text-2xl mb-4">{image.title}</h1>
-              <p className="text-gray-600 line-clamp-3">{image.description}</p>
+              <p className="text-gray-600 ">{image.description}</p>
             </div>
           ))}
         </div>
@@ -68,10 +68,10 @@ const ExpertiseAbout = () => {
           {images.slice(3).map((image) => (
             <div
               key={image.id}
-              className="bg-white rounded-lg border border-black p-6 flex flex-col  justify-evenly lg:w-[35%]"
+              className="bg-white rounded-lg border border-black p-6 flex flex-col  justify-evenly lg:w-[40%]"
             >
               <h1 className="font-semibold text-2xl mb-4">{image.title}</h1>
-              <p className="text-gray-600 line-clamp-3">{image.description}</p>
+              <p className="text-gray-600 ">{image.description}</p>
             </div>
           ))}
         </div>

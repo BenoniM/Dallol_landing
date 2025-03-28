@@ -73,7 +73,10 @@ const ResidenceHenok = () => {
             Henok T. Residence
           </h1>
           <p className="text-white w-3/4 md:w-1/2 my-2 text-center text-sm md:text-base">
-            The design shows a large, imposing hotel and business structure...
+            The design is focused in presenting a modern and stylish design. The
+            contrasting use of dark brick and white plaster creates a visually
+            interesting facade. The vertical lines formed by the windows and
+            balconies add a sense of height and elegance
           </p>
         </div>
       </div>
