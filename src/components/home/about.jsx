@@ -1,142 +1,230 @@
-import React, { useEffect, useState } from "react";
-import img1 from "../../assets/img/project1.png";
-import img2 from "../../assets/img/Getachew.png";
-import img3 from "../../assets/img/Belay.png";
-import img4 from "../../assets/img/Getachew.png";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useCallback } from "react";
 
-const images = [
-  {
-    id: 1,
-    img: img1,
-    title: "Residential",
-    description: "Dereje A. Residence",
-  },
-  {
-    id: 2,
-    img: img2,
-    title: "Residential",
-    description: "Getachew K. Residence",
-  },
-  {
-    id: 3,
-    img: img3,
-    title: "Hotel",
-    description: "Belay G. Hotel",
-  },
-  {
-    id: 4,
-    img: img4,
-    title: "Hotel",
-    description: "Tranzit Hotel",
-  },
-];
+const BG_IMAGE =
+  "https://images.pexels.com/photos/34230319/pexels-photo-34230319.jpeg?auto=compress&cs=tinysrgb&w=1920";
+const VIDEO_SRC = "https://www.pexels.com/download/video/7253208/";
+
+const INTRO =
+  "We believe Great Design begins with Understanding. Our mission is to create spaces that align with our clients' Visions and meet the needs of the Local Community.";
+const OUTRO =
+  "Every Dallol project begins by listening to our clients, to the site and to the people around it. From the first sketch to the final structure, we pair architectural vision with engineering precision, so each building is rooted in its place and built to endure for generations.";
+
+// Total scroll length of the pinned section, in viewport heights.
+const SECTION_VH = 6;
+
+// The background keeps scrolling while the white panel rises, until the panel
+// fills the screen (STOPS[4]). BG_RATE is how far it moves per unit of page
+// scroll (1 = same speed as the page).
+const BG_RATE = 0.5;
+
+// Keyframes over scroll progress t (0..1). Sizes are fractions of the
+// viewport: the background holds on its own for a moment, then the white
+// panel rises, widens, fills the screen, and the video grows into the final
+// framed shot.
+const STOPS = [0, 0.08, 0.26, 0.5, 0.66, 0.83, 1];
+const DESKTOP = {
+  boxW: [0.34, 0.34, 0.34, 0.46, 1, 1, 1],
+  boxH: [0.92, 0.92, 0.92, 1.3, 2.2, 2.2, 2.2],
+  boxY: [1, 1, 0, 0, 0, 0, 0],
+  vidW: [0.1, 0.1, 0.1, 0.15, 0.3, 0.5, 0.5],
+  vidH: [0.31, 0.31, 0.31, 0.4, 0.56, 0.74, 0.74],
+};
+const MOBILE = {
+  boxW: [0.88, 0.88, 0.88, 0.94, 1, 1, 1],
+  boxH: [0.86, 0.86, 0.86, 1.3, 2.2, 2.2, 2.2],
+  boxY: [1, 1, 0, 0, 0, 0, 0],
+  vidW: [0.42, 0.42, 0.42, 0.55, 0.8, 0.88, 0.88],
+  vidH: [0.26, 0.26, 0.26, 0.34, 0.4, 0.44, 0.44],
+};
+
+const clamp01 = (v) => Math.max(0, Math.min(1, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const easeInOut = (t) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+// Progress of t through [a, b], clamped and eased.
+const range = (t, a, b) => easeInOut(clamp01((t - a) / (b - a)));
+
+// Piecewise-eased value of a keyframe track at progress t.
+const track = (values, t) => {
+  for (let i = 1; i < STOPS.length; i++) {
+    if (t <= STOPS[i]) {
+      return lerp(values[i - 1], values[i], range(t, STOPS[i - 1], STOPS[i]));
+    }
+  }
+  return values[values.length - 1];
+};
 
 const About = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [itemsPerView, setItemsPerView] = useState(1);
-  const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const bgRef = useRef(null);
+  const boxRef = useRef(null);
+  const titleRef = useRef(null);
+  const introRef = useRef(null);
+  const videoRef = useRef(null);
+  const outroTitleRef = useRef(null);
+  const outroTextRef = useRef(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-      setItemsPerView(isDesktop ? 2 : 1);
-    };
+  const handleScroll = useCallback(() => {
+    if (!containerRef.current) return;
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const rect = containerRef.current.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const totalScrollable = rect.height - vh;
+    if (totalScrollable <= 0) return;
+    const t = clamp01(-rect.top / totalScrollable);
+    const k = vw < 1024 ? MOBILE : DESKTOP;
+
+    // White panel, drawn as a clip of a full-screen layer.
+    const boxW = track(k.boxW, t) * vw;
+    const boxH = track(k.boxH, t) * vh;
+    const boxTop = (vh - boxH) / 2 + track(k.boxY, t) * vh;
+    const boxLeft = (vw - boxW) / 2;
+    if (boxRef.current) {
+      boxRef.current.style.clipPath = `inset(${boxTop.toFixed(1)}px ${boxLeft.toFixed(1)}px ${(vh - boxTop - boxH).toFixed(1)}px ${boxLeft.toFixed(1)}px)`;
+    }
+
+    // Background scrolls with the page until the panel covers it.
+    if (bgRef.current) {
+      const bgY = Math.min(t, STOPS[4]) * totalScrollable * BG_RATE;
+      bgRef.current.style.transform = `translate3d(0, ${(-bgY).toFixed(1)}px, 0)`;
+    }
+
+    // "ABOUT" and the intro are pinned to the panel's top and bottom edges;
+    // the panel grows taller than the screen, carrying them out of view.
+    if (titleRef.current) {
+      const fontSize = Math.min(boxW, k.boxW[3] * vw) * 0.25;
+      const restY = boxTop + boxH * 0.03;
+      titleRef.current.style.fontSize = `${fontSize.toFixed(1)}px`;
+      titleRef.current.style.transform = `translate3d(-50%, ${restY.toFixed(1)}px, 0)`;
+    }
+
+    if (introRef.current) {
+      const restW = k.boxW[2] * vw;
+      const pad = Math.min(48, restW * 0.08);
+      const h = introRef.current.offsetHeight;
+      const restY = boxTop + boxH - pad - h;
+      introRef.current.style.left = `${((vw - restW) / 2 + pad).toFixed(1)}px`;
+      introRef.current.style.width = `${(restW - pad * 2).toFixed(1)}px`;
+      introRef.current.style.transform = `translate3d(0, ${restY.toFixed(1)}px, 0)`;
+    }
+
+    // Video stays centred in the panel and grows to the final frame.
+    if (videoRef.current) {
+      const vidW = track(k.vidW, t) * vw;
+      const vidH = track(k.vidH, t) * vh;
+      videoRef.current.style.width = `${vidW.toFixed(1)}px`;
+      videoRef.current.style.height = `${vidH.toFixed(1)}px`;
+      videoRef.current.style.transform = `translate3d(${((vw - vidW) / 2).toFixed(1)}px, ${(boxTop + (boxH - vidH) / 2).toFixed(1)}px, 0)`;
+    }
+
+    // Closing title and description fade in around the full-size video.
+    const outro = range(t, 0.68, 0.86);
+    [outroTitleRef, outroTextRef].forEach((ref) => {
+      if (!ref.current) return;
+      ref.current.style.opacity = outro.toFixed(3);
+      ref.current.style.transform = `translate3d(0, ${((1 - outro) * 40).toFixed(1)}px, 0)`;
+    });
   }, []);
 
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev >= images.length - itemsPerView ? 0 : prev + 1
-    );
-  };
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        handleScroll();
+      });
+    };
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? images.length - itemsPerView : prev - 1
-    );
-  };
+    handleScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [handleScroll]);
 
   return (
-    <article className="w-full pt-10 font-montserrat flex flex-col items-center overflow-hidden">
-      {/* About Section */}
-      <section className="text-center py-16 px-4">
-        <h1 className="font-semibold text-xl sm:text-2xl">About Dallol</h1>
-        <p className="text-lg sm:text-2xl mt-2 w-full sm:w-3/4 lg:w-1/2 mx-auto leading-relaxed">
-          We believe{" "}
-          <span className="text-primary font-bold">Great Design</span> begins
-          with <span className="text-primary font-bold">Understanding.</span>
-          Our mission is to create spaces that align with our clients'{" "}
-          <span className="text-primary font-bold">Visions</span>
-          and meet the needs of the{" "}
-          <span className="text-primary font-bold">Local Community.</span>
+    <article
+      id="about"
+      ref={containerRef}
+      className="relative w-full bg-white font-montserrat text-neutral-900"
+      style={{ height: `${SECTION_VH * 100}vh` }}
+    >
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Background image */}
+        <div
+          ref={bgRef}
+          className="absolute left-0 top-0 w-full bg-cover bg-center will-change-transform"
+          style={{
+            height: `${(1 + STOPS[4] * (SECTION_VH - 1) * BG_RATE) * 100}vh`,
+            backgroundImage: `url(${BG_IMAGE})`,
+          }}
+        />
+
+        {/* White panel */}
+        <div
+          ref={boxRef}
+          className="absolute inset-0 bg-white will-change-[clip-path]"
+          style={{ clipPath: "inset(100% 50% 0 50%)" }}
+        />
+
+        {/* Panel title */}
+        <h2
+          ref={titleRef}
+          className="absolute left-1/2 top-0 whitespace-nowrap font-montserrat font-normal uppercase leading-[0.9] tracking-[0.02em] text-neutral-900 will-change-transform"
+        >
+          About
+        </h2>
+
+        {/* Panel intro text */}
+        <p
+          ref={introRef}
+          className="absolute top-0 text-center text-sm leading-relaxed text-neutral-800 sm:text-base"
+        >
+          {INTRO}
         </p>
-      </section>
 
-      {/* Projects Section */}
-      <section className="w-full max-w-7xl mt-10 relative px-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl sm:text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[80%] pb-5 after:bg-primary after:left-[20%] after:top-full after:-translate-y-2">
-            Projects
-          </h1>
-          <button
-            onClick={() => navigate("/projects")}
-            className="bg-primary px-5 py-1 text-white rounded-full"
-          >
-            View All
-          </button>
+        {/* Video */}
+        <div
+          ref={videoRef}
+          className="absolute left-0 top-0 overflow-hidden bg-neutral-200 will-change-transform"
+        >
+          <video
+            className="h-full w-full object-cover"
+            src={VIDEO_SRC}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          />
         </div>
 
-        {/* Image Slider */}
-        <div className="relative w-full overflow-hidden mt-5">
-          <div
-            className="flex transition-transform duration-300 ease-in-out"
-            style={{
-              transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
-            }}
-          >
-            {images.map((image) => (
-              <div
-                key={image.id}
-                className="w-full lg:w-[45%] flex flex-col items-start px-2 shrink-0"
-              >
-                <img
-                  src={image.img}
-                  alt={image.title}
-                  className="w-full rounded-lg"
-                />
-                <div className="text-start mt-2">
-                  <h1 className="font-light text-primary">{image.title}</h1>
-                  <p>{image.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Closing title, top left (clear of the video) */}
+        <div
+          ref={outroTitleRef}
+          className="pointer-events-none absolute left-[3vw] top-[8vh] opacity-0 lg:left-[9vw] lg:top-[10vh] lg:w-[24vw]"
+        >
+          <span className="block font-montserrat text-4xl font-light leading-tight text-neutral-500 sm:text-5xl lg:text-4xl xl:text-5xl">
+            Rooted in
+          </span>
+          <span className="block font-montserrat text-4xl font-normal uppercase leading-tight tracking-wide text-neutral-900 sm:text-5xl lg:text-4xl xl:text-5xl">
+            Place
+          </span>
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="bottom-0 flex lg:items-center justify-start lg:justify-center pt-5 space-x-4">
-          <button
-            onClick={handlePrev}
-            className="border border-primary text-primary px-4 py-3 rounded-full 
-            transition-colors duration-300 
-            hover:bg-primary hover:text-white hover:border-transparent"
-          >
-            ←
-          </button>
-          <button
-            onClick={handleNext}
-            className="border border-primary text-primary px-4 py-3 rounded-full 
-            transition-colors duration-300 
-            hover:bg-primary hover:text-white hover:border-transparent"
-          >
-            →
-          </button>
-        </div>
-      </section>
+        {/* Closing description, bottom right */}
+        <p
+          ref={outroTextRef}
+          className="absolute bottom-[6vh] left-[6vw] right-[6vw] text-sm leading-relaxed text-neutral-800 opacity-0 lg:bottom-[12vh] lg:left-[76vw] lg:right-auto lg:w-[14vw] xl:text-base"
+        >
+          {OUTRO}
+        </p>
+      </div>
     </article>
   );
 };

@@ -21,14 +21,37 @@ body {
   animation: scrollCarousel 100s infinite linear;
 }
 
+.carousel:hover,
+.carousel-container:hover .carousel {
+  animation-play-state: paused;
+}
+
 .carouselReverse {
   display: flex;
   animation: scrollCarouselReverse 100s infinite linear;
 }
 
+.carouselReverse:hover,
+.carousel-container:hover .carouselReverse {
+  animation-play-state: paused;
+}
+
 .carousel-track {
   display: flex;
   width: max-content;
+}
+
+.carousel-logo {
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.carousel-logo:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 .carousel-item {
@@ -139,3 +162,4 @@ body {
     transform: rotate(360deg);
   }
 }
+

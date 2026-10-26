@@ -1,132 +1,154 @@
-import { useEffect, useState, useCallback } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import { useEffect, useState, useRef, useCallback } from "react";
 
-import Bactier from "../../assets/img/heroimg2.png";
-import slide1 from "../../assets/img/heroimg.png";
-import slide2 from "../../assets/img/heroimg3.png";
-import logo from "../../assets/icon/logowhite.svg";
+const NARRATIVE_TEXT =
+  "Build your dream with us. We believe great design begins with understanding, uniting visionary architecture and precision engineering to create spaces that honor our clients' aspirations and elevate the communities we serve.";
 
-import linkedin from "../../assets/icon/whitelinkedin.svg";
-import facebook from "../../assets/icon/whitefacebook.svg";
-import tiktok from "../../assets/icon/whitetiktok.svg";
-import instagram from "../../assets/icon/whtieinstagram.svg";
-import CircularText from "../CircularText";
+const words = NARRATIVE_TEXT.split(" ");
 
 const Hero = () => {
-  const cardsData = [
-    { title: "Card 1", image: Bactier },
-    { title: "Card 2", image: slide1 },
-    { title: "Card 3", image: slide2 },
-  ];
+  const heroRef = useRef(null);
+  const videoRef = useRef(null);
+  const narrativeRef = useRef(null);
 
-  const autoplayOptions = { delay: 9000 };
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "center" },
-    [Autoplay(autoplayOptions)]
-  );
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isPastHero, setIsPastHero] = useState(false);
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  // Handle scroll events
+  const handleScroll = useCallback(() => {
+    if (heroRef.current) {
+      const rect = heroRef.current.getBoundingClientRect();
+      // If hero has completely scrolled past the top of the viewport
+      if (rect.bottom <= 0) {
+        setIsPastHero(true);
+        if (videoRef.current && !videoRef.current.paused) {
+          videoRef.current.pause();
+        }
+      } else {
+        setIsPastHero(false);
+        if (videoRef.current && videoRef.current.paused) {
+          videoRef.current.play().catch(() => {});
+        }
+      }
+    }
 
-  const scrollTo = useCallback(
-    (index) => {
-      if (emblaApi) emblaApi.scrollTo(index);
-    },
-    [emblaApi]
-  );
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+    if (narrativeRef.current) {
+      const rect = narrativeRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // Start filling text when narrative top enters ~88% of viewport
+      // Complete filling when narrative top reaches ~38% of viewport
+      const start = windowHeight * 0.88;
+      const end = windowHeight * 0.38;
+      const raw = (start - rect.top) / (start - end);
+      const clamped = Math.max(0, Math.min(1, raw));
+      setScrollProgress(clamped);
+    }
+  }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if (!emblaApi) return;
-    emblaApi.on("select", onSelect);
-    onSelect();
-  }, [emblaApi, onSelect]);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [handleScroll]);
+
+  // Compute opacity for each word
+  const getWordOpacity = (index) => {
+    const total = words.length;
+    const wordStart = index / total;
+    const wordEnd = (index + 1) / total;
+
+    if (scrollProgress >= wordEnd) return 1.0;
+    if (scrollProgress <= wordStart) return 0.25;
+
+    const factor = (scrollProgress - wordStart) / (wordEnd - wordStart);
+    return 0.25 + factor * 0.75;
+  };
 
   return (
-    <div
+    <section
       id="Hero-section"
-      className="relative w-full font-montserrat overflow-hidden"
+      ref={heroRef}
+      className="relative w-full font-montserrat"
     >
-      {/* Carousel */}
-      <div className="overflow-hidden relative " ref={emblaRef}>
-        <div className="flex">
-          {cardsData.map((card, index) => (
-            <div
-              key={index}
-              className="embla__slide w-full flex-shrink-0 overflow-hidden relative"
-            >
-              <img
-                src={card.image}
-                alt={card.title}
-                className="w-full h-screen object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 z-0"></div>
-            </div>
-          ))}
+      {/* Fixed Video Background (stays in place as page scrolls) */}
+      <div
+        className={`fixed inset-0 w-full h-full z-0 overflow-hidden transition-opacity duration-300 pointer-events-none ${
+          isPastHero ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="w-full h-full object-cover scale-[1.02]"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/32348751/13800841_3840_2160_30fps.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="https://www.pexels.com/download/video/32348751/"
+            type="video/mp4"
+          />
+        </video>
+
+        {/* Ambient Overlay for text legibility without over-dimming the video */}
+        <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/75 via-black/20 to-black/35 pointer-events-none" />
+      </div>
+
+      {/* Hero Content Layer that scrolls naturally over the fixed video */}
+      <div className="relative z-10 w-full flex flex-col justify-between">
+        {/* First Viewport: Title on bottom left */}
+        <div className="h-screen w-full flex flex-col justify-end px-3 sm:px-6 md:px-8 lg:px-10 pb-8 sm:pb-12 lg:pb-14">
+          <div className="w-full text-left">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold tracking-tight text-white leading-[1.02] drop-shadow-md">
+              Where Innovation
+              <br />
+              Meets Precision
+            </h1>
+          </div>
+        </div>
+
+        {/* Narrative Section: Placed below the title, on the right, with reduced gap below */}
+        <div
+          id="narrative-block"
+          ref={narrativeRef}
+          className="min-h-[45vh] flex flex-col justify-center px-3 sm:px-6 md:px-8 lg:px-10 pt-8 pb-12 sm:pb-16 md:pb-20"
+        >
+          <div className="w-full max-w-2xl lg:max-w-3xl ml-auto text-left">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-[1.85rem] font-normal sm:font-medium leading-relaxed md:leading-relaxed tracking-tight text-white drop-shadow-sm">
+              {words.map((word, idx) => {
+                const opacity = getWordOpacity(idx);
+                return (
+                  <span
+                    key={idx}
+                    className="inline-block mr-[0.26em] transition-opacity duration-150"
+                    style={{
+                      opacity,
+                      color: "#ffffff",
+                    }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
+            </p>
+          </div>
         </div>
       </div>
-
-      {/* Text on the Left */}
-      <div className="absolute lg:bottom-20 bottom-14 lg:left-20 left-14 w-[70%] space-y-1 text-white z-10">
-        <h1 className="text-xl font-light md:text-7xl lg:text-5xl lg:font-semibold leading-tight">
-          DALLOL
-        </h1>
-        <p className="lg:text-[5rem] lg:w-full w-[80%] text-2xl font-semibold leading-none">
-          Where Innovation Meets Precision
-        </p>
-      </div>
-      <div className="absolute bottom-0 flex flex-col items-center space-y-5 lg:p-8 p-4 ">
-        <div className="border-r border-white h-[100vh] pt-"></div>
-        <a
-          className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="https://web.facebook.com/dallol.consult"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="">
-            <img src={facebook} alt="" className="w-6 h-6" />
-          </i>
-        </a>
-        <a
-          className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="https://www.instagram.com/dallolconsult?igsh=Z2kwcXlheXpid2Np"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="">
-            <img src={instagram} alt="" className="w-5 h-5" />
-          </i>
-        </a>
-        <a
-          className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="https://www.linkedin.com/company/dallol-consult/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="">
-            <img src={linkedin} alt="" className="w-6 h-6" />
-          </i>
-        </a>
-        <a
-          className="text-white text-2xl hover:text-gray-400 transition duration-300"
-          href="https://www.tiktok.com/@dallol.consult?_t=ZM-8tsMnv9lVHp&_r=1"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="">
-            <img src={tiktok} alt="" className="w-6 h-6" />
-          </i>
-        </a>
-      </div>
-
-      <div className="absolute bottom-10 right-5 sm:bottom-20 sm:right-10 z-10 overflow-hidden">
-        <CircularText text="build your dream With Us" />
-      </div>
-    </div>
+    </section>
   );
 };
 

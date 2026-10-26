@@ -27,12 +27,7 @@ function App() {
         <Route path="/gallery360" element={<Gallery />} />
         <Route path="/contactus" element={<Contact />} />
       </Routes>
-      <div className="hidden lg:block">
-        <Footer />
-      </div>
-      <div className="lg:hidden">
-        <FooterNew />
-      </div>
+      <Footer />
     </>
   );
 }

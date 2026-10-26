@@ -52,9 +52,9 @@ const images = [
 
 const Carousel = () => {
   return (
-    <article className="carousel-container bg-gradient-to-r text-white p-10 overflow-hidden">
+    <article className="carousel-container bg-white py-10 md:py-14 lg:py-16 overflow-hidden">
       <section className="carousel">
-        <div className="carousel-track gap-x-12 md:gap-x-24  ">
+        <div className="carousel-track items-center gap-x-12 md:gap-x-16 lg:gap-x-20">
           {Array(8)
             .fill(images)
             .flat()
@@ -62,8 +62,8 @@ const Carousel = () => {
               <img
                 key={index}
                 src={img}
-                alt={`carousel image ${index + 1}`}
-                className="h-[50px] max-w-full "
+                alt={`partner logo ${index + 1}`}
+                className="carousel-logo h-[32px] sm:h-[36px] md:h-[38px] lg:h-[42px] max-w-none object-contain shrink-0 cursor-pointer grayscale opacity-70 hover:grayscale-0 hover:opacity-100 hover:scale-110 transition-all duration-300"
               />
             ))}
         </div>

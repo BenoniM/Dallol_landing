@@ -8,6 +8,8 @@ export default {
       },
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"],
+        cormorant: ["'Cormorant Garamond'", "serif"],
+        serif: ["'Cormorant Garamond'", "Georgia", "serif"],
       },
     },
   },
