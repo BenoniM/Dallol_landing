@@ -638,7 +638,7 @@ const ProjectsSection = () => {
 
           <div
             className="absolute left-0 right-0 bottom-[6vh] overflow-hidden"
-            style={{ height: "calc(min(4.5vw, 4.5rem) * 1.25)" }}
+            style={{ height: "calc(clamp(1.4rem, 3vw, 3rem) * 2.8)" }}
           >
             {SEQUENCE.map((project, k) => (
               <h3
@@ -646,13 +646,8 @@ const ProjectsSection = () => {
                 ref={(el) => {
                   titlesRef.current[k] = el;
                 }}
-                className="absolute inset-0 flex items-center justify-center font-montserrat font-medium uppercase tracking-wide leading-none whitespace-nowrap px-4"
-                style={{
-                  // Shrink long titles so every name fits on one line
-                  fontSize: `min(4.5vw, ${(75 / project.title.length).toFixed(
-                    2
-                  )}vw, 4.5rem)`,
-                }}
+                className="absolute inset-0 flex items-center justify-center font-montserrat font-medium uppercase tracking-wide leading-tight text-center px-4"
+                style={{ fontSize: "clamp(1.4rem, 3vw, 3rem)" }}
               >
                 {project.title}
               </h3>
