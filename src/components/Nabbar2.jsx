@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/icon/black.svg";
@@ -12,6 +12,17 @@ const Nabbar2 = () => {
 
   const closeMenu = () => setIsOpen(false);
 
+  // Disable background scrolling when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
+
   // Helper function to generate valid paths
   const getPath = (item) => {
     if (item === "Home") return "/";
@@ -21,7 +32,7 @@ const Nabbar2 = () => {
   console.log(window.location.pathname);
 
   return (
-    <nav className="w-full flex items-center justify-center gap-x-[290px] py-4  relative">
+    <nav className="w-full flex items-center justify-between lg:justify-center lg:gap-x-[290px] py-4 px-4 sm:px-6 lg:px-0 relative">
       <ul className="lg:flex items-center space-x-8  hidden">
         {[
           {
@@ -52,12 +63,29 @@ const Nabbar2 = () => {
         ))}
       </ul>
 
-      <div className="flex items-center space-x-5">
+      <div className="w-full lg:w-auto flex items-center justify-between lg:justify-center">
         <a href="/">
-          <img src={logo} alt="Logo" className="h-10 w-auto" />
+          <img src={logo} alt="Logo" className="h-10 sm:h-11 md:h-12 w-auto" />
         </a>
-        <button onClick={() => setIsOpen(true)} className="lg:hidden block">
-          <Menu size={32} className="text-black" />
+        <button
+          type="button"
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+          className="lg:hidden relative w-10 h-10 flex items-center justify-center focus:outline-none"
+        >
+          <div className="relative w-[30px] h-6 flex items-center justify-center pointer-events-none">
+            <span
+              className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center bg-black ${
+                isOpen ? "translate-y-0 rotate-45" : "-translate-y-[5px] rotate-0"
+              }`}
+            />
+            <span
+              className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center bg-black ${
+                isOpen ? "translate-y-0 -rotate-45" : "translate-y-[5px] rotate-0"
+              }`}
+            />
+          </div>
         </button>
       </div>
 
@@ -119,9 +147,16 @@ const Nabbar2 = () => {
           isOpen ? "translate-x-0" : "translate-x-full"
         } z-50`}
       >
-        <div className="absolute top-4 right-4 ">
-          <button onClick={closeMenu} className="">
-            <X size={60} className="text-black font-bold" />
+        <div className="absolute top-4 right-4">
+          <button
+            onClick={closeMenu}
+            aria-label="Close menu"
+            className="w-10 h-10 flex items-center justify-center focus:outline-none"
+          >
+            <div className="relative w-[30px] h-6 flex items-center justify-center pointer-events-none">
+              <span className="absolute w-[30px] h-[2.5px] bg-black rotate-45 origin-center" />
+              <span className="absolute w-[30px] h-[2.5px] bg-black -rotate-45 origin-center" />
+            </div>
           </button>
 
           {/* Social Media Links */}

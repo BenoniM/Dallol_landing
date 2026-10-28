@@ -6,7 +6,7 @@ const Hero = () => {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <article className="flex flex-col items-center py-10 w-full">
+    <article className="flex flex-col items-center pt-24 sm:pt-28 pb-10 w-full">
       <h1 className="lg:text-7xl text-6xl  font-bold">Get in Touch</h1>
 
       <section className="flex lg:flex-row flex-col items-start lg:items-center justify-center pt-10 p-5">

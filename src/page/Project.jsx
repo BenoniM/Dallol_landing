@@ -1,5 +1,5 @@
 import React from "react";
-import Nabbar2 from "../components/Nabbar2";
+import Navbar from "../components/Navbar";
 import BlogPost from "../components/project/Bolg";
 import Hero from "../components/project/hero";
 import OurHappyClients from "../components/home/ourhappyclients";
@@ -7,7 +7,7 @@ import OurHappyClients from "../components/home/ourhappyclients";
 const Project = () => {
   return (
     <>
-      <Nabbar2 />
+      <Navbar />
       <Hero />
       <BlogPost />
       <OurHappyClients />

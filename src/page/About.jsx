@@ -1,6 +1,6 @@
 import React from "react";
 import Hero from "../components/about/hero";
-import Nabbar2 from "../components/Nabbar2";
+import Navbar from "../components/Navbar";
 import WeAre from "../components/about/WeAre";
 import Mission from "../components/about/mission";
 import ExpertiseAbout from "../components/about/expertiseabout";
@@ -8,7 +8,7 @@ import ExpertiseAbout from "../components/about/expertiseabout";
 const About = () => {
   return (
     <>
-      <Nabbar2 />
+      <Navbar />
       <Hero />
       <WeAre />
       <Mission />

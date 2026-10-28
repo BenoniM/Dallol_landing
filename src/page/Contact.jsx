@@ -1,12 +1,12 @@
 import React from "react";
-import Nabbar2 from "../components/Nabbar2";
+import Navbar from "../components/Navbar";
 import ContactUs from "../components/contact/ContactUs";
 import Hero from "../components/contact/hero";
 
 const Contact = () => {
   return (
     <>
-      <Nabbar2 />
+      <Navbar />
       <Hero />
       <ContactUs />
     </>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import logoBlack from "../assets/icon/black.svg";
 import logoWhite from "../assets/icon/logowhite.svg";
@@ -60,9 +59,56 @@ const Navbar = () => {
     },
   ];
 
+  // Disable background scrolling when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      const originalTouchAction = document.body.style.touchAction;
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.body.style.touchAction = originalTouchAction;
+      };
+    }
+  }, [isOpen]);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  // Close menu on desktop viewport resize or Escape key press
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024 && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
   // Scroll listener for past-hero detection and hide-on-scroll-down / show-on-scroll-up
   useEffect(() => {
     const handleScroll = () => {
+      // Don't modify visibility while mobile menu is open
+      if (isOpen) {
+        setIsVisible(true);
+        return;
+      }
+
       const currentScrollY = window.scrollY;
 
       // 1. Detect whether navbar has scrolled past the hero section
@@ -97,20 +143,24 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, [location.pathname]);
+  }, [location.pathname, isOpen]);
 
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 w-full z-50 font-montserrat transition-all duration-300 ease-in-out ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
+          isVisible || isOpen ? "translate-y-0" : "-translate-y-full"
         } ${
           isPastHero
             ? "py-2.5 sm:py-3 lg:py-3.5"
             : "py-2.5 sm:py-3 lg:py-3.5 bg-transparent"
         }`}
         style={
-          isPastHero
+          isOpen
+            ? {
+                background: "transparent",
+              }
+            : isPastHero
             ? {
                 background:
                   "linear-gradient(180deg, rgba(255, 76, 29, 0.09) 0%, rgba(255, 76, 29, 0.05) 100%)",
@@ -123,16 +173,17 @@ const Navbar = () => {
         }
       >
         <div className="w-full flex items-center justify-between px-3 sm:px-6 md:px-8 lg:px-10">
-          {/* Left Column: White logo in Hero, Black logo past Hero */}
+          {/* Left Column: White logo in Hero, Black logo past Hero or when menu is open */}
           <div className="flex-1 flex justify-start items-center">
             <NavLink
               to="/"
+              onClick={closeMenu}
               className="inline-block transition-transform duration-200 hover:opacity-90"
             >
               <img
-                src={isPastHero ? logoBlack : logoWhite}
+                src={isOpen || isPastHero ? logoBlack : logoWhite}
                 alt="Dallol Consult"
-                className="h-8 sm:h-9 md:h-10 lg:h-11 xl:h-12 w-auto object-contain transition-all duration-300"
+                className="h-10 sm:h-11 md:h-11 lg:h-11 xl:h-12 w-auto object-contain transition-all duration-300"
               />
             </NavLink>
           </div>
@@ -160,7 +211,7 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* Right Column: Social Media Icons (Desktop) & Mobile Hamburger */}
+          {/* Right Column: Social Media Icons (Desktop) & Mobile Two-Line Hamburger / X Button */}
           <div className="flex-1 flex justify-end items-center gap-4">
             {/* Desktop Social Icons */}
             <div className="hidden lg:flex items-center gap-4 xl:gap-5">
@@ -184,82 +235,106 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Mobile Hamburger Button (Only on Mobile/Tablet) */}
+            {/* Mobile Animated Two-Line Hamburger to X Toggle Button */}
             <button
-              onClick={() => setIsOpen(true)}
-              aria-label="Open Menu"
-              className="lg:hidden p-1.5 rounded-md focus:outline-none transition-colors"
+              type="button"
+              onClick={() => setIsOpen((prev) => !prev)}
+              aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
+              aria-expanded={isOpen}
+              className="lg:hidden relative w-10 h-10 flex items-center justify-center focus:outline-none"
             >
-              <Menu
-                size={28}
-                className={`transition-colors duration-200 ${
-                  isPastHero ? "text-black" : "text-white"
-                }`}
-              />
+              <div className="relative w-[30px] h-6 flex items-center justify-center pointer-events-none">
+                {/* Line 1: Top bar in hamburger, rotates 45deg to form diagonal of X */}
+                <span
+                  className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
+                    isOpen || isPastHero ? "bg-black" : "bg-white"
+                  } ${
+                    isOpen
+                      ? "translate-y-0 rotate-45"
+                      : "-translate-y-[5px] rotate-0"
+                  }`}
+                />
+                {/* Line 2: Bottom bar in hamburger, rotates -45deg to form diagonal of X */}
+                <span
+                  className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
+                    isOpen || isPastHero ? "bg-black" : "bg-white"
+                  } ${
+                    isOpen
+                      ? "translate-y-0 -rotate-45"
+                      : "translate-y-[5px] rotate-0"
+                  }`}
+                />
+              </div>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity"
-          onClick={closeMenu}
-        />
-      )}
-
-      {/* Mobile Sidebar Menu */}
+      {/* Full-Page Elongating Mobile Menu (Mobile Version Only: lg:hidden) */}
       <div
-        className={`fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-white shadow-2xl transform transition-transform duration-500 ease-out z-50 flex flex-col justify-between p-8 font-montserrat ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        id="mobile-fullscreen-menu"
+        aria-hidden={!isOpen}
+        className={`lg:hidden fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto overscroll-contain ${
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(255, 76, 29, 0.14) 0%, rgba(255, 76, 29, 0.08) 100%), rgba(255, 255, 255, 0.96)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          clipPath: isOpen ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)",
+          transition:
+            "clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-in-out",
+        }}
       >
-        <div>
-          {/* Header with Close Button */}
-          <div className="flex items-center justify-between pb-6 border-b border-gray-100">
-            <img
-              src={logoBlack}
-              alt="Dallol Consult"
-              className="h-7 w-auto object-contain"
-            />
-            <button
-              onClick={closeMenu}
-              aria-label="Close Menu"
-              className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-            >
-              <X size={32} className="text-black" />
-            </button>
-          </div>
+        {/* Spacer for header height so menu content flows cleanly underneath fixed header */}
+        <div className="w-full h-16 sm:h-20 flex-shrink-0" aria-hidden="true" />
 
-          {/* Nav Links in Drawer */}
-          <ul className="flex flex-col space-y-6 mt-10">
+        {/* Center Navigation Links (Big Font & Centered) */}
+        <div
+          className={`flex-1 flex flex-col items-center justify-center px-6 py-6 transition-all duration-500 delay-100 ${
+            isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <nav className="flex flex-col items-center justify-center space-y-6 sm:space-y-8 text-center">
             {navLinks.map((item) => (
-              <li key={item.name}>
-                <NavLink
-                  to={item.path}
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `text-2xl font-medium tracking-wide uppercase transition-colors ${
-                      isActive
-                        ? "text-[#FF4C1D] font-bold"
-                        : "text-black hover:text-[#FF4C1D]"
-                    }`
-                  }
-                >
-                  {item.name}
-                </NavLink>
-              </li>
+              <NavLink
+                key={item.name}
+                to={item.path}
+                onClick={closeMenu}
+                className={({ isActive }) =>
+                  `text-2xl sm:text-3xl md:text-4xl font-semibold uppercase tracking-[0.12em] transition-all duration-300 relative py-1 ${
+                    isActive
+                      ? "text-[#FF4C1D] scale-105"
+                      : "text-black hover:text-[#FF4C1D] active:scale-95"
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <span className="inline-flex items-center gap-2">
+                    {item.name}
+                    {isActive && (
+                      <span className="w-2 h-2 rounded-full bg-[#FF4C1D] inline-block" />
+                    )}
+                  </span>
+                )}
+              </NavLink>
             ))}
-          </ul>
+          </nav>
         </div>
 
-        {/* Footer in Drawer with Social Links */}
-        <div className="pt-6 border-t border-gray-100">
-          <p className="text-xs uppercase tracking-widest text-gray-500 mb-4">
+        {/* Bottom Center Social Media Icons */}
+        <div
+          className={`pb-8 sm:pb-10 pt-4 flex flex-col items-center justify-center flex-shrink-0 transition-all duration-500 delay-150 ${
+            isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <p className="text-[11px] uppercase tracking-[0.24em] text-neutral-500 mb-4 font-medium text-center">
             Follow Us
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center justify-center gap-5 sm:gap-6">
             {socialLinks.map((social) => (
               <a
                 key={social.name}
@@ -267,7 +342,7 @@ const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.name}
-                className="p-2 rounded-full bg-gray-100 hover:bg-[#FF4C1D]/15 transition-colors"
+                className="p-3 rounded-full bg-black/5 hover:bg-[#FF4C1D]/15 active:scale-90 transition-all duration-200 flex items-center justify-center"
               >
                 <img
                   src={social.blackIcon}

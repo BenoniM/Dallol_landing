@@ -218,7 +218,7 @@ const OurHappyClients = () => {
             ))}
           </div>
 
-          {/* Center Box: Quote on top-left, Name on bottom-right using ProjectsSection ticker */}
+          {/* Center Box: Quote on top-left, Name + nav buttons on bottom */}
           <div className="flex-1 min-w-0 bg-white border border-neutral-200/80 rounded-none p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between min-h-[260px] md:min-h-0 overflow-hidden relative">
             {/* Top Left: What they said */}
             <div className="relative w-full h-[140px] sm:h-[160px] md:h-[180px] lg:h-[200px] overflow-hidden">
@@ -242,34 +242,55 @@ const OurHappyClients = () => {
               ))}
             </div>
 
-            {/* Bottom Right: Person's name */}
-            <div className="relative self-end text-right h-[60px] w-full max-w-xs overflow-hidden mt-6">
-              {SEQUENCE.map((item, k) => (
-                <div
-                  key={`client-name-${k}-${item.id}`}
-                  ref={(el) => {
-                    namesRef.current[k] = el;
-                  }}
-                  className="absolute inset-0 flex flex-col justify-center items-end"
-                  style={{
-                    transform: `translate3d(0, ${k * 100}%, 0)`,
-                    opacity: k === 0 ? 1 : 0,
-                    visibility: k === 0 ? "visible" : "hidden",
-                  }}
+            {/* Bottom: name on the right, nav buttons on the left (mobile only) */}
+            <div className="flex items-end justify-between mt-6 gap-4">
+              {/* Mobile-only nav buttons — bottom-left, bluish bg, white arrows */}
+              <div className="flex items-center gap-2 md:hidden">
+                <button
+                  onClick={handlePrev}
+                  aria-label="Previous client"
+                  className="w-9 h-9 bg-[#01263D] text-white flex items-center justify-center rounded-sm hover:bg-[#01344f] transition-colors duration-200 cursor-pointer active:scale-95 shadow"
                 >
-                  <h3 className="font-montserrat text-lg sm:text-xl md:text-2xl font-semibold text-neutral-900 leading-tight">
-                    {item.name}
-                  </h3>
-                  <p className="font-montserrat text-xs uppercase tracking-widest text-neutral-500 mt-1 leading-tight">
-                    {item.role}
-                  </p>
-                </div>
-              ))}
+                  <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  aria-label="Next client"
+                  className="w-9 h-9 bg-[#01263D] text-white flex items-center justify-center rounded-sm hover:bg-[#01344f] transition-colors duration-200 cursor-pointer active:scale-95 shadow"
+                >
+                  <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                </button>
+              </div>
+
+              {/* Person's name — right-aligned */}
+              <div className="relative text-right h-[60px] w-full max-w-xs overflow-hidden">
+                {SEQUENCE.map((item, k) => (
+                  <div
+                    key={`client-name-${k}-${item.id}`}
+                    ref={(el) => {
+                      namesRef.current[k] = el;
+                    }}
+                    className="absolute inset-0 flex flex-col justify-center items-end"
+                    style={{
+                      transform: `translate3d(0, ${k * 100}%, 0)`,
+                      opacity: k === 0 ? 1 : 0,
+                      visibility: k === 0 ? "visible" : "hidden",
+                    }}
+                  >
+                    <h3 className="font-montserrat text-lg sm:text-xl md:text-2xl font-semibold text-neutral-900 leading-tight">
+                      {item.name}
+                    </h3>
+                    <p className="font-montserrat text-xs uppercase tracking-widest text-neutral-500 mt-1 leading-tight">
+                      {item.role}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Right Box: #01263D Background (Square) with Chevron Navigation Buttons */}
-          <div className="w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-[#01263D] flex items-center justify-center rounded-none border-0 py-8 md:py-0">
+          {/* Right Box: hidden on mobile, visible on md+ */}
+          <div className="hidden md:flex w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-[#01263D] items-center justify-center rounded-none border-0 py-8 md:py-0">
             <div className="flex items-center gap-3 sm:gap-4">
               <button
                 onClick={handlePrev}

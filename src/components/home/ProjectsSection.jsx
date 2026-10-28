@@ -154,15 +154,17 @@ const ProjectsSection = () => {
     // Styles not applied yet (e.g. CSS still loading) - wait for the observer.
     if (!cardW) return;
     const isMobile = windowWidth < 640;
-    const gap = cardW * (isMobile ? 0.1 : 0.2);
+    const gap = cardW * (isMobile ? 0.08 : 0.2);
     const stripW = cardW / STRIPS;
 
     // Curved path: z = -c * s^2 (s = distance along the row). With the
     // perspective below, cards stay front-facing until s = sqrt(p / c), which
     // projects well past the screen edge, so they curve off-screen.
-    const p = windowWidth;
-    const sMax = windowWidth * 1.3;
-    const c = p / (sMax * sMax);
+    // On mobile, ease on the curves and perspective for a smoother, elegant bend
+    const p = isMobile ? Math.max(windowWidth * 2.2, 800) : windowWidth;
+    const sMax = windowWidth * (isMobile ? 1.4 : 1.3);
+    const cBase = windowWidth / (sMax * sMax);
+    const c = isMobile ? cBase * 0.58 : p / (sMax * sMax);
     if (columnRef.current) {
       columnRef.current.querySelector("[data-stage]").style.perspective = `${p}px`;
     }
@@ -196,9 +198,15 @@ const ProjectsSection = () => {
     if (titleWrapRef.current && descRef.current) {
       descTop = titleWrapRef.current.offsetTop + descRef.current.offsetTop;
       const descBottom = descTop + descRef.current.offsetHeight;
-      const targetTop = isMobile ? 72 : windowWidth < 1024 ? 88 : 104;
-      startTy = Math.max(0, targetTop - descTop);
-      endTy = -Math.max(0, descBottom + 16);
+      if (isMobile) {
+        // On mobile, keep the title and images centered at rest (endTy = 0)
+        startTy = 90;
+        endTy = 0;
+      } else {
+        const targetTop = windowWidth < 1024 ? 88 : 104;
+        startTy = Math.max(0, targetTop - descTop);
+        endTy = -Math.max(0, descBottom + 16);
+      }
     }
 
     // Group description words into their rendered lines (credit-roll rows)
@@ -255,6 +263,20 @@ const ProjectsSection = () => {
         word.style.transform = `translate3d(0, ${(-lift).toFixed(1)}px, 0)`;
       });
     });
+
+    if (descRef.current) {
+      const isMobile = window.innerWidth < 640;
+      if (isMobile) {
+        const fade = clamp01(
+          1 - introScrolled / (introDist > 0 ? introDist * 0.85 : 1)
+        );
+        descRef.current.style.opacity = fade.toFixed(3);
+        descRef.current.style.pointerEvents = fade > 0.1 ? "auto" : "none";
+      } else {
+        descRef.current.style.opacity = "1";
+        descRef.current.style.pointerEvents = "auto";
+      }
+    }
 
     // Rotation starts before the section pins (cards still lower on screen)
     // and runs to the end, so the first card curves in while the text rises.
@@ -435,17 +457,17 @@ const ProjectsSection = () => {
         {/* Scroll-driven column: starts pushed down, rises during the intro */}
         <div
           ref={columnRef}
-          className="absolute inset-0 flex flex-col justify-start pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-24 lg:pb-28 will-change-transform z-10"
+          className="absolute inset-0 flex flex-col justify-center sm:justify-start pt-0 sm:pt-32 lg:pt-36 pb-0 sm:pb-24 lg:pb-28 will-change-transform z-10"
         >
           {/* Projects Title (description is anchored above it) */}
           <div
             ref={titleWrapRef}
-            className="relative z-30 w-full flex flex-col items-center justify-center text-center -mb-5 sm:-mb-7 md:-mb-9 lg:-mb-11 pointer-events-auto"
+            className="relative z-30 w-full flex flex-col items-center justify-center text-center mb-3 sm:-mb-7 md:-mb-9 lg:-mb-11 pointer-events-auto"
           >
             {/* Top Description Text: rolls up like credits during the intro */}
             <div
               ref={descRef}
-              className="absolute bottom-full left-0 w-full flex flex-col items-center px-6 mb-12 sm:mb-16 md:mb-20 lg:mb-24"
+              className="absolute bottom-full left-0 w-full flex flex-col items-center px-6 mb-8 sm:mb-16 md:mb-20 lg:mb-24"
             >
               <p className="relative font-montserrat text-xs sm:text-sm md:text-base text-neutral-600 max-w-2xl mx-auto text-center leading-relaxed font-normal select-text">
                 {DESCRIPTION_WORDS.map((word, i) => (
@@ -464,13 +486,13 @@ const ProjectsSection = () => {
               </p>
             </div>
 
-            <h2 className="font-montserrat font-medium text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-widest text-neutral-900 uppercase select-text drop-shadow-sm -translate-y-6 sm:-translate-y-4 md:-translate-y-2 lg:translate-y-0 xl:translate-y-[4px]">
+            <h2 className="font-montserrat font-medium text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-widest text-neutral-900 uppercase select-text drop-shadow-sm translate-y-0 sm:-translate-y-4 md:-translate-y-2 lg:translate-y-0 xl:translate-y-[4px]">
               Projects
             </h2>
           </div>
 
           {/* 3D Curved Stage */}
-          <div className="relative z-10 w-full flex-1 flex items-center justify-center">
+          <div className="relative z-10 w-full flex-none sm:flex-1 h-[62vw] sm:h-full flex items-center justify-center">
             <div
               data-stage
               className="relative w-full h-full flex items-center justify-center"
@@ -485,7 +507,7 @@ const ProjectsSection = () => {
                   ref={(el) => {
                     cardsRef.current[project.id - 1] = el;
                   }}
-                  className="absolute top-[75%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[84vw] sm:w-[500px] md:w-[570px] lg:w-[630px] xl:w-[680px] h-[50vw] sm:h-[260px] md:h-[300px] lg:h-[330px] xl:h-[360px] group cursor-pointer"
+                  className="absolute top-1/2 sm:top-[75%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92vw] sm:w-[500px] md:w-[570px] lg:w-[630px] xl:w-[680px] h-[58vw] sm:h-[260px] md:h-[300px] lg:h-[330px] xl:h-[360px] group cursor-pointer"
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   {Array.from({ length: STRIPS }).map((_, j) => (

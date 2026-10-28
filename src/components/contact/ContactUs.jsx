@@ -82,7 +82,6 @@ const ContactUs = () => {
 
   return (
     <article
-      id="Hero-section"
       className="py-0 mt-7 sm:mt-0 font-montserrat flex flex-col items-center overflow-hidden "
       style={{
         // backgroundImage: `url(${BG})`,
