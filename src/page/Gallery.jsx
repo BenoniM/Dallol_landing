@@ -8,7 +8,9 @@ const Gallery = () => {
     <>
       <Navbar />
       <Hero />
-      <CardGallery />
+      <main className="bg-white relative z-20">
+        <CardGallery />
+      </main>
     </>
   );
 };

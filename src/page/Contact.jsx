@@ -8,7 +8,9 @@ const Contact = () => {
     <>
       <Navbar />
       <Hero />
-      <ContactUs />
+      <main className="bg-white relative z-20">
+        <ContactUs />
+      </main>
     </>
   );
 };

@@ -9,8 +9,10 @@ const Project = () => {
     <>
       <Navbar />
       <Hero />
-      <BlogPost />
-      <OurHappyClients />
+      <main className="bg-white relative z-20">
+        <BlogPost />
+        <OurHappyClients />
+      </main>
     </>
   );
 };

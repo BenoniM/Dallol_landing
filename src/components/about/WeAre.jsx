@@ -3,55 +3,58 @@ import img from "../../assets/img/weareabout.png";
 
 const WeAre = () => {
   return (
-    <article className="flex flex-col lg:flex-row justify-between items-center  lg:items-start  w-full">
-      {/* Image Section */}
-      <section className="w-full lg:w-[45%] mb-8 lg:mb-0 lg:p-5 p-3">
-        <img
-          src={img}
-          alt="We are Dallol"
-          className="w-full h-auto object-cover"
-        />
-      </section>
+    <section className="w-full bg-white py-6 sm:py-8 lg:py-10 font-montserrat">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-center">
+          {/* Centered Image Section - Sharp corners, no border radius */}
+          <div className="w-full lg:col-span-6 flex items-center justify-center">
+            <div className="w-full max-w-[460px] lg:max-w-[480px]">
+              <img
+                src={img}
+                alt="We are Dallol"
+                className="w-full aspect-square object-cover rounded-none shadow-none block"
+              />
+            </div>
+          </div>
 
-      {/* Text Section */}
-      <section className="w-full lg:w-1/2 lg:pr-20 text-start lg:text-left ">
-        <h1 className="text-3xl lg:p-0 p-3 lg:text-5xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[30%] pb-5 after:bg-primary lg:after:left-[20%] after:left-[6%]  after:top-full lg:after:-translate-y-0 after:-translate-y-4">
-          We are Dallol
-        </h1>
-        <p className="mt-6 lg:mt-10 text-lg text-justify leading-relaxed lg:p-0 p-4">
-          At Dallol Design Build, we believe that great design starts with
-          understanding. Our mission is to craft spaces that resonate with our
-          clients’ visions while being grounded in the needs of the local
-          community. With a team of skilled architects, engineers, and project
-          managers, we are dedicated to delivering not just buildings, but
-          enduring relationships built on trust, quality, and collaboration.
-        </p>
+          {/* Text Section - Roomy whitespace, clean simplicity, small font size without backgrounds */}
+          <div className="w-full lg:col-span-6 flex flex-col justify-center">
+            <div className="max-w-xl space-y-6 sm:space-y-7 text-neutral-600 text-sm sm:text-[14.5px] leading-relaxed sm:leading-[1.8] font-normal">
+              <h2 className="text-2xl sm:text-3xl font-light text-neutral-900 tracking-tight">
+                We are Dallol
+              </h2>
 
-        <div className="text-white bg-primary p-2 border rounded-lg mt-8 lg:mt-10 space-y-8">
-          <h1 className="font-semibold text-2xl leading-4 lg:hidden pt-5 ">
-            <h1 className="flex flex-col space-y-0">
-              DESIGN <h1 className="pb-2">__</h1>
-            </h1>
-            <h1 className="flex flex-col pt-2">
-              BUILD <h1 className="pb-2">__</h1>
-            </h1>
-            <h1 className="flex flex-col pt-2">INNOVATE</h1>
-          </h1>
-          <h1 className="font-semibold text-xl lg:text-2xl leading-loose lg:flex hidden ">
-            DESIGN | BUILD | INNOVATE
-          </h1>
-          <p className="lg:leading-7 text-sm lg:text-base pb-5">
-            “From architectural design and construction to asset valuation and
-            property management, we offer a full suite of services designed to
-            bring every project to life with precision and care. We pride
-            ourselves on being approachable, flexible, and client-focused,
-            ensuring that each project is a tailored journey where our clients’
-            goals are at the heart of every decision.”
-          </p>
+              <p>
+                At Dallol Design Build, we believe that great design starts with
+                understanding. Our mission is to craft spaces that resonate with
+                our clients’ visions while being grounded in the needs of the
+                local community. With a team of skilled architects, engineers,
+                and project managers, we are dedicated to delivering not just
+                buildings, but enduring relationships built on trust, quality,
+                and collaboration.
+              </p>
+
+              <div className="space-y-3 pt-1">
+                <h3 className="text-xs sm:text-[13px] font-semibold tracking-[0.2em] text-neutral-900 uppercase">
+                  DESIGN &nbsp;|&nbsp; BUILD &nbsp;|&nbsp; INNOVATE
+                </h3>
+                <p>
+                  “From architectural design and construction to asset valuation
+                  and property management, we offer a full suite of services
+                  designed to bring every project to life with precision and
+                  care. We pride ourselves on being approachable, flexible, and
+                  client-focused, ensuring that each project is a tailored
+                  journey where our clients’ goals are at the heart of every
+                  decision.”
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
-    </article>
+      </div>
+    </section>
   );
 };
 
 export default WeAre;
+

@@ -10,9 +10,11 @@ const About = () => {
     <>
       <Navbar />
       <Hero />
-      <WeAre />
-      <Mission />
-      <ExpertiseAbout />
+      <main className="bg-white relative z-20">
+        <WeAre />
+        <Mission />
+        <ExpertiseAbout />
+      </main>
     </>
   );
 };

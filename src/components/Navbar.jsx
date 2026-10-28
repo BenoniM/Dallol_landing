@@ -18,6 +18,7 @@ import tiktokWhite from "../assets/icon/whitetiktok.svg";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
+  const [isOverDarkSection, setIsOverDarkSection] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const prevScrollY = useRef(0);
   const location = useLocation();
@@ -117,7 +118,16 @@ const Navbar = () => {
         const rect = heroElement.getBoundingClientRect();
         setIsPastHero(rect.bottom <= 80);
       } else {
-        setIsPastHero(true);
+        setIsPastHero(currentScrollY > 80);
+      }
+
+      // 2b. Detect if navbar is overlapping the mission/vision/values dark section
+      const missionEl = document.getElementById("mission-section");
+      if (missionEl) {
+        const mRect = missionEl.getBoundingClientRect();
+        setIsOverDarkSection(mRect.top <= 80 && mRect.bottom > 0);
+      } else {
+        setIsOverDarkSection(false);
       }
 
       // 2. Hide on scroll down, show on scroll up behavior
@@ -138,10 +148,14 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
     handleScroll();
+    const rafId = requestAnimationFrame(handleScroll);
+    const timeoutId = setTimeout(handleScroll, 60);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
+      cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
     };
   }, [location.pathname, isOpen]);
 
@@ -160,7 +174,7 @@ const Navbar = () => {
             ? {
                 background: "transparent",
               }
-            : isPastHero
+            : isPastHero && !isOverDarkSection
             ? {
                 background:
                   "linear-gradient(180deg, rgba(255, 76, 29, 0.09) 0%, rgba(255, 76, 29, 0.05) 100%)",
@@ -181,7 +195,7 @@ const Navbar = () => {
               className="inline-block transition-transform duration-200 hover:opacity-90"
             >
               <img
-                src={isOpen || isPastHero ? logoBlack : logoWhite}
+                src={isOpen || (isPastHero && !isOverDarkSection) ? logoBlack : logoWhite}
                 alt="Dallol Consult"
                 className="h-10 sm:h-11 md:h-11 lg:h-11 xl:h-12 w-auto object-contain transition-all duration-300"
               />
@@ -196,7 +210,7 @@ const Navbar = () => {
                 to={item.path}
                 className={({ isActive }) =>
                   `text-xs xl:text-[13px] uppercase tracking-[0.16em] font-medium transition-colors duration-200 ${
-                    isPastHero
+                    isPastHero && !isOverDarkSection
                       ? isActive
                         ? "text-[#FF4C1D] font-bold"
                         : "text-black hover:text-[#FF4C1D]"
@@ -223,11 +237,11 @@ const Navbar = () => {
                   rel="noopener noreferrer"
                   aria-label={social.name}
                   className={`p-1.5 rounded-full transition-all duration-200 hover:scale-115 flex items-center justify-center ${
-                    isPastHero ? "hover:bg-[#FF4C1D]/10" : "hover:bg-white/10"
+                    isPastHero && !isOverDarkSection ? "hover:bg-[#FF4C1D]/10" : "hover:bg-white/10"
                   }`}
                 >
                   <img
-                    src={isPastHero ? social.blackIcon : social.whiteIcon}
+                    src={isPastHero && !isOverDarkSection ? social.blackIcon : social.whiteIcon}
                     alt={social.name}
                     className="w-5 h-5 object-contain transition-opacity duration-200"
                   />
@@ -247,7 +261,7 @@ const Navbar = () => {
                 {/* Line 1: Top bar in hamburger, rotates 45deg to form diagonal of X */}
                 <span
                   className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
-                    isOpen || isPastHero ? "bg-black" : "bg-white"
+                    isOpen || (isPastHero && !isOverDarkSection) ? "bg-black" : "bg-white"
                   } ${
                     isOpen
                       ? "translate-y-0 rotate-45"
@@ -257,7 +271,7 @@ const Navbar = () => {
                 {/* Line 2: Bottom bar in hamburger, rotates -45deg to form diagonal of X */}
                 <span
                   className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
-                    isOpen || isPastHero ? "bg-black" : "bg-white"
+                    isOpen || (isPastHero && !isOverDarkSection) ? "bg-black" : "bg-white"
                   } ${
                     isOpen
                       ? "translate-y-0 -rotate-45"

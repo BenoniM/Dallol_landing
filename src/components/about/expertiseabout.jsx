@@ -37,7 +37,7 @@ const images = [
 const ExpertiseAbout = () => {
   return (
     <article
-      className="min-h-screen flex flex-col items-center justify-center py-10"
+      className="min-h-screen flex flex-col items-center justify-center py-10 relative z-40 bg-white shadow-[0_-12px_35px_rgba(0,0,0,0.25)]"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
