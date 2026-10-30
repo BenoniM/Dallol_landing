@@ -5,8 +5,10 @@ import lidiyares from "../../assets/img/lidiyares.png";
 import hotel1 from "../../assets/img/hotel1.png";
 import hotel2 from "../../assets/img/hotel2.png";
 import hotel3 from "../../assets/img/hotel3.png";
-import Nabbar2 from "../Nabbar2";
-import { useState } from "react";
+import Navbar from "../Navbar";
+import ExploreProjects from "./ExploreProjects";
+import ParallaxImage from "./ParallaxImage";
+import { useState, useEffect } from "react";
 
 const images = [
   {
@@ -46,20 +48,11 @@ const images = [
 const image = [hotel1, hotel2, hotel3];
 
 const HotelMall = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 2 ? 0 : prevIndex + 1
-    );
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 2 : prevIndex - 1
-    );
-  };
 
   const handleNextnew = () => {
     setCurrentSlide((prev) => (prev === image.length - 1 ? 0 : prev + 1));
@@ -74,50 +67,149 @@ const HotelMall = () => {
   };
 
   return (
-    <article>
-      <Nabbar2 />
+    <article className="w-full bg-white font-montserrat text-black">
+      <Navbar forceDark={true} />
       {/* Hero Section */}
-      <div className="flex items-center justify-center">
-        <div
-          style={{ backgroundImage: `url(${bloghero})` }}
-          className="h-[300px] md:h-[450px] bg-cover bg-center flex flex-col items-center justify-center rounded-3xl max-w-[98%] mx-auto"
-        >
-          <h1 className="text-4xl md:text-8xl font-bold text-white text-center">
-            Yeshowa Birhan Hotel and Mall
-          </h1>
-          <p className="text-white w-3/4 md:w-1/2 my-2 text-center text-sm md:text-base">
-            The design shows a large, imposing hotel and business structure. The
-            front has a large central entrance, arched windows, and a
-            symmetrical layout, all of which are characteristics of classic
-            architecture. A sense of elegance and grandeur is created by the
-            building's exterior's use of warm, earthy tones.
-          </p>
+      <section
+        id="Hero-section"
+        className="w-full bg-white text-black min-h-screen lg:h-screen lg:max-h-screen overflow-hidden pt-20 sm:pt-24 lg:pt-24 pb-6 sm:pb-8 lg:pb-10 px-3 sm:px-6 md:px-8 lg:px-10 box-border flex flex-col justify-between"
+      >
+        <div className="w-full h-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-stretch min-h-0 flex-1">
+          {/* Left Column: Description on top left, Title on bottom left */}
+          <div className="flex flex-col justify-between h-full min-h-0 py-1 lg:py-2 order-2 lg:order-1">
+            {/* Top Left: Description (Decreased font size) */}
+            <div className="max-w-xl space-y-3 sm:space-y-4">
+              <p className="text-xs sm:text-sm lg:text-[14.5px] xl:text-[15px] text-neutral-700 leading-relaxed font-normal">
+                The design shows a large, imposing hotel and business structure.
+                The front has a large central entrance, arched windows, and a
+                symmetrical layout, all of which are characteristics of classic
+                architecture.
+              </p>
+              <p className="text-xs sm:text-sm lg:text-[14.5px] xl:text-[15px] text-neutral-700 leading-relaxed font-normal">
+                A sense of elegance and grandeur is created by the building's
+                exterior's use of warm, earthy tones.
+              </p>
+            </div>
+
+            {/* Bottom Left: Title (Decreased font size) */}
+            <div className="pt-4 sm:pt-6 lg:pt-8">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[54px] font-bold text-black tracking-tight leading-[1.1]">
+                Yeshowa Birhan Hotel and Mall
+              </h1>
+            </div>
+          </div>
+
+          {/* Right Column: Image on the right (No border radius) */}
+          <div className="w-full h-[280px] sm:h-[360px] lg:h-full min-h-0 order-1 lg:order-2 overflow-hidden rounded-none">
+            <ParallaxImage
+              src={bloghero}
+              alt="Yeshowa Birhan Hotel and Mall"
+              className="w-full h-full object-cover object-center rounded-none"
+            />
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Features Section */}
-      <section className="flex flex-col md:flex-row items-center p-5">
-        <div className="flex flex-col lg:items-center items-start w-full md:w-1/2 h-auto md:h-[500px] gap-10 md:gap-20 pt-10 md:pt-20 lg:border lg:border-primary">
-          <h1 className="text-4xl md:text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
+      <section className="w-full h-screen bg-white px-3 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 lg:py-12 flex flex-col items-center justify-center text-center overflow-hidden box-border">
+        <h2 className="flex flex-col items-center leading-none">
+          <span className="font-light text-neutral-500 text-2xl sm:text-3xl lg:text-4xl">
+            Key
+          </span>
+          <span className="font-normal uppercase tracking-[0.04em] text-neutral-900 text-3xl sm:text-5xl lg:text-6xl">
             Features
-          </h1>
-          <p className="w-full md:w-[66%] text-start lg:text-center md:text-left">
+          </span>
+        </h2>
+        <p className="mt-4 sm:mt-6 max-w-xl text-xs sm:text-sm leading-relaxed text-neutral-800">
+          The Hotel design, while modern and sleek, might not fully align with
+          the expectations of a typical hotel. The minimalist aesthetic, while
+          visually appealing, could potentially lack a warmer and more inviting
+          atmosphere required in hospitality spaces.
+        </p>
+        <ParallaxImage
+          src={blognew}
+          alt=""
+          className="mt-4 sm:mt-6 h-[38vh] sm:h-[42vh] lg:h-[45vh] max-w-full aspect-[5/3] object-cover"
+        />
+      </section>
+
+      {/* Function Section */}
+      <section>
+        {/* Desktop: images centred, description top right, title bottom left */}
+        <div className="hidden md:grid min-h-screen grid-cols-[1fr_auto_1fr] grid-rows-[1fr_auto] gap-x-4 lg:gap-x-6 px-3 sm:px-6 md:px-8 lg:px-10 pt-[12vh] pb-14 lg:pb-20 box-border">
+          <div className="col-start-2 row-start-1 flex gap-2 lg:gap-3 w-[46vw] lg:w-[50vw] h-[42vh] lg:h-[50vh]">
+            <ParallaxImage
+              src={hotel3}
+              alt=""
+              className="flex-1 min-w-0 h-full object-cover"
+            />
+            <ParallaxImage
+              src={hotel2}
+              alt=""
+              className="flex-1 min-w-0 h-full object-cover"
+            />
+            <ParallaxImage
+              src={hotel1}
+              alt=""
+              className="flex-1 min-w-0 h-full object-cover"
+            />
+          </div>
+          <p className="col-start-3 row-start-1 self-start max-w-[220px] text-xs lg:text-sm leading-relaxed text-neutral-800">
             The Hotel design, while modern and sleek, might not fully align with
             the expectations of a typical hotel. The minimalist aesthetic, while
             visually appealing, could potentially lack a warmer and more
             inviting atmosphere required in hospitality spaces.
           </p>
-        </div>
-        <img src={blognew} alt="" className="w-full md:w-1/2 mt-10 md:mt-0" />
-      </section>
-
-      {/* Function Section */}
-      <section>
-        <div className="flex flex-col md:flex-row items-center justify-between p-5">
-          <h1 className="text-4xl md:text-8xl font-bold relative after:content-[''] after:absolute after:h-[3px] after:w-[70%] after:bg-primary after:left-1/2 after:top-full after:translate-y-2">
+          <h2 className="col-start-1 col-span-2 row-start-2 self-end pt-6 leading-none font-normal uppercase tracking-[0.04em] text-neutral-900 text-4xl lg:text-6xl">
             Function
-          </h1>
-          <p className="w-full md:w-[55%] mt-5 md:mt-0">
+          </h2>
+          <div className="col-start-3 row-start-2 self-end w-full pt-6">
+            <h3 className="text-sm lg:text-base font-semibold text-neutral-900 mb-3">
+              Project Teams
+            </h3>
+            <ul className="grid grid-cols-[auto_1fr] gap-x-4 lg:gap-x-8 gap-y-2 text-xs xl:text-sm">
+              <li className="contents">
+                <span className="whitespace-nowrap text-neutral-500">
+                  Principal Architect
+                </span>
+                <span className="whitespace-nowrap text-neutral-900">
+                  Lorem Ipsum
+                </span>
+              </li>
+              <li className="contents">
+                <span className="whitespace-nowrap text-neutral-500">
+                  3D Visualization Specialist
+                </span>
+                <span className="whitespace-nowrap text-neutral-900">
+                  Lorem Ipsum
+                </span>
+              </li>
+              <li className="contents">
+                <span className="whitespace-nowrap text-neutral-500">
+                  Interior Design Specialist
+                </span>
+                <span className="whitespace-nowrap text-neutral-900">
+                  Lorem Ipsum
+                </span>
+              </li>
+              <li className="contents">
+                <span className="whitespace-nowrap text-neutral-500">
+                  Marketing
+                </span>
+                <span className="whitespace-nowrap text-neutral-900">
+                  Lorem Ipsum
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Mobile: title and description */}
+        <div className="md:hidden flex flex-col items-start gap-4 px-3 sm:px-6 py-10">
+          <h2 className="leading-none font-normal uppercase tracking-[0.04em] text-neutral-900 text-3xl sm:text-5xl">
+            Function
+          </h2>
+          <p className="text-xs sm:text-sm leading-relaxed text-neutral-800">
             The Hotel design, while modern and sleek, might not fully align with
             the expectations of a typical hotel. The minimalist aesthetic, while
             visually appealing, could potentially lack a warmer and more
@@ -133,17 +225,17 @@ const HotelMall = () => {
           >
             {image.map((img, index) => (
               <div key={index} className="w-full flex-shrink-0">
-                <img
+                <ParallaxImage
                   src={img}
                   alt={`Slide ${index + 1}`}
                   className="w-full h-[450px] object-cover rounded-lg p-2"
-                />
+                  />
               </div>
             ))}
           </div>
         </div>
         {/* Dots Navigation */}
-        <div className="flex lg:hidden justify-center mt-4 space-x-3">
+        <div className="flex md:hidden justify-center mt-4 space-x-3">
           {image.map((_, index) => (
             <button
               key={index}
@@ -155,15 +247,8 @@ const HotelMall = () => {
           ))}
         </div>
 
-        {/* Two Images Side by Side for Larger Screens */}
-        <div className="w-full  flex-row h-[300px] md:h-[500px] rounded-lg overflow-hidden lg:flex hidden">
-          <img src={hotel3} alt="" className="w-1/3 h-full object-cover" />
-          <img src={hotel2} alt="" className="w-1/3 h-full object-cover" />
-          <img src={hotel1} alt="" className="w-1/3 h-full object-cover" />
-        </div>
-
-        {/* Project Teams Section */}
-        <div className="flex flex-col md:flex-row items-start justify-around p-5">
+        {/* Project Teams Section (mobile; desktop version sits in the Function grid) */}
+        <div className="md:hidden flex flex-col items-start p-5">
           <h1 className="font-semibold text-2xl">Project Teams</h1>
           <ul className="mt-5 md:mt-0">
             <li>Principal Architect</li>
@@ -180,58 +265,8 @@ const HotelMall = () => {
         </div>
       </section>
 
-      {/* Carousel Section */}
-      <section className="border-t pt-14">
-        <div className="flex flex-col items-start pl-5 md:pl-10">
-          <h1 className="text-3xl md:text-5xl w-full md:w-1/3 font-semibold">
-            Explore some of our current projects
-          </h1>
-          <div className="bottom-0 items-center justify-center pt-5 transform flex space-x-4">
-            <button
-              onClick={handlePrev}
-              className="border border-primary text-primary px-4 py-2 md:px-4 md:py-3 rounded-full transition-colors duration-300 
-             hover:bg-primary hover:text-white hover:border-transparent"
-            >
-              ←
-            </button>
-            <button
-              onClick={handleNext}
-              className="border border-primary text-primary px-4 py-2 md:px-4 md:py-3 rounded-full transition-colors duration-300 
-             hover:bg-primary hover:text-white hover:border-transparent"
-            >
-              →
-            </button>
-          </div>
-        </div>
-
-        <section>
-          <div className="relative w-full overflow-x-auto scrollbar-hide mt-5 p-5 md:p-10">
-            <div
-              className="flex transition-transform duration-300 ease-in-out gap-10"
-              style={{
-                transform: `translateX(-${currentIndex * (100 / 2.2)}%)`,
-              }}
-            >
-              {images.map((image) => (
-                <div
-                  key={image.id}
-                  className="w-full md:w-1/2  min-w-[100%] md:min-w-[45%] flex flex-col items-start"
-                >
-                  <img src={image.img} alt={image.title} className="w-full " />
-                  <div className="text-start mt-5">
-                    <h1 className="font-semibold text-xl">{image.title}</h1>
-                    <h2 className="font-semibold pt-4">{image.subtitle}</h2>
-                    <p className="text-sm w-full">{image.description}</p>
-                  </div>
-                  <button className="underline underline-offset-8 pt-2">
-                    View →
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </section>
+      {/* Explore projects: scroll-driven horizontal showcase */}
+      <ExploreProjects projects={images} />
     </article>
   );
 };

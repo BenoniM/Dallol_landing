@@ -1,8 +1,5 @@
 import { ErrorMessage, Field, Formik } from "formik";
 import { useEffect } from "react";
-import office from "../../assets/icon/office.svg";
-import email from "../../assets/icon/email.svg";
-import phone from "../../assets/icon/phone.svg";
 import * as Yup from "yup";
 import Map from "./map";
 
@@ -80,140 +77,137 @@ const ContactUs = () => {
     }
   }, []);
 
+  const labelClass =
+    "block text-xs sm:text-sm font-medium tracking-[0.12em] uppercase text-[#0B2545]";
+  const inputClass =
+    "w-full bg-transparent px-4 py-3 text-base sm:text-lg text-gray-800 placeholder:text-gray-500 border-b border-gray-300 focus:outline-none focus:border-[#0B2545] transition-colors";
+
+  const fields = [
+    { name: "name", label: "Name", type: "text", placeholder: "Enter your name" },
+    { name: "email", label: "Email", type: "email", placeholder: "Enter your email address" },
+    { name: "phone", label: "Phone", type: "tel", placeholder: "Enter your phone number" },
+    { name: "subject", label: "Subject", type: "text", placeholder: "What is this about?" },
+  ];
+
   return (
-    <article
-      className="py-0 mt-7 sm:mt-0 font-montserrat flex flex-col items-center overflow-hidden "
-      style={{
-        // backgroundImage: `url(${BG})`,
-        backgroundSize: "100% 69%",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <section className="space-y-8 px-2 md:px-[10%] ">
-        <section className="flex flex-col md:flex-row items-start gap-10">
-          {/* Left Section: Contact Information */}
-          <main className="bg-secondary text-white flex flex-col items-center justify-center rounded-3xl w-full md:w-1/2 p-5 space-y-10 bg-primary">
-            <div className="flex flex-col w-full items-start">
-              <h1 className="text-xl font-light">Get in Touch</h1>
-              <p className="text-start text-3xl lg:w-full w-[88%] mb-7 mt-3 font-bold">
-                We’re Eager to Assist with Your Architectural Dreams
-              </p>
-            </div>
+    <article className="font-montserrat flex flex-col items-center overflow-hidden">
+      {/* Form Section */}
+      <section
+        id="contact-form"
+        className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-16"
+        style={{
+          backgroundImage:
+            "url(https://images.pexels.com/photos/6614757/pexels-photo-6614757.jpeg?auto=compress&cs=tinysrgb&w=1920)",
+        }}
+      >
+        <div className="w-full max-w-2xl bg-white px-6 py-10 sm:px-12 sm:py-14 shadow-2xl">
+          <h2 className="font-cormorant text-5xl sm:text-6xl leading-none tracking-tight text-black mb-10">
+            Send an Inquiry
+          </h2>
 
-            {/* Contact Details Section */}
-            <section className="grid grid-cols-2 md:grid-cols-2 gap-10 mt-5 text-sm ">
-              <div className="flex flex-col gap-2 ">
-                <div className="mb-5 f">
-                  <div className="flex flex-row items-center text-xl font-bold mb-5 gap-5">
-                    <img src={office} alt="" className="w-16 h-16" />
-                    <div className="flex flex-col items-start">
-                      <h1>Our Office</h1>
-                      <h1 className="font-light">Addis Ababa,Ethiopia</h1>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center text-xl font-bold mb-5 gap-5">
-                    <img src={email} alt="" className="w-16 h-16" />
-                    <div className="flex flex-col items-start">
-                      <h1>Contact Email</h1>
-                      <h1 className="font-light">info@dallolconsult.com</h1>
-                    </div>
-                  </div>
-                  <div className="flex flex-row items-center text-xl font-bold mb-5 gap-5">
-                    <img src={phone} alt="" className="w-16 h-16" />
-                    <div className="flex flex-col items-start">
-                      <h1>Phone Number</h1>
-                      <h1 className="font-light">+251911606260</h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </main>
-
-          {/* Right Section: Form */}
-          <div className="w-full md:w-1/2 rounded-2xl p-2">
-            <Formik
-              initialValues={form}
-              validationSchema={ContactSchema}
-              onSubmit={onSubmit} // This will now properly handle form submission
-            >
-              {({ handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
-                  <div className="space-y-8">
-                    <div className="flex flex-row items-center justify-center gap-3">
-                      <div className="flex flex-col w-full">
-                        <Field
-                          type="text"
-                          name="name"
-                          placeholder="First Name"
-                          className="w-full p-2 border-b-[1px] border-black focus:outline-none "
-                        />
-
-                        <ErrorMessage
-                          name="name"
-                          component="div"
-                          className="text-red-500"
-                        />
-                      </div>
-                      <div className="flex flex-col w-full">
-                        <Field
-                          type="text"
-                          name="name"
-                          placeholder="Last Name"
-                          className="w-full p-2 border-b-[1px] border-black focus:outline-none "
-                          required
-                        />
-                        <ErrorMessage
-                          name="name"
-                          component="div"
-                          className="text-red-500"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row items-center justify-center gap-3">
-                      <Field
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        className="w-full p-2 border-b-[1px] border-black focus:outline-none "
-                        required
-                      />
-                      <Field
-                        type="phone"
-                        name="phone"
-                        placeholder="Phone"
-                        className="w-full p-2 border-b-[1px] border-black focus:outline-none "
-                        required
-                      />
-                    </div>
-
+          <Formik
+            initialValues={form}
+            validationSchema={ContactSchema}
+            onSubmit={onSubmit}
+          >
+            {({ handleSubmit, isSubmitting }) => (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {fields.map((f) => (
+                  <div key={f.name}>
+                    <label htmlFor={f.name} className={labelClass}>
+                      {f.label}
+                    </label>
                     <Field
-                      as="textarea"
-                      name="body"
-                      placeholder="Message"
-                      rows="3"
-                      className="w-full p-2 border-b-[1px] border-black focus:outline-none "
-                      required
+                      id={f.name}
+                      type={f.type}
+                      name={f.name}
+                      placeholder={f.placeholder}
+                      className={inputClass}
                     />
-                    <button
-                      type="submit"
-                      className="w-1/2 py-2 bg-primary text-white rounded-lg mt-4 hover:bg-secondary transition duration-300"
-                    >
-                      Send Your Inquiry
-                    </button>
+                    <ErrorMessage
+                      name={f.name}
+                      component="div"
+                      className="text-red-500 text-sm mt-1"
+                    />
                   </div>
-                </form>
-              )}
-            </Formik>
-          </div>
-        </section>
+                ))}
+
+                <div>
+                  <label htmlFor="body" className={labelClass}>
+                    Message
+                  </label>
+                  <Field
+                    id="body"
+                    as="textarea"
+                    name="body"
+                    rows="3"
+                    placeholder="Tell us about your project"
+                    className={`${inputClass} resize-none`}
+                  />
+                  <ErrorMessage
+                    name="body"
+                    component="div"
+                    className="text-red-500 text-sm mt-1"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="mt-4 rounded-full bg-[#FF4C1D] px-8 py-3 text-lg font-medium text-white transition hover:brightness-110 disabled:opacity-60"
+                >
+                  {isSubmitting ? "Sending..." : "Send"}
+                </button>
+              </form>
+            )}
+          </Formik>
+        </div>
       </section>
 
       {/* Map Section */}
-      <div className="lg:w-full w-[93%] h-auto mt-32 mb-12  overflow-hidden object-cover ">
-        <Map />
-      </div>
+      <section className="w-full bg-white text-[#01263D] px-3 sm:px-6 md:px-8 lg:px-10 py-10 md:py-14">
+        <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight mb-6 md:mb-8">
+          Based in Addis Ababa, <span className="text-[#FF4C1D]">Ethiopia</span>
+        </h2>
+
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+          <div className="flex-1 border border-[#01263D]/20 overflow-hidden">
+            <Map />
+          </div>
+
+          <aside className="lg:w-72 space-y-6">
+            {[
+              { title: "Head Office", lines: ["Addis Ababa", "Ethiopia"] },
+              {
+                title: "Email",
+                lines: ["info@dallolconsult.com"],
+                href: "mailto:info@dallolconsult.com",
+              },
+              {
+                title: "Phone",
+                lines: ["+251 911 606 260"],
+                href: "tel:+251911606260",
+              },
+            ].map((item) => (
+              <div key={item.title}>
+                <h3 className={labelClass}>{item.title}</h3>
+                <div className="mt-3 text-base sm:text-lg text-gray-700 leading-snug">
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      className="hover:text-[#FF4C1D] transition-colors break-all"
+                    >
+                      {item.lines[0]}
+                    </a>
+                  ) : (
+                    item.lines.map((line) => <p key={line}>{line}</p>)
+                  )}
+                </div>
+              </div>
+            ))}
+          </aside>
+        </div>
+      </section>
     </article>
   );
 };

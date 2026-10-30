@@ -1,113 +1,170 @@
-import { useState } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import blognew from "../../assets/img/bolgnew.png";
 import school from "../../assets/img/schoolnew.png";
 import henok from "../../assets/img/featurehenok.png";
 import yesh from "../../assets/img/yesh.png";
-import { useNavigate } from "react-router-dom";
 
 const blogPosts = [
   {
-    category: "Hotel",
     title: "Tranzit Hotel",
     content:
-      "Villa Alpha, the studio and residence of the most renowned Ethiopian artist, Afewerk Tekle, built in the 1960s, is residential establishment with a sizable portion of the artist's priceless works created over the course of his lifeti..",
-    author: "John Doe",
+      "Villa Alpha, the studio and residence of the renowned Ethiopian artist Afewerk Tekle, built in the 1960s, is a celebrated establishment holding a sizable portion of the artist's priceless works. Dallol Consult reimagined this landmark into a world-class hospitality experience blending cultural heritage with contemporary architectural rigor.",
     link: "/blogdetails",
     img: blognew,
   },
   {
-    category: "Hotel",
-    title: "Yeshowa Birhan Hotel and Mall",
+    title: "Yeshowa Birhan Hotel & Mall",
     content:
-      "The design shows a large, imposing hotel and business structure. The front has a large central entrance, arched windows, and a symmetrical layout, all of which are characteristics of classic architecture. A sense of elegance and grandeur is created by the building's exterior's use of warm, earthy tones.",
-    author: "Sarah Smith",
+      "A monumental civic landmark uniting high-end retail, fine dining, and grand hospitality. The facade features a prominent central entrance, arched windows, and a balanced symmetrical layout, all anchored in classic architectural elegance with warm, earthy tones.",
     link: "/hotelmall",
     img: yesh,
   },
   {
-    category: "School",
     title: "School of Tomorrow",
     content:
-      "This School design depicts a modern school building with a bold, contemporary aesthetic. The facade features a vibrant combination of colors, primarily white with accents of blue, yellow, and red, creating a dynamic visual appeal...",
-    author: "Mike Johnson",
+      "A forward-thinking educational campus designed with a bold, contemporary aesthetic. The dynamic facade combines clean white geometries with vibrant accents of blue, yellow, and red—fostering dynamic learning environments and collaborative spaces.",
     link: "/schooldetails",
     img: school,
   },
   {
-    category: "Residence",
-    title: "Henok T. Residence B+G+2+T Residence Building",
+    title: "Henok T. Residence",
     content:
-      "The design is focused in presenting a modern and stylish design. The contrasting use of dark brick and white plaster creates a visually interesting facade. The vertical lines formed by the windows and balconies add a sense of height and elegance...",
-    author: "Emily Davis",
+      "A sophisticated B+G+2+T residential sanctuary defined by clean modern lines. The contrasting interplay between textured dark brick and smooth white surfaces creates an expressive facade, complemented by rhythmic vertical apertures and floating balconies.",
     link: "/henok-t-residence",
     img: henok,
   },
 ];
 
 const BlogPost = () => {
-  const [activeTab, setActiveTab] = useState("All Projects");
   const navigate = useNavigate();
+  const sectionRefs = useRef([]);
+  const imageRefs = useRef([]);
 
   const handleReadMore = (link) => {
+    window.scrollTo(0, 0);
     navigate(link);
   };
 
-  const filteredBlogs =
-    activeTab === "All Projects"
-      ? blogPosts
-      : blogPosts.filter((post) => post.category === activeTab);
+  // Parallax scroll calculation for project images
+  const handleScroll = useCallback(() => {
+    const windowHeight = window.innerHeight;
+
+    sectionRefs.current.forEach((section, index) => {
+      const img = imageRefs.current[index];
+      if (!section || !img) return;
+
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom > -100 && rect.top < windowHeight + 100) {
+        const sectionCenter = rect.top + rect.height / 2;
+        const viewportCenter = windowHeight / 2;
+        const progress = (sectionCenter - viewportCenter) / windowHeight;
+        // Balanced parallax travel for lengthened image frames
+        const translateY = progress * 55;
+        img.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(1.16)`;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    let animationFrameId;
+
+    const onScroll = () => {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    onScroll();
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [handleScroll]);
 
   return (
-    <article className="relative min-h-screen lg:p-10 pt-10 p-5">
-      {/* Dropdown Filter */}
-      <div className="lg:top-5 lg:pb-0 pb-10">
-        <select
-          value={activeTab}
-          onChange={(e) => setActiveTab(e.target.value)}
-          className="px-4 py-2 border rounded-lg bg-white text-black font-semibold"
-        >
-          {["All Projects", "Hotel", "School", "Residence"].map((tab) => (
-            <option key={tab} value={tab}>
-              {tab}
-            </option>
-          ))}
-        </select>
-      </div>
+    <article className="w-full font-montserrat">
+      {/* Projects List with Alternating #01263D and White backgrounds */}
+      <div className="w-full">
+        {blogPosts.map((project, index) => {
+          const isDark = index % 2 === 0;
 
-      <section className="lg:p-10">
-        {filteredBlogs.length > 0 ? (
-          filteredBlogs.map((blog, index) => (
-            <div
-              key={blog.title}
-              className={`flex flex-col md:flex-row items-center gap-10 mb-10 pb-5 ${
-                index % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
+          return (
+            <section
+              key={project.title}
+              ref={(el) => {
+                sectionRefs.current[index] = el;
+              }}
+              className={`w-full py-12 sm:py-16 lg:py-20 xl:py-24 transition-colors duration-500 rounded-none ${
+                isDark
+                  ? "bg-[#01263D] text-white"
+                  : "bg-white text-neutral-900"
               }`}
             >
-              <img
-                src={blog.img}
-                alt="Blog"
-                className="w-full md:w-1/2 rounded-lg "
-              />
+              {/* Full stretch aligned with navbar padding px-3 sm:px-6 md:px-8 lg:px-10 */}
+              <div className="w-full px-3 sm:px-6 md:px-8 lg:px-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 xl:gap-16 items-start">
+                  {/* Left Column: Top-left text placement */}
+                  <div className="lg:col-span-5 flex flex-col items-start justify-start pt-1 font-montserrat order-2 lg:order-1">
+                    {/* Project Title */}
+                    <h2
+                      className={`font-montserrat font-bold text-2xl sm:text-3xl lg:text-[2.2rem] uppercase tracking-tight leading-[1.12] mb-4 sm:mb-5 ${
+                        isDark ? "text-white" : "text-[#01263D]"
+                      }`}
+                    >
+                      {project.title}
+                    </h2>
 
-              <div className="flex flex-col gap-5 w-full md:w-1/2">
-                <h2 className="font-semibold text-4xl">{blog.title}</h2>
-                <p>{blog.content}</p>
+                    {/* Project Description (Existing Montserrat font, clean & readable) */}
+                    <p
+                      className={`font-montserrat text-xs sm:text-sm lg:text-[14.5px] leading-relaxed sm:leading-[1.8] font-normal max-w-lg mb-6 sm:mb-8 ${
+                        isDark ? "text-neutral-300" : "text-neutral-600"
+                      }`}
+                    >
+                      {project.content}
+                    </p>
 
-                <div className="flex items-center">
-                  <button
-                    onClick={() => handleReadMore(blog.link)}
-                    className="bg-primary text-white flex items-center gap-2 px-5 py-2 rounded-full"
+                    {/* Rectangular Action Button: #FF4C1D bg, white text, no border radius */}
+                    <button
+                      onClick={() => handleReadMore(project.link)}
+                      className="bg-[#FF4C1D] text-white font-montserrat font-semibold text-xs tracking-[0.2em] uppercase px-7 py-3 sm:px-8 sm:py-3.5 transition-all duration-300 hover:bg-[#e03d10] active:scale-95 inline-flex items-center justify-center cursor-pointer rounded-none border-0"
+                    >
+                      Discover
+                    </button>
+                  </div>
+
+                  {/* Right Column: Lengthened Project Image with Parallax */}
+                  <div
+                    onClick={() => handleReadMore(project.link)}
+                    className="lg:col-span-7 w-full overflow-hidden rounded-none cursor-pointer group order-1 lg:order-2"
                   >
-                    Read More
-                  </button>
+                    <div className="relative w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px] xl:h-[490px] overflow-hidden bg-neutral-900 rounded-none shadow-sm">
+                      <img
+                        ref={(el) => {
+                          imageRefs.current[index] = el;
+                        }}
+                        src={project.img}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-center select-none will-change-transform rounded-none transition-transform duration-75 ease-out"
+                        style={{
+                          transform: "translate3d(0, 0, 0) scale(1.16)",
+                        }}
+                        loading="lazy"
+                      />
+                      {/* Subtle hover overlay */}
+                      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-none" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No blog posts available.</p>
-        )}
-      </section>
+            </section>
+          );
+        })}
+      </div>
     </article>
   );
 };

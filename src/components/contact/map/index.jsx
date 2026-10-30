@@ -1,55 +1,66 @@
-import { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import InfoWindow from "./info-window";
+
+const NAVY = "#01263D";
+const ORANGE = "#FF4C1D";
+
+const OFFICE = { name: "Dallol Consult", coords: [9.0056, 38.7891] };
 
 const Map = () => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const containerRef = useRef(null);
   const mapRef = useRef(null);
 
   useEffect(() => {
-    if (!mapRef.current) {
-      mapRef.current = L.map("map", {
-        scrollWheelZoom: false, // Disable scroll wheel zoom
-      }).setView([9.005575912620671, 38.789145827947856], 15);
+    if (mapRef.current) return;
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(mapRef.current);
-    }
-  }, []);
+    const map = L.map(containerRef.current, {
+      scrollWheelZoom: false,
+      zoomSnap: 0.5,
+    });
+    mapRef.current = map;
 
-  const customIcon = L.icon({
-    iconUrl: "/Pin.svg",
-    iconSize: [60, 60],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  });
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
 
-  useEffect(() => {
-    const marker = L.marker([9.005575912620671, 38.789145827947856], {
-      icon: customIcon,
-    }).addTo(mapRef.current);
 
-    const pharmacy = {
-      name: "Logihub",
-      distanceInKm: 1.23,
-      latitude: 9.011357127660336,
-      longitude: 38.76136003644539,
+    const marker = L.marker(OFFICE.coords, {
+      icon: L.divIcon({
+        className: "",
+        iconSize: [0, 0],
+        html: `<div style="display:flex;align-items:center;gap:8px;transform:translate(-8px,-50%);white-space:nowrap;cursor:pointer;">
+          <span style="display:block;flex:none;width:16px;height:16px;border-radius:9999px;background:${ORANGE};border:3px solid #fff;box-shadow:0 0 0 1px ${NAVY};"></span>
+          <span style="font-family:Montserrat,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${NAVY};background:#fff;padding:2px 8px;">${OFFICE.name}</span>
+        </div>`,
+      }),
+    }).addTo(map);
+
+    marker.bindPopup(
+      `<div style="font-family:Montserrat,sans-serif;color:${NAVY};">
+        <strong style="text-transform:uppercase;letter-spacing:0.08em;">Dallol Consult</strong><br/>
+        Addis Ababa, Ethiopia<br/>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=${OFFICE.coords.join(",")}"
+          target="_blank" rel="noopener noreferrer"
+          style="display:inline-block;margin-top:8px;color:${ORANGE};font-weight:700;">Get directions &rarr;</a>
+      </div>`,
+      { offset: [0, -6] }
+    );
+
+    map.setView(OFFICE.coords, 14);
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
     };
-
-    const popupContainer = document.createElement("div");
-    const root = ReactDOM.createRoot(popupContainer);
-    root.render(<InfoWindow pharmacy={pharmacy} />);
-    marker.bindPopup(popupContainer);
   }, []);
 
   return (
     <div
-      id="map"
-      style={{ height: "500px", width: "100%", position: "relative" }}
+      ref={containerRef}
+      className="h-[260px] sm:h-[300px] lg:h-[340px] w-full z-0"
     />
   );
 };

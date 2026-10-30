@@ -52,27 +52,45 @@ const CardGallery = () => {
   };
 
   return (
-    <article className="lg:p-10">
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {galleries.map((gallery) => (
+    <article className="w-full bg-white px-4 sm:px-8 lg:px-[60px] py-16 lg:py-24 font-montserrat">
+      {/* Staggered 3-column grid: first card starts at column 2, so rows read
+          [empty, card, card] / [card, card, empty] on large screens */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {galleries.map((gallery, idx) => (
           <div
             key={gallery.id}
-            className=" overflow-hidden p-5 flex flex-col items-start text-start"
+            className={`group bg-[#01263D] text-white p-5 flex flex-col md:aspect-square cursor-pointer ${
+              idx === 0 ? "lg:col-start-2" : ""
+            }`}
+            onClick={() => handleReadMore(gallery.link)}
           >
-            <img
-              src={gallery.image}
-              alt={gallery.title}
-              className="w-full h-auto object-cover rounded-lg cursor-pointer"
-              onClick={() => handleReadMore(gallery.link)}
-            />
-            <h1 className="text-xl font-semibold mt-4">{gallery.title}</h1>
-            <p className="text-gray-600 mt-2">{gallery.description}</p>
-            <button
-              onClick={() => handleReadMore(gallery.link)}
-              className="mt-4 bg-primary text-white px-5 py-2 rounded-full"
-            >
-              Read More
-            </button>
+            <div className="h-56 md:h-auto md:flex-1 min-h-0 overflow-hidden">
+              <img
+                src={gallery.image}
+                alt={gallery.title}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+
+            <h2 className="mt-6 text-2xl sm:text-3xl xl:text-[2.4rem] font-bold uppercase leading-tight tracking-tight">
+              {gallery.title}
+            </h2>
+
+            <div className="mt-4 flex items-end justify-between gap-5">
+              <p className="max-w-[65%] text-sm sm:text-[0.95rem] leading-snug text-white/80">
+                {gallery.description}
+              </p>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleReadMore(gallery.link);
+                }}
+                className="shrink-0 bg-[#FF4C1D] text-white px-5 py-1 font-mono uppercase tracking-wide text-base sm:text-lg hover:bg-white hover:text-[#01263D] transition-colors"
+              >
+                Explore 360
+              </button>
+            </div>
           </div>
         ))}
       </section>

@@ -15,13 +15,23 @@ import instagramWhite from "../assets/icon/whtieinstagram.svg";
 import linkedinWhite from "../assets/icon/whitelinkedin.svg";
 import tiktokWhite from "../assets/icon/whitetiktok.svg";
 
-const Navbar = () => {
+const Navbar = ({ forceDark = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
   const [isOverDarkSection, setIsOverDarkSection] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const prevScrollY = useRef(0);
   const location = useLocation();
+
+  const lightRoutes = [
+    "/blogdetails",
+    "/hotelmall",
+    "/schooldetails",
+    "/henok-t-residence",
+  ];
+  const isLightHero = forceDark || lightRoutes.includes(location.pathname);
+  const useDarkTheme =
+    isOpen || (!isOverDarkSection && (isLightHero || isPastHero));
 
   const closeMenu = () => setIsOpen(false);
 
@@ -121,14 +131,17 @@ const Navbar = () => {
         setIsPastHero(currentScrollY > 80);
       }
 
-      // 2b. Detect if navbar is overlapping the mission/vision/values dark section
-      const missionEl = document.getElementById("mission-section");
-      if (missionEl) {
-        const mRect = missionEl.getBoundingClientRect();
-        setIsOverDarkSection(mRect.top <= 80 && mRect.bottom > 0);
-      } else {
-        setIsOverDarkSection(false);
-      }
+      // 2b. Detect if navbar is overlapping a dark section (the
+      // mission/vision/values section, or any element marked data-nav-dark)
+      const darkEls = document.querySelectorAll(
+        "#mission-section, [data-nav-dark]"
+      );
+      setIsOverDarkSection(
+        Array.from(darkEls).some((el) => {
+          const r = el.getBoundingClientRect();
+          return r.top <= 80 && r.bottom > 80;
+        })
+      );
 
       // 2. Hide on scroll down, show on scroll up behavior
       if (currentScrollY <= 20) {
@@ -165,7 +178,7 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 w-full z-50 font-montserrat transition-all duration-300 ease-in-out ${
           isVisible || isOpen ? "translate-y-0" : "-translate-y-full"
         } ${
-          isPastHero
+          isPastHero || isLightHero
             ? "py-2.5 sm:py-3 lg:py-3.5"
             : "py-2.5 sm:py-3 lg:py-3.5 bg-transparent"
         }`}
@@ -174,10 +187,20 @@ const Navbar = () => {
             ? {
                 background: "transparent",
               }
-            : isPastHero && !isOverDarkSection
+            : isOverDarkSection
+            ? {
+                background: "transparent",
+              }
+            : isPastHero
             ? {
                 background:
                   "linear-gradient(180deg, rgba(255, 76, 29, 0.09) 0%, rgba(255, 76, 29, 0.05) 100%)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+              }
+            : isLightHero
+            ? {
+                background: "rgba(255, 255, 255, 0.8)",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
               }
@@ -187,7 +210,7 @@ const Navbar = () => {
         }
       >
         <div className="w-full flex items-center justify-between px-3 sm:px-6 md:px-8 lg:px-10">
-          {/* Left Column: White logo in Hero, Black logo past Hero or when menu is open */}
+          {/* Left Column: White logo in Hero, Black logo past Hero or when menu is open or on light hero */}
           <div className="flex-1 flex justify-start items-center">
             <NavLink
               to="/"
@@ -195,7 +218,7 @@ const Navbar = () => {
               className="inline-block transition-transform duration-200 hover:opacity-90"
             >
               <img
-                src={isOpen || (isPastHero && !isOverDarkSection) ? logoBlack : logoWhite}
+                src={useDarkTheme ? logoBlack : logoWhite}
                 alt="Dallol Consult"
                 className="h-10 sm:h-11 md:h-11 lg:h-11 xl:h-12 w-auto object-contain transition-all duration-300"
               />
@@ -204,25 +227,29 @@ const Navbar = () => {
 
           {/* Center Column: Navigation Links (Desktop) */}
           <nav className="hidden lg:flex items-center justify-center gap-7 xl:gap-10">
-            {navLinks.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.path}
-                className={({ isActive }) =>
-                  `text-xs xl:text-[13px] uppercase tracking-[0.16em] font-medium transition-colors duration-200 ${
-                    isPastHero && !isOverDarkSection
-                      ? isActive
-                        ? "text-[#FF4C1D] font-bold"
-                        : "text-black hover:text-[#FF4C1D]"
-                      : isActive
-                      ? "text-[#FFA53F] font-bold"
-                      : "text-white hover:text-[#FFA53F]"
-                  }`
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
+            {navLinks.map((item) => {
+              const isProjectActive = item.path === "/projects" && isLightHero;
+              return (
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={({ isActive }) => {
+                    const active = isActive || isProjectActive;
+                    return `text-xs xl:text-[13px] uppercase tracking-[0.16em] font-medium transition-colors duration-200 ${
+                      useDarkTheme
+                        ? active
+                          ? "text-[#FF4C1D] font-bold"
+                          : "text-black hover:text-[#FF4C1D]"
+                        : active
+                        ? "text-[#FFA53F] font-bold"
+                        : "text-white hover:text-[#FFA53F]"
+                    }`;
+                  }}
+                >
+                  {item.name}
+                </NavLink>
+              );
+            })}
           </nav>
 
           {/* Right Column: Social Media Icons (Desktop) & Mobile Two-Line Hamburger / X Button */}
@@ -237,11 +264,11 @@ const Navbar = () => {
                   rel="noopener noreferrer"
                   aria-label={social.name}
                   className={`p-1.5 rounded-full transition-all duration-200 hover:scale-115 flex items-center justify-center ${
-                    isPastHero && !isOverDarkSection ? "hover:bg-[#FF4C1D]/10" : "hover:bg-white/10"
+                    useDarkTheme ? "hover:bg-[#FF4C1D]/10" : "hover:bg-white/10"
                   }`}
                 >
                   <img
-                    src={isPastHero && !isOverDarkSection ? social.blackIcon : social.whiteIcon}
+                    src={useDarkTheme ? social.blackIcon : social.whiteIcon}
                     alt={social.name}
                     className="w-5 h-5 object-contain transition-opacity duration-200"
                   />
@@ -261,7 +288,7 @@ const Navbar = () => {
                 {/* Line 1: Top bar in hamburger, rotates 45deg to form diagonal of X */}
                 <span
                   className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
-                    isOpen || (isPastHero && !isOverDarkSection) ? "bg-black" : "bg-white"
+                    useDarkTheme ? "bg-black" : "bg-white"
                   } ${
                     isOpen
                       ? "translate-y-0 rotate-45"
@@ -271,7 +298,7 @@ const Navbar = () => {
                 {/* Line 2: Bottom bar in hamburger, rotates -45deg to form diagonal of X */}
                 <span
                   className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
-                    isOpen || (isPastHero && !isOverDarkSection) ? "bg-black" : "bg-white"
+                    useDarkTheme ? "bg-black" : "bg-white"
                   } ${
                     isOpen
                       ? "translate-y-0 -rotate-45"
