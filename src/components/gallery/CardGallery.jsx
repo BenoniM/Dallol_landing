@@ -173,6 +173,7 @@ const CardGallery = () => {
   const sizeRef = useRef({ W: 0, H: 0 });
   const imagesRef = useRef([]);
   const hitsRef = useRef([]);
+  const captionRef = useRef(null);
   const titlesRef = useRef([]);
   const descsRef = useRef([]);
   const stateRef = useRef({
@@ -190,6 +191,7 @@ const CardGallery = () => {
     moved: false,
     pressedSlot: null,
     tickerOffset: null,
+    captionInset: null,
     dirty: true,
   });
   const activeRef = useRef(0);
@@ -233,6 +235,17 @@ const CardGallery = () => {
     // its neighbours outwards, and the curve flattens out.
     const zoomW = lerp(w, W * (isMobile ? 0.9 : 0.84), t);
     const zoomH = lerp(h, H * 0.98, t);
+
+    // As the centre card stretches, the caption's side padding moves from the
+    // page gutter to the card's edges, so the title and description line up
+    // with the full-size image.
+    const gutter = W < 640 ? 16 : W < 1024 ? 32 : 60;
+    const captionInset = Math.round(lerp(gutter, (W - zoomW) / 2, t));
+    if (captionRef.current && captionInset !== st.captionInset) {
+      st.captionInset = captionInset;
+      captionRef.current.style.paddingLeft = `${captionInset}px`;
+      captionRef.current.style.paddingRight = `${captionInset}px`;
+    }
     const edge = W / 2;
     const cy = H / 2;
     const bend = isMobile ? 0.18 : 0.26; // extra height at the screen edges
@@ -630,14 +643,17 @@ const CardGallery = () => {
 
         {/* Details of the card currently in the centre: title and
             description on opposite edges, Explore 360 in the middle */}
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] md:items-center gap-3 md:gap-8 px-4 sm:px-8 lg:px-[60px] pt-4 sm:pt-5">
-          <div className="grid overflow-hidden md:justify-self-start" aria-live="polite">
+        <div
+          ref={captionRef}
+          className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] md:items-center gap-3 md:gap-8 px-4 sm:px-8 lg:px-[60px] pt-4 sm:pt-5"
+        >
+          <div className="grid overflow-hidden justify-self-center md:justify-self-start" aria-live="polite">
             {galleries.map((gallery, idx) => (
               <h2
                 key={gallery.id}
                 ref={(el) => (titlesRef.current[idx] = el)}
                 aria-hidden={idx !== active}
-                className="col-start-1 row-start-1 text-2xl sm:text-3xl xl:text-[2.4rem] font-bold leading-tight tracking-tight text-[#00040D] will-change-transform"
+                className="col-start-1 row-start-1 text-center md:text-left text-2xl sm:text-3xl xl:text-[2.4rem] font-bold leading-tight tracking-tight text-[#00040D] will-change-transform"
                 style={{
                   transform: `translate3d(0, ${idx * 100}%, 0)`,
                   opacity: idx === 0 ? 1 : 0,
@@ -651,18 +667,18 @@ const CardGallery = () => {
 
           <button
             onClick={() => handleReadMore(galleries[active].link)}
-            className="order-last md:order-none justify-self-center h-12 sm:h-14 px-8 sm:px-10 bg-[#FF4C1D] text-white font-mono uppercase tracking-wide text-base sm:text-lg hover:bg-[#00040D] transition-colors"
+            className="order-first md:order-none justify-self-center h-12 sm:h-14 px-8 sm:px-10 bg-[#FF4C1D] text-white font-mono uppercase tracking-wide text-base sm:text-lg hover:bg-[#00040D] transition-colors"
           >
             Explore 360
           </button>
 
-          <div className="grid overflow-hidden md:justify-self-end md:max-w-md lg:max-w-lg">
+          <div className="grid overflow-hidden justify-self-center md:justify-self-end md:max-w-md lg:max-w-lg">
             {galleries.map((gallery, idx) => (
               <p
                 key={gallery.id}
                 ref={(el) => (descsRef.current[idx] = el)}
                 aria-hidden={idx !== active}
-                className="col-start-1 row-start-1 text-sm sm:text-[0.95rem] leading-snug text-neutral-600 md:text-right will-change-transform"
+                className="col-start-1 row-start-1 text-sm sm:text-[0.95rem] leading-snug text-neutral-600 text-center md:text-right will-change-transform"
                 style={{
                   transform: `translate3d(0, ${idx * 100}%, 0)`,
                   opacity: idx === 0 ? 1 : 0,
