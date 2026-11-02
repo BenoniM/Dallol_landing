@@ -1,14 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import avatar1 from "../../assets/img/avatergirl.svg";
-import avatar2 from "../../assets/img/avaterman.svg";
-import avatar3 from "../../assets/img/avaterchina.svg";
+import ClientAvatar from "./ClientAvatar";
 
 const testimonials = [
   {
     id: 1,
-    img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar1,
+    avatar: { bg: "#F3EDE6", accent: "#FF4C1D", skin: "#F2C9A8", skinShade: "#D9A07C", hair: "#3B2A20", shirt: "#00040D", hairStyle: "long" },
     name: "Emily Johnson",
     role: "HOMEOWNER & INVESTOR",
     feedback:
@@ -16,8 +13,7 @@ const testimonials = [
   },
   {
     id: 2,
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar2,
+    avatar: { bg: "#E7ECEF", accent: "#FF4C1D", skin: "#C98E64", skinShade: "#A86E46", hair: "#1E1E1E", shirt: "#082D38", hairStyle: "short" },
     name: "David Miller",
     role: "COMMERCIAL DEVELOPER",
     feedback:
@@ -25,8 +21,7 @@ const testimonials = [
   },
   {
     id: 3,
-    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar3,
+    avatar: { bg: "#EDEDED", accent: "#082D38", skin: "#F5D3B5", skinShade: "#D9A887", hair: "#151515", shirt: "#FF4C1D", hairStyle: "bob" },
     name: "Laura Lee",
     role: "DIRECTOR, PROPERTY VENTURES",
     feedback:
@@ -34,8 +29,7 @@ const testimonials = [
   },
   {
     id: 4,
-    img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar2,
+    avatar: { bg: "#E9E4DC", accent: "#FF4C1D", skin: "#EBC0A0", skinShade: "#C99573", hair: "#6B4A32", shirt: "#1F2933", hairStyle: "short", beard: true },
     name: "Kirill Stan",
     role: "CEO & FOUNDER",
     feedback:
@@ -43,8 +37,7 @@ const testimonials = [
   },
   {
     id: 5,
-    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar1,
+    avatar: { bg: "#F1E8E1", accent: "#FF4C1D", skin: "#8D5B3E", skinShade: "#6A3F27", hair: "#1A1210", shirt: "#082D38", hairStyle: "bun" },
     name: "Sarah Jenkins",
     role: "HOSPITALITY PARTNER",
     feedback:
@@ -52,8 +45,7 @@ const testimonials = [
   },
   {
     id: 6,
-    img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar2,
+    avatar: { bg: "#E4E9EC", accent: "#FF4C1D", skin: "#E8C097", skinShade: "#C79870", hair: "#0F0F0F", shirt: "#00040D", hairStyle: "curly", glasses: true },
     name: "Michael Chang",
     role: "URBAN DEVELOPMENT CONSULTANT",
     feedback:
@@ -61,8 +53,7 @@ const testimonials = [
   },
   {
     id: 7,
-    img: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=800&q=80",
-    fallback: avatar3,
+    avatar: { bg: "#F0ECE6", accent: "#082D38", skin: "#F7D9C4", skinShade: "#D8AE92", hair: "#B5793F", shirt: "#5A6B73", hairStyle: "long" },
     name: "Elena Rostova",
     role: "INTERIOR DESIGN DIRECTOR",
     feedback:
@@ -81,6 +72,7 @@ const OurHappyClients = () => {
   const isBusyRef = useRef(false);
   const animIdRef = useRef(null);
 
+  const avatarBoxRef = useRef(null);
   const imageLayersRef = useRef([]);
   const quotesRef = useRef([]);
   const namesRef = useRef([]);
@@ -175,6 +167,64 @@ const OurHappyClients = () => {
     };
   }, [updateDisplay]);
 
+  // Cursor tracking for the avatars: eases --lx / --ly (look direction, -1..1)
+  // and --lh (hover, 0..1) on the avatar box; the SVG layers read them via CSS.
+  useEffect(() => {
+    const box = avatarBoxRef.current;
+    if (!box) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const clamp = (v) => Math.max(-1, Math.min(1, v));
+    const target = { x: 0, y: 0, h: 0 };
+    const current = { x: 0, y: 0, h: 0 };
+    let raf = null;
+
+    const tick = () => {
+      let moving = false;
+      for (const k of ["x", "y", "h"]) {
+        const diff = target[k] - current[k];
+        current[k] += diff * 0.1;
+        if (Math.abs(diff) > 0.001) moving = true;
+      }
+      box.style.setProperty("--lx", current.x.toFixed(4));
+      box.style.setProperty("--ly", current.y.toFixed(4));
+      box.style.setProperty("--lh", current.h.toFixed(4));
+      raf = moving ? requestAnimationFrame(tick) : null;
+    };
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    const onMove = (e) => {
+      const r = box.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height * 0.46;
+      target.x = clamp((e.clientX - cx) / (window.innerWidth * 0.45));
+      target.y = clamp((e.clientY - cy) / (window.innerHeight * 0.45));
+      target.h =
+        e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom
+          ? 1
+          : 0;
+      kick();
+    };
+    const onLeave = () => {
+      target.x = 0;
+      target.y = 0;
+      target.h = 0;
+      kick();
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <article className="w-full py-12 md:py-20 bg-white font-montserrat">
       <div className="w-full px-3 sm:px-6 md:px-8 lg:px-10">
@@ -191,8 +241,11 @@ const OurHappyClients = () => {
 
         {/* 3 Separate Boxes */}
         <div className="w-full flex flex-col md:flex-row items-stretch gap-4 sm:gap-5 lg:gap-6">
-          {/* Left Box: Client Image (Square) using ProjectsSection clipPath wipe */}
-          <div className="w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-neutral-100 overflow-hidden rounded-none border border-neutral-200/80 relative">
+          {/* Left Box: Interactive client avatar (Square) using ProjectsSection clipPath wipe */}
+          <div
+            ref={avatarBoxRef}
+            className="w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-neutral-100 overflow-hidden rounded-none border border-neutral-200/80 relative"
+          >
             {SEQUENCE.map((item, k) => (
               <div
                 key={`client-img-${k}-${item.id}`}
@@ -205,14 +258,10 @@ const OurHappyClients = () => {
                   visibility: k === 0 ? "visible" : "hidden",
                 }}
               >
-                <img
-                  src={item.img}
-                  alt={item.name}
-                  onError={(e) => {
-                    e.currentTarget.src = item.fallback;
-                  }}
-                  className="w-full h-full object-cover grayscale contrast-105 select-none"
-                  draggable="false"
+                <ClientAvatar
+                  avatar={item.avatar}
+                  name={item.name}
+                  blinkDelay={(k % testimonials.length) * 0.9}
                 />
               </div>
             ))}
@@ -249,14 +298,14 @@ const OurHappyClients = () => {
                 <button
                   onClick={handlePrev}
                   aria-label="Previous client"
-                  className="w-9 h-9 bg-[#01263D] text-white flex items-center justify-center rounded-sm hover:bg-[#01344f] transition-colors duration-200 cursor-pointer active:scale-95 shadow"
+                  className="w-9 h-9 bg-[#00040D] text-white flex items-center justify-center rounded-sm hover:bg-[#0A1220] transition-colors duration-200 cursor-pointer active:scale-95 shadow"
                 >
                   <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
                 </button>
                 <button
                   onClick={handleNext}
                   aria-label="Next client"
-                  className="w-9 h-9 bg-[#01263D] text-white flex items-center justify-center rounded-sm hover:bg-[#01344f] transition-colors duration-200 cursor-pointer active:scale-95 shadow"
+                  className="w-9 h-9 bg-[#00040D] text-white flex items-center justify-center rounded-sm hover:bg-[#0A1220] transition-colors duration-200 cursor-pointer active:scale-95 shadow"
                 >
                   <ChevronRight className="w-5 h-5 stroke-[2.5]" />
                 </button>
@@ -290,19 +339,19 @@ const OurHappyClients = () => {
           </div>
 
           {/* Right Box: hidden on mobile, visible on md+ */}
-          <div className="hidden md:flex w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-[#01263D] items-center justify-center rounded-none border-0 py-8 md:py-0">
+          <div className="hidden md:flex w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-[#00040D] items-center justify-center rounded-none border-0 py-8 md:py-0">
             <div className="flex items-center gap-3 sm:gap-4">
               <button
                 onClick={handlePrev}
                 aria-label="Previous client"
-                className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-[#01263D] flex items-center justify-center rounded-none border-0 hover:bg-[#FF4C1D] hover:text-white transition-colors duration-200 cursor-pointer shadow-sm active:scale-95"
+                className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-[#00040D] flex items-center justify-center rounded-none border-0 hover:bg-[#FF4C1D] hover:text-white transition-colors duration-200 cursor-pointer shadow-sm active:scale-95"
               >
                 <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
               </button>
               <button
                 onClick={handleNext}
                 aria-label="Next client"
-                className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-[#01263D] flex items-center justify-center rounded-none border-0 hover:bg-[#FF4C1D] hover:text-white transition-colors duration-200 cursor-pointer shadow-sm active:scale-95"
+                className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-[#00040D] flex items-center justify-center rounded-none border-0 hover:bg-[#FF4C1D] hover:text-white transition-colors duration-200 cursor-pointer shadow-sm active:scale-95"
               >
                 <ChevronRight className="w-6 h-6 stroke-[2.5]" />
               </button>

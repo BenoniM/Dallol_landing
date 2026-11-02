@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* DB Sans — place the font files in public/fonts/ */
+@font-face {
+  font-family: "DB Sans";
+  src: local("DB Sans Light"), local("DBSans-Light"),
+    url("/fonts/DBSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DB Sans";
+  src: local("DB Sans"), local("DB Sans Regular"), local("DBSans-Regular"),
+    url("/fonts/DBSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DB Sans";
+  src: local("DB Sans Medium"), local("DBSans-Medium"),
+    url("/fonts/DBSans-Medium.woff2") format("woff2");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DB Sans";
+  src: local("DB Sans Bold"), local("DBSans-Bold"),
+    url("/fonts/DBSans-Bold.woff2") format("woff2");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "DB Sans", sans-serif;
+}
+
+/* Client testimonial avatars: periodic blink */
+@keyframes avatar-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+.client-avatar-blink {
+  transform-box: view-box;
+  transform-origin: 100px 96px;
+  animation: avatar-blink 4.8s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .client-avatar-blink { animation: none; }
+}

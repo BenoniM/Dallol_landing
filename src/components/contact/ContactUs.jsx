@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, Formik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import Map from "./map";
 
@@ -77,6 +77,40 @@ const ContactUs = () => {
     }
   }, []);
 
+  const sectionRef = useRef(null);
+  const bgRef = useRef(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const section = sectionRef.current;
+      const bg = bgRef.current;
+      if (!section || !bg) return;
+      const rect = section.getBoundingClientRect();
+      // Progress from -1 (section below viewport) to 1 (section above viewport)
+      const progress =
+        (window.innerHeight / 2 - (rect.top + rect.height / 2)) /
+        (window.innerHeight / 2 + rect.height / 2);
+      const clamped = Math.max(-1, Math.min(1, progress));
+      bg.style.transform = `translate3d(0, ${clamped * rect.height * 0.15}px, 0)`;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   const labelClass =
     "block text-xs sm:text-sm font-medium tracking-[0.12em] uppercase text-[#0B2545]";
   const inputClass =
@@ -94,14 +128,21 @@ const ContactUs = () => {
       {/* Form Section */}
       <section
         id="contact-form"
-        className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-16"
-        style={{
-          backgroundImage:
-            "url(https://images.pexels.com/photos/6614757/pexels-photo-6614757.jpeg?auto=compress&cs=tinysrgb&w=1920)",
-        }}
+        ref={sectionRef}
+        className="relative w-full min-h-screen flex items-center justify-center overflow-hidden px-4 py-16"
       >
-        <div className="w-full max-w-2xl bg-white px-6 py-10 sm:px-12 sm:py-14 shadow-2xl">
-          <h2 className="font-cormorant text-5xl sm:text-6xl leading-none tracking-tight text-black mb-10">
+        {/* Parallax background */}
+        <div
+          ref={bgRef}
+          aria-hidden="true"
+          className="absolute inset-x-0 -top-[20%] h-[140%] bg-cover bg-center will-change-transform"
+          style={{
+            backgroundImage:
+              "url(https://images.pexels.com/photos/6614757/pexels-photo-6614757.jpeg?auto=compress&cs=tinysrgb&w=1920)",
+          }}
+        />
+        <div className="relative w-full max-w-2xl bg-white px-6 py-10 sm:px-12 sm:py-14 shadow-2xl">
+          <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-black mb-10">
             Send an Inquiry
           </h2>
 
@@ -165,13 +206,13 @@ const ContactUs = () => {
       </section>
 
       {/* Map Section */}
-      <section className="w-full bg-white text-[#01263D] px-3 sm:px-6 md:px-8 lg:px-10 py-10 md:py-14">
+      <section className="w-full bg-white text-[#00040D] px-3 sm:px-6 md:px-8 lg:px-10 py-10 md:py-14">
         <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight mb-6 md:mb-8">
           Based in Addis Ababa, <span className="text-[#FF4C1D]">Ethiopia</span>
         </h2>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-          <div className="flex-1 border border-[#01263D]/20 overflow-hidden">
+          <div className="flex-1 border border-[#00040D]/20 overflow-hidden">
             <Map />
           </div>
 

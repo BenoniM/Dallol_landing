@@ -188,7 +188,7 @@ const ExpertiseAbout = () => {
                   panelsRef.current[i] = el;
                 }}
                 className={`absolute top-0 h-full flex flex-col justify-between px-8 sm:px-12 lg:px-16 py-12 lg:py-16 will-change-transform ${
-                  dark ? "bg-[#01263D] text-white" : "bg-white text-black shadow-[-16px_0_40px_rgba(0,0,0,0.08)]"
+                  dark ? "bg-[#00040D] text-white" : "bg-white text-black shadow-[-16px_0_40px_rgba(0,0,0,0.08)]"
                 }`}
                 style={{
                   left: dims.w - panelW + i * panelW,

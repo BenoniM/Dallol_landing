@@ -19,7 +19,9 @@ const Hero = () => {
 
   // Handle scroll events for parallax image and word-filling narrative
   const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
+    // The hero is one screen tall, so its parallax stops mattering after one
+    // viewport; capping the value lets React skip re-rendering further down.
+    const currentScrollY = Math.min(window.scrollY, window.innerHeight);
     setScrollY(currentScrollY);
 
     if (narrativeRef.current) {

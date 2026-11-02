@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from "react";
 
-const BG = "#01263D";
+const BG = "#00040D";
 
 // Scroll length per project, in viewport heights.
 const VH_PER_PROJECT = 1;

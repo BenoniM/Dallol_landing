@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const dbSans = ["'DB Sans'", "sans-serif"];
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -6,10 +8,13 @@ export default {
       colors: {
         primary: "#FFA53F",
       },
+      // DB Sans is used for the entire site; legacy font utilities map to it too
       fontFamily: {
-        montserrat: ["Montserrat", "sans-serif"],
-        cormorant: ["'Cormorant Garamond'", "serif"],
-        serif: ["'Cormorant Garamond'", "Georgia", "serif"],
+        sans: dbSans,
+        serif: dbSans,
+        mono: dbSans,
+        montserrat: dbSans,
+        cormorant: dbSans,
       },
     },
   },

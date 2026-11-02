@@ -88,7 +88,7 @@ const BlogPost = () => {
 
   return (
     <article className="w-full font-montserrat">
-      {/* Projects List with Alternating #01263D and White backgrounds */}
+      {/* Projects List with Alternating #00040D and White backgrounds */}
       <div className="w-full">
         {blogPosts.map((project, index) => {
           const isDark = index % 2 === 0;
@@ -101,7 +101,7 @@ const BlogPost = () => {
               }}
               className={`w-full py-12 sm:py-16 lg:py-20 xl:py-24 transition-colors duration-500 rounded-none ${
                 isDark
-                  ? "bg-[#01263D] text-white"
+                  ? "bg-[#00040D] text-white"
                   : "bg-white text-neutral-900"
               }`}
             >
@@ -112,8 +112,8 @@ const BlogPost = () => {
                   <div className="lg:col-span-5 flex flex-col items-start justify-start pt-1 font-montserrat order-2 lg:order-1">
                     {/* Project Title */}
                     <h2
-                      className={`font-montserrat font-bold text-2xl sm:text-3xl lg:text-[2.2rem] uppercase tracking-tight leading-[1.12] mb-4 sm:mb-5 ${
-                        isDark ? "text-white" : "text-[#01263D]"
+                      className={`font-montserrat font-bold text-2xl sm:text-3xl lg:text-[2.2rem] tracking-tight leading-[1.12] mb-4 sm:mb-5 ${
+                        isDark ? "text-white" : "text-[#00040D]"
                       }`}
                     >
                       {project.title}
