@@ -312,7 +312,7 @@ const OurHappyClients = () => {
               </div>
 
               {/* Person's name — right-aligned */}
-              <div className="relative text-right h-[60px] w-full max-w-xs overflow-hidden">
+              <div className="relative flex-1 min-w-0 text-right h-[60px] overflow-hidden">
                 {SEQUENCE.map((item, k) => (
                   <div
                     key={`client-name-${k}-${item.id}`}

@@ -61,3 +61,19 @@ select {
 @media (prefers-reduced-motion: reduce) {
   .client-avatar-blink { animation: none; }
 }
+
+/* 360 gallery "Drag" hint: arrows nudge outwards and back */
+@keyframes drag-hint-left {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-8px); }
+}
+@keyframes drag-hint-right {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+.drag-hint-left { animation: drag-hint-left 1.4s ease-in-out infinite; }
+.drag-hint-right { animation: drag-hint-right 1.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .drag-hint-left,
+  .drag-hint-right { animation: none; }
+}

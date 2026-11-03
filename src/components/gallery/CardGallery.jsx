@@ -174,6 +174,7 @@ const CardGallery = () => {
   const imagesRef = useRef([]);
   const hitsRef = useRef([]);
   const captionRef = useRef(null);
+  const hintRef = useRef(null);
   const titlesRef = useRef([]);
   const descsRef = useRef([]);
   const stateRef = useRef({
@@ -248,6 +249,13 @@ const CardGallery = () => {
     }
     const edge = W / 2;
     const cy = H / 2;
+
+    // The "Drag" hint sits centred in the white space above the middle card
+    // and fades out as that card zooms up into it.
+    if (hintRef.current) {
+      hintRef.current.style.top = `${((cy - zoomH / 2) / 2).toFixed(1)}px`;
+      hintRef.current.style.opacity = clamp01(1 - t * 4).toFixed(3);
+    }
     const bend = isMobile ? 0.18 : 0.26; // extra height at the screen edges
     const k = ((1 - 1 / (1 + bend)) / (edge * edge)) * (1 - t);
     const scaleAt = (s) => 1 / Math.max(0.4, 1 - k * s * s);
@@ -639,6 +647,37 @@ const CardGallery = () => {
             className="absolute inset-0 w-full h-full"
             aria-hidden="true"
           />
+          <div
+            ref={hintRef}
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-3 text-[#00040D]"
+          >
+            <svg
+              className="drag-hint-left w-5 h-5 sm:w-6 sm:h-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 12H5M11 6l-6 6 6 6" />
+            </svg>
+            <span className="font-mono uppercase tracking-[0.2em] text-sm sm:text-base">
+              Drag
+            </span>
+            <svg
+              className="drag-hint-right w-5 h-5 sm:w-6 sm:h-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </div>
         </div>
 
         {/* Details of the card currently in the centre: title and
