@@ -339,7 +339,7 @@ const OurHappyClients = () => {
           </div>
 
           {/* Right Box: hidden on mobile, visible on md+ */}
-          <div className="hidden md:flex w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-[#00040D] items-center justify-center rounded-none border-0 py-8 md:py-0">
+          <div data-nav-dark className="hidden md:flex w-full md:w-[280px] lg:w-[340px] xl:w-[380px] aspect-square shrink-0 bg-[#00040D] items-center justify-center rounded-none border-0 py-8 md:py-0">
             <div className="flex items-center gap-3 sm:gap-4">
               <button
                 onClick={handlePrev}

@@ -90,6 +90,14 @@ const Expertise = () => {
     const dim = range(t, 0, DIM_END) * (1 - range(t, UNDIM_START, 1));
     if (dimRef.current) {
       dimRef.current.style.opacity = (dim * MAX_DIM).toFixed(3);
+      // Once mostly dark, have the navbar switch to its white theme. The
+      // easing keeps running after scrolling stops, so notify it directly.
+      const isDark = dim >= 0.5;
+      if (isDark !== ("navDark" in dimRef.current.dataset)) {
+        if (isDark) dimRef.current.dataset.navDark = "";
+        else delete dimRef.current.dataset.navDark;
+        window.dispatchEvent(new Event("navtheme:update"));
+      }
     }
     // Crossfade to a pre-blurred copy; animating the blur itself is slow.
     if (introRef.current) {

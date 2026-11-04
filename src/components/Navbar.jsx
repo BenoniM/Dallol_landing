@@ -18,9 +18,19 @@ import tiktokWhite from "../assets/icon/whitetiktok.svg";
 const Navbar = ({ forceDark = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
-  const [isOverDarkSection, setIsOverDarkSection] = useState(false);
+  // Which parts of the bar currently sit over a dark section
+  const [darkZones, setDarkZones] = useState({
+    logo: false,
+    links: false,
+    right: false,
+  });
   const [isVisible, setIsVisible] = useState(true);
   const prevScrollY = useRef(0);
+  const headerRef = useRef(null);
+  const logoRef = useRef(null);
+  const linksRef = useRef(null);
+  const socialsRef = useRef(null);
+  const burgerRef = useRef(null);
   const location = useLocation();
 
   const lightRoutes = [
@@ -30,8 +40,14 @@ const Navbar = ({ forceDark = false }) => {
     "/henok-t-residence",
   ];
   const isLightHero = forceDark || lightRoutes.includes(location.pathname);
-  const useDarkTheme =
-    isOpen || (!isOverDarkSection && (isLightHero || isPastHero));
+  const isOverDarkSection =
+    darkZones.logo || darkZones.links || darkZones.right;
+  // Black content on light backgrounds; white over the hero or dark sections
+  const darkThemeFor = (overDark) =>
+    isOpen || (!overDark && (isLightHero || isPastHero));
+  const logoDark = darkThemeFor(darkZones.logo);
+  const linksDark = darkThemeFor(darkZones.links);
+  const rightDark = darkThemeFor(darkZones.right);
 
   const closeMenu = () => setIsOpen(false);
 
@@ -113,6 +129,51 @@ const Navbar = ({ forceDark = false }) => {
 
   // Scroll listener for past-hero detection and hide-on-scroll-down / show-on-scroll-up
   useEffect(() => {
+    // Detect which parts of the navbar overlap a dark section (the
+    // mission/vision/values section, or any element marked data-nav-dark).
+    // Each zone is tested at its own center so sections that only cover
+    // part of the bar (e.g. half-width panels) color each zone correctly.
+    const updateDarkZones = () => {
+      const darkRects = Array.from(
+        document.querySelectorAll("#mission-section, [data-nav-dark]")
+      ).map((el) => el.getBoundingClientRect());
+      // Use the header's layout height so the hide/show slide doesn't skew it
+      const y = (headerRef.current?.offsetHeight ?? 80) / 2;
+      const isOverDark = (el) => {
+        if (!el) return false;
+        const r = el.getBoundingClientRect();
+        if (!r.width) return false; // hidden at this breakpoint
+        const x = r.left + r.width / 2;
+        return darkRects.some(
+          (d) => d.left <= x && d.right > x && d.top <= y && d.bottom > y
+        );
+      };
+      const next = {
+        logo: isOverDark(logoRef.current),
+        links: isOverDark(linksRef.current),
+        right: isOverDark(socialsRef.current) || isOverDark(burgerRef.current),
+      };
+      setDarkZones((prev) =>
+        prev.logo === next.logo &&
+        prev.links === next.links &&
+        prev.right === next.right
+          ? prev
+          : next
+      );
+    };
+
+    // Scroll-driven sections apply their transforms in their own rAF, so
+    // re-check a frame later to read their settled positions
+    let zoneRaf1;
+    let zoneRaf2;
+    const scheduleDarkZones = () => {
+      cancelAnimationFrame(zoneRaf1);
+      cancelAnimationFrame(zoneRaf2);
+      zoneRaf1 = requestAnimationFrame(() => {
+        zoneRaf2 = requestAnimationFrame(updateDarkZones);
+      });
+    };
+
     const handleScroll = () => {
       // Don't modify visibility while mobile menu is open
       if (isOpen) {
@@ -131,17 +192,9 @@ const Navbar = ({ forceDark = false }) => {
         setIsPastHero(currentScrollY > 80);
       }
 
-      // 2b. Detect if navbar is overlapping a dark section (the
-      // mission/vision/values section, or any element marked data-nav-dark)
-      const darkEls = document.querySelectorAll(
-        "#mission-section, [data-nav-dark]"
-      );
-      setIsOverDarkSection(
-        Array.from(darkEls).some((el) => {
-          const r = el.getBoundingClientRect();
-          return r.top <= 80 && r.bottom > 80;
-        })
-      );
+      // 2b. Detect if navbar is overlapping a dark section
+      updateDarkZones();
+      scheduleDarkZones();
 
       // 2. Hide on scroll down, show on scroll up behavior
       if (currentScrollY <= 20) {
@@ -160,6 +213,9 @@ const Navbar = ({ forceDark = false }) => {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
+    // Sections whose darkness changes without a scroll (e.g. an eased
+    // dimming layer) dispatch this to request a re-check
+    window.addEventListener("navtheme:update", updateDarkZones);
     handleScroll();
     const rafId = requestAnimationFrame(handleScroll);
     const timeoutId = setTimeout(handleScroll, 60);
@@ -167,7 +223,10 @@ const Navbar = ({ forceDark = false }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("navtheme:update", updateDarkZones);
       cancelAnimationFrame(rafId);
+      cancelAnimationFrame(zoneRaf1);
+      cancelAnimationFrame(zoneRaf2);
       clearTimeout(timeoutId);
     };
   }, [location.pathname, isOpen]);
@@ -175,6 +234,7 @@ const Navbar = ({ forceDark = false }) => {
   return (
     <>
       <header
+        ref={headerRef}
         className={`fixed top-0 left-0 right-0 w-full z-50 font-montserrat transition-all duration-300 ease-in-out ${
           isVisible || isOpen ? "translate-y-0" : "-translate-y-full"
         } ${
@@ -187,11 +247,7 @@ const Navbar = ({ forceDark = false }) => {
             ? {
                 background: "transparent",
               }
-            : isOverDarkSection
-            ? {
-                background: "transparent",
-              }
-            : isPastHero
+            : isPastHero || isOverDarkSection
             ? {
                 background:
                   "linear-gradient(180deg, rgba(255, 76, 29, 0.09) 0%, rgba(255, 76, 29, 0.05) 100%)",
@@ -218,7 +274,8 @@ const Navbar = ({ forceDark = false }) => {
               className="inline-block transition-transform duration-200 hover:opacity-90"
             >
               <img
-                src={useDarkTheme ? logoBlack : logoWhite}
+                ref={logoRef}
+                src={logoDark ? logoBlack : logoWhite}
                 alt="Dallol Consult"
                 className="h-10 sm:h-11 md:h-11 lg:h-11 xl:h-12 w-auto object-contain transition-all duration-300"
               />
@@ -226,7 +283,10 @@ const Navbar = ({ forceDark = false }) => {
           </div>
 
           {/* Center Column: Navigation Links (Desktop) */}
-          <nav className="hidden lg:flex items-center justify-center gap-7 xl:gap-10">
+          <nav
+            ref={linksRef}
+            className="hidden lg:flex items-center justify-center gap-7 xl:gap-10"
+          >
             {navLinks.map((item) => {
               const isProjectActive = item.path === "/projects" && isLightHero;
               return (
@@ -236,7 +296,7 @@ const Navbar = ({ forceDark = false }) => {
                   className={({ isActive }) => {
                     const active = isActive || isProjectActive;
                     return `text-xs xl:text-[13px] uppercase tracking-[0.16em] font-medium transition-colors duration-200 ${
-                      useDarkTheme
+                      linksDark
                         ? active
                           ? "text-[#FF4C1D] font-bold"
                           : "text-black hover:text-[#FF4C1D]"
@@ -255,7 +315,10 @@ const Navbar = ({ forceDark = false }) => {
           {/* Right Column: Social Media Icons (Desktop) & Mobile Two-Line Hamburger / X Button */}
           <div className="flex-1 flex justify-end items-center gap-4">
             {/* Desktop Social Icons */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-5">
+            <div
+              ref={socialsRef}
+              className="hidden lg:flex items-center gap-4 xl:gap-5"
+            >
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
@@ -264,11 +327,11 @@ const Navbar = ({ forceDark = false }) => {
                   rel="noopener noreferrer"
                   aria-label={social.name}
                   className={`p-1.5 rounded-full transition-all duration-200 hover:scale-115 flex items-center justify-center ${
-                    useDarkTheme ? "hover:bg-[#FF4C1D]/10" : "hover:bg-white/10"
+                    rightDark ? "hover:bg-[#FF4C1D]/10" : "hover:bg-white/10"
                   }`}
                 >
                   <img
-                    src={useDarkTheme ? social.blackIcon : social.whiteIcon}
+                    src={rightDark ? social.blackIcon : social.whiteIcon}
                     alt={social.name}
                     className="w-5 h-5 object-contain transition-opacity duration-200"
                   />
@@ -278,6 +341,7 @@ const Navbar = ({ forceDark = false }) => {
 
             {/* Mobile Animated Two-Line Hamburger to X Toggle Button */}
             <button
+              ref={burgerRef}
               type="button"
               onClick={() => setIsOpen((prev) => !prev)}
               aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
@@ -288,7 +352,7 @@ const Navbar = ({ forceDark = false }) => {
                 {/* Line 1: Top bar in hamburger, rotates 45deg to form diagonal of X */}
                 <span
                   className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
-                    useDarkTheme ? "bg-black" : "bg-white"
+                    rightDark ? "bg-black" : "bg-white"
                   } ${
                     isOpen
                       ? "translate-y-0 rotate-45"
@@ -298,7 +362,7 @@ const Navbar = ({ forceDark = false }) => {
                 {/* Line 2: Bottom bar in hamburger, rotates -45deg to form diagonal of X */}
                 <span
                   className={`absolute w-[30px] h-[2.5px] transition-transform duration-300 ease-in-out origin-center ${
-                    useDarkTheme ? "bg-black" : "bg-white"
+                    rightDark ? "bg-black" : "bg-white"
                   } ${
                     isOpen
                       ? "translate-y-0 -rotate-45"

@@ -99,6 +99,7 @@ const BlogPost = () => {
               ref={(el) => {
                 sectionRefs.current[index] = el;
               }}
+              data-nav-dark={isDark || undefined}
               className={`w-full py-12 sm:py-16 lg:py-20 xl:py-24 transition-colors duration-500 rounded-none ${
                 isDark
                   ? "bg-[#00040D] text-white"

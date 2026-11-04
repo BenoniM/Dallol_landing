@@ -13,6 +13,7 @@ const Footer = () => {
 
   return (
     <footer
+      data-nav-dark
       className="relative flex h-screen min-h-screen w-full flex-col justify-between overflow-hidden bg-cover bg-center bg-no-repeat text-white px-6 py-6 sm:px-12 sm:py-8 lg:px-16 lg:py-10"
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(15, 15, 15, 0.3), rgba(10, 10, 10, 0.45)), url('${bgImageUrl}'), url('${footerBgLocal}')`,
